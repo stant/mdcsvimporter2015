@@ -1,0 +1,131 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/46/trunk/src/com/moneydance/modules/features/mdcsvimporter
+END
+CSVData.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/CSVData.java
+END
+import.png
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/5/trunk/src/com/moneydance/modules/features/mdcsvimporter/import.png
+END
+DataField.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/64/trunk/src/com/moneydance/modules/features/mdcsvimporter/DataField.java
+END
+PreviewImportWin.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/93/trunk/src/com/moneydance/modules/features/mdcsvimporter/PreviewImportWin.java
+END
+ImportDialog.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/ImportDialog.java
+END
+PreviewImportWin.form
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/92/trunk/src/com/moneydance/modules/features/mdcsvimporter/PreviewImportWin.form
+END
+ImportDialog.form
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/93/trunk/src/com/moneydance/modules/features/mdcsvimporter/ImportDialog.form
+END
+RegexReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/RegexReader.java
+END
+CSVReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/CSVReader.java
+END
+Settings.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/93/trunk/src/com/moneydance/modules/features/mdcsvimporter/Settings.java
+END
+CustomTableCellRenderer.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/93/trunk/src/com/moneydance/modules/features/mdcsvimporter/CustomTableCellRenderer.java
+END
+TransactionReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/TransactionReader.java
+END
+CustomReaderData.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/93/trunk/src/com/moneydance/modules/features/mdcsvimporter/CustomReaderData.java
+END
+OtherActionsDialog.form-hide
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/92/trunk/src/com/moneydance/modules/features/mdcsvimporter/OtherActionsDialog.form-hide
+END
+CustomReaderDialog.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/CustomReaderDialog.java
+END
+OtherActionsDialog.java-hide
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/92/trunk/src/com/moneydance/modules/features/mdcsvimporter/OtherActionsDialog.java-hide
+END
+CustomReaderDialog.form
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/93/trunk/src/com/moneydance/modules/features/mdcsvimporter/CustomReaderDialog.form
+END
+Main.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/Main.java
+END
+PreviewImportTblModel.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/92/trunk/src/com/moneydance/modules/features/mdcsvimporter/PreviewImportTblModel.java
+END
+DateGuesser.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/69/trunk/src/com/moneydance/modules/features/mdcsvimporter/DateGuesser.java
+END
+SecureFileDeleter.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/!svn/ver/20/trunk/src/com/moneydance/modules/features/mdcsvimporter/SecureFileDeleter.java
+END

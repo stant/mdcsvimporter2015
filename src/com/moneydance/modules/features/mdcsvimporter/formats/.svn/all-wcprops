@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/35/trunk/src/com/moneydance/modules/features/mdcsvimporter/formats
+END
+INGNetherlandsReader.java-HIDE
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/formats/INGNetherlandsReader.java-HIDE
+END
+YodleeReader.java-HIDE
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/formats/YodleeReader.java-HIDE
+END
+SimpleCreditDebitReader.java-HIDE
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/formats/SimpleCreditDebitReader.java-HIDE
+END
+BbvaCompassBankReader.java-HIDE
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/formats/BbvaCompassBankReader.java-HIDE
+END
+CitiBankCanadaReader.java-HIDE
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/formats/CitiBankCanadaReader.java-HIDE
+END
+CustomReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/formats/CustomReader.java
+END
+WellsFargoReader.java-HIDE
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/!svn/ver/97/trunk/src/com/moneydance/modules/features/mdcsvimporter/formats/WellsFargoReader.java-HIDE
+END
