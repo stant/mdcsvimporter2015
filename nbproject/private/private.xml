@@ -4,20 +4,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/CSVReader.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/CustomReaderData.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/CSVData.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/RegexReader.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/formats/CustomReader.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/PreviewImportWin.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/CustomReaderDialog.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/Main.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/test/com/moneydance/modules/features/mdcsvimporter/DateGuesserTest.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/nbproject/project.properties</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/TransactionReader.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/CustomTableCellRenderer.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/ImportDialog.java</file>
-            <file>file:/F:/data/java/mdcsvimporter/trunk/src/com/moneydance/modules/features/mdcsvimporter/Settings.java</file>
+            <file>file:/F:/github/mdcsvimporter2015/src/com/moneydance/modules/features/mdcsvimporter/CSVData.java</file>
         </group>
     </open-files>
 </project-private>
