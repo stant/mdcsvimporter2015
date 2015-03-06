@@ -14,23 +14,12 @@
  */
 package com.moneydance.modules.features.mdcsvimporter;
 
-import com.moneydance.apps.md.model.TransactionSet;
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.RootAccount;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.AbstractTxn;
-import com.moneydance.apps.md.model.OnlineTxn;
-import com.moneydance.apps.md.model.OnlineTxnList;
-import com.moneydance.apps.md.model.ParentTxn;
-import com.moneydance.apps.md.model.SplitTxn;
-
-import com.moneydance.apps.md.model.TxnSet;
+import com.infinitekind.moneydance.model.*;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.apps.md.view.gui.OnlineManager;
 import com.moneydance.modules.features.mdcsvimporter.formats.CustomReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -53,7 +42,7 @@ public abstract class TransactionReader
    
    protected static ImportDialog importDialog = null;
    protected static CustomReaderDialog customReaderDialog = null;
-   protected static RootAccount rootAccount = null;
+   protected static AccountBook book = null;
 
    protected CSVData csvData;
    protected Account account;
@@ -98,16 +87,16 @@ public abstract class TransactionReader
       throw new IOException( message );
    }
 
-   public static void init( CustomReaderDialog customReaderDialogArg, ImportDialog importDialogArg, RootAccount rootAccountArg )
+   public static void init( CustomReaderDialog customReaderDialogArg, ImportDialog importDialogArg, AccountBook accountBookArg )
     {
     customReaderDialog = customReaderDialogArg;
     importDialog = importDialogArg;
-    rootAccount = rootAccountArg;
+    book = accountBookArg;
     }
-   
-   protected final void setRootAccount( RootAccount rootAccount )
+  
+   protected final void setAccountBook(AccountBook book)
    {
-        this.rootAccount = rootAccount;
+        this.book = book;
    }
 
    public final String calcFITxnIdAbstract( AbstractTxn atxn )
@@ -140,7 +129,7 @@ public abstract class TransactionReader
   </TAG>
               */
               
-      String origtxn = atxn.getTag( "ol.orig-txn" );
+      String origtxn = atxn.getParameter("ol.orig-txn");
       //String origCheckNumber = origtxn.replaceAll( ".*\\\"chknum\\\" = \\\"(.*?)\\\"\\\n.*", "$1" );
 
       //System.out.println( "\norigtxn ="+origtxn + "=" );
@@ -182,20 +171,20 @@ public abstract class TransactionReader
 
         //long value = atxn.getParentTxn().getValue();
         
-        if ( atxn.getTag( "ol.orig-payee" ) == null )
+        if ( atxn.getParameter("ol.orig-payee") == null )
             {
             desc = atxn.getDescription();
             }
         else
             {
-            desc = atxn.getTag( "ol.orig-payee" );
+            desc = atxn.getParameter("ol.orig-payee");
             }
 
         // This new way compare using the ORIGINAL payee and memo fields so if the user changes them, it will still match. Stan
         String tmp = atxn.getDateInt() + ":" + amt
                            + ":" + desc
                            + ":" + (origCheckNumber == null ? "" : origCheckNumber.replaceAll( "^0*(.*)", "$1" ) )    // strip leading 0's
-                           + ":" + (atxn.getTag( "ol.orig-memo" ) == null ? "" : atxn.getTag( "ol.orig-memo" ));
+                           + ":" + (atxn.getParameter("ol.orig-memo") == null ? "" : atxn.getParameter("ol.orig-memo"));
 
         //System.err.println( "calc abstract FITxnld >" + tmp + "<" );
         return tmp;
@@ -241,14 +230,14 @@ public abstract class TransactionReader
       /*                
        ************************************************************************************************
        */
-        public final void parse( Main main, CSVData csvDataArg, Account accountIn, RootAccount rootAccount )
+        public final void parse( Main main, CSVData csvDataArg, Account accountIn, AccountBook book)
                 throws IOException 
         {
         System.err.println("\n---------   entered TransactionReader().parse()  -------------");
 
         this.csvData = csvDataArg;
-        this.rootAccount = rootAccount;
-        this.txnSet = rootAccount.getTransactionSet();
+        this.book = book;
+        this.txnSet = book.getTransactionSet();
         this.tsetMatcherKey = new HashSet();
         this.tsetFITxnIdMatcherKey = new HashSet();
 
@@ -396,7 +385,7 @@ public abstract class TransactionReader
                 }
             else
                 {
-                this.account = rootAccount.getAccountByName( accountNameFromCSV );
+                this.account = book.getRootAccount().getAccountByName( accountNameFromCSV );
                 System.out.println( "accountNameFromCSV: " +  accountNameFromCSV );
                 if ( this.account == null )
                     {
@@ -469,7 +458,7 @@ public abstract class TransactionReader
                 else
                     {
                     System.err.println( "add new parentTxn/splitTxn" );
-                    ParentTxn pTxn = onlineToParentTxn( account, rootAccount, txn );
+                    ParentTxn pTxn = onlineToParentTxn( account, book, txn );
                     if ( pTxn != null )
                         {
                         txnSet.addNewTxn( pTxn );
@@ -550,7 +539,7 @@ public abstract class TransactionReader
     * Note: Create a ParentTxn from a filled out OnlineTxn
     */
  //  @ Override
-   protected ParentTxn onlineToParentTxn( Account account, RootAccount rootAccount, OnlineTxn oTxn )
+   protected ParentTxn onlineToParentTxn( Account account, AccountBook book, OnlineTxn oTxn )
       throws IOException
    {
         Account category = null;
@@ -565,13 +554,13 @@ public abstract class TransactionReader
         oTxn.setAmount( - oTxn.getAmount() );  
         oTxn.setTotalAmount( - oTxn.getTotalAmount() );  
         
-        ParentTxn pTxn = new ParentTxn( oTxn.getDateInitiatedInt(), oTxn.getDateInitiatedInt(), oTxn.getDateInitiatedInt()
+        ParentTxn pTxn = ParentTxn.makeParentTxn(book, oTxn.getDateInitiatedInt(), oTxn.getDateInitiatedInt(), oTxn.getDateInitiatedInt()
                                                           , ckNum, account, oTxn.getName(), oTxn.getMemo()
                                                           , -1, AbstractTxn.STATUS_UNRECONCILED );
        try {
            System.err.println( "find category for oTxn.getSubAccountTo() =" + oTxn.getSubAccountTo() + "=" );
-           category = getAccount( account, oTxn.getSubAccountTo(), com.moneydance.apps.md.model.AccountUtil.getDefaultCategoryForAcct( account ).getAccountName()  //rr.getString("default_category"),
-                                  , oTxn.getAmount() <= 0 ? Account.ACCOUNT_TYPE_EXPENSE : Account.ACCOUNT_TYPE_INCOME );
+           category = getAccount( account, oTxn.getSubAccountTo(), AccountUtil.getDefaultCategoryForAcct( account ).getAccountName()  //rr.getString("default_category"),
+                                  , oTxn.getAmount() <= 0 ? Account.AccountType.EXPENSE : Account.AccountType.INCOME );
            System.err.println( "found category =" + category + "=" );
 
        } catch (Exception ex) {
@@ -579,9 +568,9 @@ public abstract class TransactionReader
            return null;   // skip this transaction - do not add
        }
         
-        SplitTxn sptxn = new SplitTxn( pTxn, oTxn.getAmount(), oTxn.getAmount(), 1.0
-                                        , category  //com.moneydance.apps.md.model.AccountUtil.getDefaultCategoryForAcct(account)  /* category */
-                                        , pTxn.getDescription(), -1, AbstractTxn.STATUS_UNRECONCILED );
+       SplitTxn sptxn = SplitTxn.makeSplitTxn(pTxn, oTxn.getAmount(), oTxn.getAmount(), 1.0,
+                                              category,  //com.moneydance.apps.md.model.AccountUtil.getDefaultCategoryForAcct(account)  /* category */
+                                              pTxn.getDescription(), -1, AbstractTxn.STATUS_UNRECONCILED );
         
         sptxn.setIsNew( true );
         pTxn.addSplit( sptxn );
@@ -608,7 +597,7 @@ public abstract class TransactionReader
             return this.customReaderDialog.getNumberOfCustomReaderFieldsUsed();
         }
    
-   public static TransactionReader[] getCompatibleReaders( boolean getAllReadersList, File selectedFile, ImportDialog importDialogArg, RootAccount rootAccount )
+   public static TransactionReader[] getCompatibleReaders( boolean getAllReadersList, File selectedFile, ImportDialog importDialogArg, AccountBook book)
    {
       ArrayList<TransactionReader> formats = new ArrayList<TransactionReader>();
 // moving      importDialog = importDialogArg;
@@ -636,7 +625,7 @@ public abstract class TransactionReader
                     }
                 CSVData csvData = new CSVData( csvReader );
             
-                transactionReader.setRootAccount( rootAccount );
+                transactionReader.setAccountBook(TransactionReader.book);
                 if ( getAllReadersList )
                       {
                       System.err.println( "=============== add all readers for >" + key + "< ===============" );
@@ -763,14 +752,14 @@ s        {
 
   /** Find and return the ACCOUNT field in the appropriate format. */
   private final Account getAccount( Account account, String categoryName, String defaultAccount,
-                                    int defaultAcctType )
+                                    Account.AccountType defaultAcctType )
     throws Exception
   {
     //String acctStr = getField(fieldValues, 1 /*ACCOUNT*/, null);
     if ( categoryName == null ) return addNewAccount( defaultAccount, account.getCurrencyType(),
-                                           rootAccount, "", defaultAcctType, true, -1 );
+                                                      book.getRootAccount(), "", defaultAcctType, true, -1 );
     //acctStr = acctStr.trim();
-    return addNewAccount( categoryName, account.getCurrencyType(), rootAccount, "",
+    return addNewAccount( categoryName, account.getCurrencyType(), book.getRootAccount(), "",
                           defaultAcctType, true, -1 );
   }
   
@@ -781,12 +770,12 @@ s        {
   
   private Account addNewAccount( String accountName, CurrencyType currencyType,
                                 Account parentAccount, String description,
-                                int accountType, boolean lenientMatch,
+                                Account.AccountType accountType, boolean lenientMatch,
                                 int currAccountId)
     throws Exception
   {
     if(accountName.indexOf(':')==0 &&
-       parentAccount.getAccountType()==Account.ACCOUNT_TYPE_ROOT) {
+       parentAccount.getAccountType()==Account.AccountType.ROOT) {
       accountName = accountName.substring(1);
     }
 
@@ -813,14 +802,10 @@ s        {
     }
 
     if(newAccount==null) {
-      newAccount = 
-        Account.makeAccount(accountType, thisAcctName, currencyType, parentAccount);
-      if(newAccount instanceof com.moneydance.apps.md.model.BankAccount) {
-        ((com.moneydance.apps.md.model.BankAccount)newAccount).setBankName(description);
-      } else if(newAccount instanceof com.moneydance.apps.md.model.InvestmentAccount) {
-        (( com.moneydance.apps.md.model.InvestmentAccount)newAccount).setAccountDescription(description);
-      }
-      parentAccount.addSubAccount(newAccount);
+      newAccount = Legacy.makeAccount(book, accountType, thisAcctName, currencyType, parentAccount);
+      newAccount.setBankName(description);
+      newAccount.setAccountDescription(description);
+      newAccount.syncItem();
     }
 
     if(restOfAcctName!=null) {
@@ -831,19 +816,13 @@ s        {
       if(newAccount.getAccountNum()==currAccountId) {
         // if the found account is the same as the container account
         // create another account with the same name and return it
-        if(accountType==Account.ACCOUNT_TYPE_BANK &&
-           parentAccount==rootAccount) {
-          newAccount = Account.makeAccount(Account.ACCOUNT_TYPE_INCOME, 
-                                           thisAcctName+"X", currencyType, 
-                                           parentAccount);
+        if(accountType==Account.AccountType.BANK && parentAccount == book.getRootAccount()) {
+          newAccount = Legacy.makeAccount(book, Account.AccountType.INCOME, thisAcctName+"X", currencyType, parentAccount);
         } else {
-          newAccount = Account.makeAccount(accountType, thisAcctName+"X", 
-                                           currencyType, parentAccount);
+          newAccount = Legacy.makeAccount(book, accountType, thisAcctName+"X", currencyType, parentAccount);
         }
-        if(newAccount instanceof com.moneydance.apps.md.model.BankAccount) {
-          (( com.moneydance.apps.md.model.BankAccount)newAccount).setBankName(description);
-        }
-        parentAccount.addSubAccount(newAccount);
+        newAccount.setBankName(description);
+        newAccount.syncItem();
       }
       return newAccount;
     }

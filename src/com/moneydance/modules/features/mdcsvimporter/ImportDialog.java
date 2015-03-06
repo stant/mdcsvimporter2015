@@ -14,8 +14,7 @@
  */
 package com.moneydance.modules.features.mdcsvimporter;
 
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.RootAccount;
+import com.infinitekind.moneydance.model.*;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.apps.md.view.gui.OnlineManager;
 import static com.moneydance.modules.features.mdcsvimporter.TransactionReader.importDialog;
@@ -33,8 +32,6 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -130,7 +127,7 @@ public class ImportDialog
      skipDuringInit = false;
      this.setModal( false );
      this.addEscapeListener( this );
-     TransactionReader.init( customReaderDialog, this, main.getRootAccount() );
+     TransactionReader.init( customReaderDialog, this, main.getAccountBook() );
     }
 
     public static void addEscapeListener(final JDialog win) {
@@ -337,10 +334,10 @@ public class ImportDialog
 
    private void fillAccountCombo( Main main )
    {
-      RootAccount rootAccount = main.getRootAccount();
+      AccountBook book = main.getAccountBook();
       comboAccount.removeAllItems();
 
-      fillAccountCombo_( rootAccount );
+      fillAccountCombo_(book.getRootAccount());
 
       if ( comboAccount.getItemCount() > 0 )
       {
@@ -867,7 +864,7 @@ public class ImportDialog
 
           Account account = (Account) comboAccount.getSelectedItem();
           System.err.println( "starting transReader.parse..." );
-          transReader.parse( main, csvData, account, main.getRootAccount() );
+          transReader.parse( main, csvData, account, main.getAccountBook() );
           csvReader.close();
           System.out.println( "finished transReader.parse" );
 
@@ -1045,7 +1042,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
             //System.err.println( "starting transReader.parse..." );
             //transReader.parse( main, csvData, account, main.getRootAccount() );
                       
-            transReader.setRootAccount( main.getRootAccount() );
+            transReader.setAccountBook(main.getAccountBook());
                 
             PreviewImportWin previewImportWin = new PreviewImportWin();
             previewImportWin.myInit( this, transReader, csvData, csvReader );
@@ -1313,7 +1310,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
 // moving        TransactionReader.customReaderDialog = customReaderDialog;
         
          setLabel( "FindAReader", "Find Reader" );
-         TransactionReader[] fileFormats = TransactionReader.getCompatibleReaders( GET_COMPATIBLE_READERS, selectedFile, this, main.getRootAccount() );
+         TransactionReader[] fileFormats = TransactionReader.getCompatibleReaders( GET_COMPATIBLE_READERS, selectedFile, this, main.getAccountBook() );
 
          comboFileFormat.removeAllItems();
          for ( TransactionReader reader : fileFormats )
@@ -1422,7 +1419,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
 // moving        TransactionReader.customReaderDialog = customReaderDialog;
         
          setLabel( "FindAReader", "Find Reader" );
-         TransactionReader[] fileFormats = TransactionReader.getCompatibleReaders( GET_ALL_READERS, selectedFile, this, main.getRootAccount() );
+         TransactionReader[] fileFormats = TransactionReader.getCompatibleReaders( GET_ALL_READERS, selectedFile, this, main.getAccountBook() );
 
          comboFileFormat.removeAllItems();
          for ( TransactionReader reader : fileFormats )

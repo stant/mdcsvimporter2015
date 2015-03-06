@@ -61,7 +61,8 @@ public class CSVReaderTest
       throws IOException
    {
       StringReader data = new StringReader( test1 );
-      CSVReader cvsReader = new CSVReader( data );
+      CustomReaderData parseParameters = new CustomReaderData();
+      CSVReader cvsReader = new CSVReader( data, parseParameters );
       doTest1( cvsReader );
    }
 
