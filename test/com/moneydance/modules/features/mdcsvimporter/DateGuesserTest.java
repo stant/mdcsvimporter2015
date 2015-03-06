@@ -66,7 +66,7 @@ public class DateGuesserTest
    {
       Reader file = new InputStreamReader(
          DateGuesserTest.class.getResourceAsStream( "dateGuesser.csv" ) );
-      CSVReader reader = new CSVReader( file );
+      CSVReader reader = new CSVReader( );
       DateGuesser guesser = new DateGuesser();
 
       while ( reader.nextLine() ) {

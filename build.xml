@@ -77,8 +77,10 @@
         <property name="publickey" value="public.key"/>
         <property name="privatekeyid" value="99"/>
     </target>
-
+  
     <target name="-post-jar">
+        <property file="user.properties" />
+        <echo message="Using private key: ${privatekey}"/>
         <jar destfile="${dist.jar}" update="true">
             <zipfileset src="externals/swing-layout/swing-layout-1.0.3.jar"/>
         </jar>

@@ -68,7 +68,7 @@ public class PreviewImportWin extends javax.swing.JFrame {
             for (           ; fieldIndex < maxFieldIndex; fieldIndex ++ )
                 {
                 String dataTypeExpecting = transReader.getCustomReaderData().getDataTypesList().get( fieldIndex );
-                System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  fieldIndex = " + fieldIndex );
+                //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  fieldIndex = " + fieldIndex );
 
                 if ( dataTypeExpecting.equalsIgnoreCase( DATA_TYPE_IGNORE_REST ) )
                    {

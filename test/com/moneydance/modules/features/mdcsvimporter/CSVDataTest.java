@@ -4,7 +4,7 @@
  */
 package com.moneydance.modules.features.mdcsvimporter;
 
-import com.moneydance.apps.md.model.Account;
+import com.infinitekind.moneydance.model.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -64,10 +64,11 @@ public class CSVDataTest
       throws IOException
    {
       StringReader data = new StringReader( test1 );
-      CSVReader csvReader = new CSVReader( data );
+      CustomReaderData readerData = new CustomReaderData();
+      CSVReader csvReader = new CSVReader( data,  readerData);
       CSVData csvData = new CSVData( csvReader );
 
-      csvData.parseIntoLines( ',' );
+      csvData.parseIntoLines( readerData );
 
       System.out.println( "finished transReader.parse" );
       

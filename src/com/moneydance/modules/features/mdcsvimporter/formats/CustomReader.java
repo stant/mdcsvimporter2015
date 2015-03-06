@@ -14,7 +14,7 @@
  */
 package com.moneydance.modules.features.mdcsvimporter.formats;
 
-import com.moneydance.apps.md.model.OnlineTxn;
+import com.infinitekind.moneydance.model.OnlineTxn;
 import com.moneydance.modules.features.mdcsvimporter.CSVData;
 import com.moneydance.modules.features.mdcsvimporter.CustomReaderData;
 import com.moneydance.modules.features.mdcsvimporter.TransactionReader;
@@ -198,12 +198,12 @@ public class CustomReader extends TransactionReader
          for (           ; retVal && fieldIndex < maxFieldIndex; fieldIndex ++ )
              {
              String dataTypeExpecting = getCustomReaderData().getDataTypesList().get( fieldIndex );
-             System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  fieldIndex = " + fieldIndex );
+             //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  fieldIndex = " + fieldIndex );
 
              data.nextField();
 //             if ( ! data.nextField() )
 //                {
-//                System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but have no data left." );
+//                //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but have no data left." );
 //                retVal = false;
 //                break;
 //                }
@@ -239,7 +239,7 @@ public class CustomReader extends TransactionReader
                 {
                 if ( ! getCustomReaderData().getEmptyFlagsList().get( fieldIndex ).equals( "Can Be Blank" ) )
                     {
-                    System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but got no value =" + fieldString + "= and STOP ON ERROR" );
+                    //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but got no value =" + fieldString + "= and STOP ON ERROR" );
                     retVal = false;
                     break;
                     }
@@ -366,10 +366,10 @@ public class CustomReader extends TransactionReader
                 System.err.println(  "accountName >" + fieldString + "<" );
                 accountName = fieldString;
 
-                if ( rootAccount.getAccountByName( accountName ) == null )
+                if ( book.getRootAccount().getAccountByName( accountName ) == null )
                     {
-                    System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but that account does not exist =" + fieldString + "= will not import it." );
-//                    System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but that account does not exist =" + fieldString + "= and STOP ON ERROR" );
+                    //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but that account does not exist =" + fieldString + "= will not import it." );
+//                    //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but that account does not exist =" + fieldString + "= and STOP ON ERROR" );
 //                    retVal = false;
 //                    break;
                     }
@@ -439,7 +439,7 @@ public class CustomReader extends TransactionReader
      for (           ; fieldIndex < maxFieldIndex; fieldIndex ++ )
          {
          String dataTypeExpecting = getCustomReaderData().getDataTypesList().get( fieldIndex );
-         System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  EmptyFlagsList = " + getCustomReaderData().getEmptyFlagsList().get( fieldIndex ) + "=" );
+         //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  EmptyFlagsList = " + getCustomReaderData().getEmptyFlagsList().get( fieldIndex ) + "=" );
 
          csvData.nextField();
          String fieldString = csvData.getField();
@@ -475,7 +475,7 @@ public class CustomReader extends TransactionReader
                     && ! getCustomReaderData().getEmptyFlagsList().get( fieldIndex )
 					.equals( "Can Be Blank" ) )
             {
-            System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but got no value =" + fieldString + "= and STOP ON ERROR" );
+            //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but got no value =" + fieldString + "= and STOP ON ERROR" );
             throwException( "dataTypeExpecting =" + dataTypeExpecting + "=  but got no value =" + fieldString + "= and STOP ON ERROR" );
             }
          
@@ -604,10 +604,10 @@ public class CustomReader extends TransactionReader
             System.err.println(  "accountName >" + fieldString + "<" );
             accountName = fieldString;
 
-            if ( rootAccount.getAccountByName( accountName ) == null )
+            if ( book.getRootAccount().getAccountByName( accountName ) == null )
                 {
-                System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but that account does not exist =" + fieldString + "= will not import it." );
-//                System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but that account does not exist =" + fieldString + "= and STOP ON ERROR" );
+                //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but that account does not exist =" + fieldString + "= will not import it." );
+//                //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but that account does not exist =" + fieldString + "= and STOP ON ERROR" );
 //                throwException( "dataTypeExpecting =" + dataTypeExpecting + "=  but that account does not exist =" + fieldString + "= and STOP ON ERROR" );
                 return false; // skip this line
                 }

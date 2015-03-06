@@ -14,9 +14,9 @@
  */
 package com.moneydance.modules.features.mdcsvimporter;
 
+import com.infinitekind.moneydance.model.AccountBook;
 import com.moneydance.apps.md.controller.FeatureModule;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
-import com.moneydance.apps.md.model.RootAccount;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,8 +50,7 @@ public class Main
    {
       try
       {
-         image = ImageIO.read(
-            Main.class.getResourceAsStream( "import.png" ) );
+         image = ImageIO.read( Main.class.getResourceAsStream( "import.png" ) );
       }
       catch ( IOException x )
       {
@@ -88,10 +87,10 @@ public class Main
       context.registerFeature( this, "import", image, "Import File" );
    }
 
-   RootAccount getRootAccount()
+   AccountBook getAccountBook()
    {
       FeatureModuleContext context = getContext();
-      return context.getRootAccount();
+      return context.getCurrentAccountBook();
    }
 
    JFrame getMoneydanceWindow()
