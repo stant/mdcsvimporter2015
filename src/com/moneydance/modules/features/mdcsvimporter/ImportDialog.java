@@ -19,22 +19,31 @@ import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.apps.md.view.gui.OnlineManager;
 import static com.moneydance.modules.features.mdcsvimporter.TransactionReader.importDialog;
 import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 /**
  *
@@ -145,6 +154,18 @@ public class ImportDialog
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
     }    
 
+    private static void launchUrl(URI uri) 
+        {
+        if (Desktop.isDesktopSupported()) 
+            {
+            try {
+                Desktop.getDesktop().browse(uri);
+                } 
+            catch (IOException e) { /* TODO: error handling */ }
+          } 
+        else { /* TODO: error handling */ }
+    }
+      
    protected ArrayList<Integer> processRunArguments()
        {
        errCodeList = new ArrayList<Integer>();
@@ -1010,6 +1031,51 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         this.setPropertiesFile(); 
+
+    // for copying style
+    JLabel label = new JLabel();
+    Font font = label.getFont();
+
+    // create some css from the label's font
+    StringBuffer style = new StringBuffer("font-family:" + font.getFamily() + ";");
+    style.append("font-weight:" + (font.isBold() ? "bold" : "normal") + ";");
+    style.append("font-size:" + font.getSize() + "pt;");
+
+    // html content
+    JEditorPane ep = new JEditorPane("text/html", "<html><body style=\"" + style + "\">" //
+            + "This is a first build of mdcsvimporter <br>"
+            + " for Moneydance 2015 ! ! <br>"
+            + "Please Create a Test Data Book and Test mdcsvimporter and <br>"
+            + "leave comments on whether it is ready for use at: <br>"
+            + "<a href=\"http://tinyurl.com/mqkqp4r\">web site</a>" //
+            + "</body></html>" );
+
+    // handle link events
+    ep.addHyperlinkListener(new HyperlinkListener()
+    {
+        @Override
+        public void hyperlinkUpdate(HyperlinkEvent e)
+        {
+            if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
+                try {
+                    launchUrl( new URI( e.getURL().toString() ) ); // roll your own link launcher or use Desktop if J6+
+            } catch (URISyntaxException ex) {
+                Logger.getLogger(ImportDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    });
+    ep.setEditable(false);
+    ep.setBackground(label.getBackground());
+
+    // show
+    JOptionPane.showMessageDialog( null, ep );
+    
+//        JOptionPane.showMessageDialog( this, "<html>This is a first build of mdcsvimporter \n"
+//             + " for Moneydance 2015 ! ! \n"
+//             + "Please Create a Test Data Book and Test mdcsvimporter and \nleave comments on whether it is ready for use at: \n"
+//             + "<a href=\"http://tinyurl.com/mqkqp4r\">web site</a></html>",
+//             "NOTICE: Tesing Requested !", fixxx
+//             JOptionPane.INFORMATION_MESSAGE );
     }//GEN-LAST:event_formWindowOpened
 
     private void PreviewImportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewImportBtnActionPerformed

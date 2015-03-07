@@ -1,0 +1,8 @@
+{
+  "vendor" = "Stan Towianski, Milutin Jovanović"
+  "module_build" = "18"
+  "minbuild" = "1000"
+  "vendor.url" = "https://github.com/stant/mdcsvimporter2015/releases"
+  "module_name" = "mdcsvimporter2015"
+  "desc" = "Let's you create configs for say: Discover card, VISA, your private bank, etc... You denote columns like: -Payment-, -Deposit-, date, amount, memo, etc... It can test your file, giving you a list of all the readers that can handle your file. Importing does matching to skip duplicate entries."
+}

@@ -33,7 +33,7 @@ public class Main
    extends FeatureModule
 {
    private static final int VERSION = 18;
-   protected static final String VERSION_STRING = " Beta 18";
+   protected static final String VERSION_STRING = " Alpha 18 for MD2015";
    private static final String NAME = "CSV Importer";
    private static final String VENDOR = "Stan Towianski, Milutin Jovanović";
    private static final String URL = "http://code.google.com/p/mdcsvimporter/";
