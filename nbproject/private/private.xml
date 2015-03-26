@@ -5,11 +5,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/F:/github/mdcsvimporter2015/src/com/moneydance/modules/features/mdcsvimporter/Main.java</file>
-            <file>file:/F:/github/mdcsvimporter2015/src/com/moneydance/modules/features/mdcsvimporter/CSVReader.java</file>
-            <file>file:/F:/github/mdcsvimporter2015/src/com/moneydance/modules/features/mdcsvimporter/SecureFileDeleter.java</file>
-            <file>file:/F:/github/mdcsvimporter2015/src/com/moneydance/modules/features/mdcsvimporter/CSVData.java</file>
+            <file>file:/F:/github/mdcsvimporter2015/src/com/moneydance/modules/features/mdcsvimporter/CustomReaderDialog.java</file>
             <file>file:/F:/github/mdcsvimporter2015/src/com/moneydance/modules/features/mdcsvimporter/ImportDialog.java</file>
-            <file>file:/F:/github/mdcsvimporter2015/src/com/moneydance/modules/features/mdcsvimporter/Settings.java</file>
         </group>
     </open-files>
 </project-private>

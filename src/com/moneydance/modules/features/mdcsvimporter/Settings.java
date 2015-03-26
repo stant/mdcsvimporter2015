@@ -178,6 +178,7 @@ public final class Settings
       OutputStream os = new FileOutputStream( getFilename() );  //, Charset.forName( "UTF-8" ) ); //(String) transReader.getCustomReaderData().getFileEncoding() ) );
       try
       {
+         //System.err.println( "DOING SAVE TO PROPS FILE" );
          props.store( os, "MDCSVImporter - Moneydance CSV Importer" );
       }
       finally
@@ -218,7 +219,7 @@ public final class Settings
    {
       try
       {
-         Properties props = load();
+        Properties props = load();
 
         setOnly( props, name, value );
 
@@ -227,6 +228,7 @@ public final class Settings
       catch ( IOException ex )
       {
          Logger.getLogger( Settings.class.getName() ).log( Level.SEVERE, null, ex );
+         ex.printStackTrace();
       }
    }
 
@@ -296,6 +298,34 @@ public final class Settings
    public static void setInteger( String name, int value )
    {
       set( name, Integer.toString( value ) );
+   }
+
+   public static WinProps getWinProps( boolean loadProps, String name )
+    {
+    String value = get( loadProps, name );
+    //System.err.println( "getWinProps(" + name + ")   value =" + value + "=" );
+    if ( value == null )
+        {
+        //System.err.println( "getWinProps() string value is null" );
+        return new WinProps();
+        }
+
+    ArrayList<String> tmpList = new ArrayList<String>(Arrays.asList( value.trim().split( "[\\[\\],]" ) ) );
+    tmpList.remove( 0 );
+    ArrayList<Integer> numList = new ArrayList<Integer>();
+    for ( String one : tmpList )
+        {
+        //System.err.println( "one =" + one + "=" );
+        numList.add( Integer.parseInt( one.trim() ) );
+        //System.err.println( "getWinProps set name =" + name + "=   list value =" + one.getWinPropsAsList().toString() + "=" );
+        }
+    return new WinProps( numList );
+    }
+
+   public static void setWinProps( String name, WinProps value )
+   {
+      set( name, value.getWinPropsAsList().toString() );
+      //System.err.println( "set name =" + name + "=   list value =" + value.getWinPropsAsList().toString() + "=" );
    }
 
    public static HashMap<String, CustomReaderData> createReaderConfigsHM()

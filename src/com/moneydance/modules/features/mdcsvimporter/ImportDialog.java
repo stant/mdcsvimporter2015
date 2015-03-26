@@ -20,30 +20,25 @@ import com.moneydance.apps.md.view.gui.OnlineManager;
 import static com.moneydance.modules.features.mdcsvimporter.TransactionReader.importDialog;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Font;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 /**
  *
@@ -93,12 +88,13 @@ public class ImportDialog
    {
       super( main.getMoneydanceWindow(), true );
       initComponents();
+      
       this.runArgsHM = runArgsHM;
       autoProcessedAFile = false;
 
       customReaderDialog.init();
-      customReaderDialog.setLocationRelativeTo( getRootPane() );
-
+      //customReaderDialog.setLocationRelativeTo( getRootPane() );
+      
       /**
       textFilename.getDocument().addDocumentListener( new DocumentListener()
       {
@@ -145,6 +141,7 @@ public class ImportDialog
             @Override
             public void actionPerformed(ActionEvent e) {
                 //System.err.println( "previewImportWin formWindow dispose()" );
+                win.dispatchEvent( new WindowEvent( win, WindowEvent.WINDOW_CLOSING )); 
                 win.dispose();
             }
         };
@@ -494,13 +491,19 @@ public class ImportDialog
         textFilename = new javax.swing.JComboBox();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        importFileCount = new javax.swing.JLabel();
 
         jLabel3.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Import File: " + main.VERSION_STRING);
+        setMinimumSize(new java.awt.Dimension(750, 470));
         setName("importDialog"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(800, 470));
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -511,22 +514,25 @@ public class ImportDialog
         lblSelectFile.setPreferredSize(new java.awt.Dimension(120, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         getContentPane().add(lblSelectFile, gridBagConstraints);
 
         btnBrowse.setText("...");
+        btnBrowse.setMaximumSize(new java.awt.Dimension(50, 23));
+        btnBrowse.setMinimumSize(new java.awt.Dimension(50, 23));
+        btnBrowse.setPreferredSize(new java.awt.Dimension(50, 23));
         btnBrowse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBrowseActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 7;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 0, 10);
         getContentPane().add(btnBrowse, gridBagConstraints);
 
         checkDeleteFile.setText("Securely erase file after processing.");
@@ -535,7 +541,8 @@ public class ImportDialog
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 13;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 10, 0);
         getContentPane().add(checkDeleteFile, gridBagConstraints);
@@ -610,7 +617,7 @@ public class ImportDialog
         lblFileFormat.setPreferredSize(new java.awt.Dimension(120, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         getContentPane().add(lblFileFormat, gridBagConstraints);
@@ -631,7 +638,7 @@ public class ImportDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -710,7 +717,8 @@ public class ImportDialog
         comboFileFormatLabel.setPreferredSize(new java.awt.Dimension(60, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 7;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         getContentPane().add(comboFileFormatLabel, gridBagConstraints);
@@ -765,7 +773,7 @@ public class ImportDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         getContentPane().add(jButton3, gridBagConstraints);
@@ -780,7 +788,7 @@ public class ImportDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -795,7 +803,7 @@ public class ImportDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         getContentPane().add(jButton4, gridBagConstraints);
@@ -808,8 +816,18 @@ public class ImportDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 5;
         getContentPane().add(jButton5, gridBagConstraints);
+
+        importFileCount.setText(" ");
+        importFileCount.setMaximumSize(new java.awt.Dimension(80, 25));
+        importFileCount.setMinimumSize(new java.awt.Dimension(40, 23));
+        importFileCount.setPreferredSize(new java.awt.Dimension(40, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(0, 6, 0, 0);
+        getContentPane().add(importFileCount, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1031,51 +1049,44 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         this.setPropertiesFile(); 
-
-    // for copying style
-    JLabel label = new JLabel();
-    Font font = label.getFont();
-
-    // create some css from the label's font
-    StringBuffer style = new StringBuffer("font-family:" + font.getFamily() + ";");
-    style.append("font-weight:" + (font.isBold() ? "bold" : "normal") + ";");
-    style.append("font-size:" + font.getSize() + "pt;");
-
-    // html content
-    JEditorPane ep = new JEditorPane("text/html", "<html><body style=\"" + style + "\">" //
-            + "This is a first build of mdcsvimporter <br>"
-            + " for Moneydance 2015 ! ! <br>"
-            + "Please Create a Test Data Book and Test mdcsvimporter and <br>"
-            + "leave comments on whether it is ready for use at: <br>"
-            + "<a href=\"http://tinyurl.com/mqkqp4r\">web site</a>" //
-            + "</body></html>" );
-
-    // handle link events
-    ep.addHyperlinkListener(new HyperlinkListener()
-    {
-        @Override
-        public void hyperlinkUpdate(HyperlinkEvent e)
-        {
-            if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
-                try {
-                    launchUrl( new URI( e.getURL().toString() ) ); // roll your own link launcher or use Desktop if J6+
-            } catch (URISyntaxException ex) {
-                Logger.getLogger(ImportDialog.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    });
-    ep.setEditable(false);
-    ep.setBackground(label.getBackground());
-
-    // show
-    JOptionPane.showMessageDialog( null, ep );
-    
-//        JOptionPane.showMessageDialog( this, "<html>This is a first build of mdcsvimporter \n"
-//             + " for Moneydance 2015 ! ! \n"
-//             + "Please Create a Test Data Book and Test mdcsvimporter and \nleave comments on whether it is ready for use at: \n"
-//             + "<a href=\"http://tinyurl.com/mqkqp4r\">web site</a></html>",
-//             "NOTICE: Tesing Requested !", fixxx
-//             JOptionPane.INFORMATION_MESSAGE );
+       
+//    // for copying style
+//    JLabel label = new JLabel();
+//    Font font = label.getFont();
+//
+//    // create some css from the label's font
+//    StringBuffer style = new StringBuffer("font-family:" + font.getFamily() + ";");
+//    style.append("font-weight:" + (font.isBold() ? "bold" : "normal") + ";");
+//    style.append("font-size:" + font.getSize() + "pt;");
+//
+//    // html content
+//    JEditorPane ep = new JEditorPane("text/html", "<html><body style=\"" + style + "\">" //
+//            + "This is a first build of mdcsvimporter <br>"
+//            + " for Moneydance 2015 ! ! <br>"
+//            + "Please Create a Test Data Book and Test mdcsvimporter and <br>"
+//            + "leave comments on whether it is ready for use at: <br>"
+//            + "<a href=\"http://tinyurl.com/mqkqp4r\">web site</a>" //
+//            + "</body></html>" );
+//
+//    // handle link events
+//    ep.addHyperlinkListener(new HyperlinkListener()
+//    {
+//        @Override
+//        public void hyperlinkUpdate(HyperlinkEvent e)
+//        {
+//            if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
+//                try {
+//                    launchUrl( new URI( e.getURL().toString() ) ); // roll your own link launcher or use Desktop if J6+
+//            } catch (URISyntaxException ex) {
+//                Logger.getLogger(ImportDialog.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//    });
+//    ep.setEditable(false);
+//    ep.setBackground(label.getBackground());
+//
+//    // show
+//    JOptionPane.showMessageDialog( null, ep );
     }//GEN-LAST:event_formWindowOpened
 
     private void PreviewImportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewImportBtnActionPerformed
@@ -1156,6 +1167,12 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
         fileChanged2();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       WinProps winProps = new WinProps( this.getWidth(), this.getHeight(), this.getX(), this.getY() );
+       Settings.setWinProps( "winprops.ImportDialog", winProps );
+       //System.err.println( "setting winprops of importdlg wid =" + winProps.getWidth() );
+    }//GEN-LAST:event_formWindowClosing
+
     
     /**
      * @param args the command line arguments
@@ -1171,6 +1188,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
                         System.exit(0);
                     }
                 });
+                dialog.pack();
                 dialog.setVisible(true);
             }
         });
@@ -1187,6 +1205,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
     private javax.swing.JComboBox comboDateFormat;
     private javax.swing.JComboBox comboFileFormat;
     private javax.swing.JLabel comboFileFormatLabel;
+    private javax.swing.JLabel importFileCount;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -1324,6 +1343,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
                 textFilename.addItem( s );
                 }
             }
+        importFileCount.setText( textFilename.getItemCount() + "" );
         }
     
     public void popComboDateFormatList( String [] formats )
@@ -1345,10 +1365,10 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
               
       // see if the file is selected
       if ( selectedFile == null || !selectedFile.exists() || !selectedFile.isFile() )
-      {
-         message = "Please select a valid file.";
-         error = true;
-      }
+        {
+        message = "Please select a valid file.";
+        error = true;
+        }
 
       // try reading the file
       /*
@@ -1372,7 +1392,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
       
       // detect file format
       if ( ! error )
-      {
+          {
 // moving        TransactionReader.customReaderDialog = customReaderDialog;
         
          setLabel( "FindAReader", "Find Reader" );
@@ -1494,7 +1514,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
             if ( reader.isUsingCategorynameFlag() )
                 isUsingCategorynameFlag = true;
             }
-
+                 
          if ( fileFormats.length == 0 )
          {
             comboFileFormat.addItem( "Format not recognized" );

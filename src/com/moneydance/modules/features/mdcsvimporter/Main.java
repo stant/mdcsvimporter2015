@@ -17,6 +17,7 @@ package com.moneydance.modules.features.mdcsvimporter;
 import com.infinitekind.moneydance.model.AccountBook;
 import com.moneydance.apps.md.controller.FeatureModule;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ import javax.swing.JFrame;
 public class Main
    extends FeatureModule
 {
-   private static final int VERSION = 18;
-   protected static final String VERSION_STRING = " Alpha 18 for MD2015";
+   private static final int VERSION = 19;
+   protected static final String VERSION_STRING = " v19 for MD2015";
    private static final String NAME = "CSV Importer";
    private static final String VENDOR = "Stan Towianski, Milutin Jovanović";
    private static final String URL = "http://code.google.com/p/mdcsvimporter/";
@@ -195,10 +196,17 @@ public class Main
       //-------   This is for passing in arguments to do auto processing.   -------
      errCodeList = dialog.processRunArguments();
 
-     dialog.setLocationRelativeTo( null );
+     //dialog.setLocationRelativeTo( null );
       
       if ( ! dialog.isAutoProcessedAFile() && ! argsHM.containsKey( "junitflag" ) )
           {
+          dialog.pack();
+          WinProps winProps = Settings.getWinProps( true, "winprops.ImportDialog" );
+          dialog.setLocation( winProps.getAtX(), winProps.getAtY() );
+          dialog.setSize( new Dimension( winProps.getWidth(), winProps.getHeight() ) );
+          //System.err.println( "winProps.getWidth() =" + winProps.getWidth() + "=" );
+          //System.err.println( "winProps.getHeight() =" + winProps.getHeight() + "=" );
+
           dialog.setVisible( true );
           }
    }
