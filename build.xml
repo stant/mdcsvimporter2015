@@ -9,6 +9,7 @@
 <!-- in the project's Project Properties dialog box.-->
 <project name="mdcsvimporter" default="default" basedir=".">
     <description>Builds, tests, and runs the project mdcsvimporter.</description>
+    <property file="user.properties" />
     <import file="nbproject/build-impl.xml"/>
     <!--
 
@@ -84,7 +85,11 @@
         <jar destfile="${dist.jar}" update="true">
             <zipfileset src="externals/swing-layout/swing-layout-1.0.3.jar"/>
         </jar>
-        <java newenvironment="true"
+      <jar destfile="${dist.jar}" update="true">
+        <fileset dir="src" includes="com/moneydance/modules/features/mdcsvimporter/*.form"/>
+      </jar>
+
+      <java newenvironment="true"
             classpath="externals/moneydance/extadmin.jar:externals/moneydance/moneydance.jar"
             classname="com.moneydance.admin.KeyAdmin">
             <arg value="signextjar"/>
