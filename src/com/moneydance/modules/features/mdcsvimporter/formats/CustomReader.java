@@ -106,7 +106,7 @@ public class CustomReader extends TransactionReader
         }
 	
    @Override
-   public boolean canParse( CSVData data )
+   public boolean canParse( CSVData data, int parseThruErrors )
         {
         System.err.println(  "---------   entered customerReader().canParse() as type =" + getFormatName() + "=  -------------" );
         try {
@@ -176,7 +176,9 @@ public class CustomReader extends TransactionReader
 //    data.reverseListRangeOrder( begAtLine, stopAtLine - 1 );
 //    data.printFile();
     
-      while ( retVal && data.nextLine() && totalProcessed < stopAtLine )
+      
+      while ( ( retVal || (parseThruErrors == TransactionReader.PARSE_THRU_ERRORS_CONTINUE) )
+                && data.nextLine() && totalProcessed < stopAtLine )
          {
          totalProcessed++;
          System.err.println(  "------- next line ---------------" );
@@ -187,15 +189,19 @@ public class CustomReader extends TransactionReader
 
          if ( ! data.hasEnoughFieldsPerCurrentLine( maxFieldIndex - 1 ) )
             {
-            System.err.println(  "Have too few fields. Needed >= " + ( maxFieldIndex - 2 ) );
+            System.err.println( "Have too few fields. Needed >= " + ( maxFieldIndex - 1 ) );
             data.printCurrentLine();
             retVal = false;
+            data.nextField();  // read to first field since we did not start yet.
+            data.setFieldErr( "Have too few fields. Needed >= " + ( maxFieldIndex - 1 ) );
+            continue;
             }
 
          int fieldIndex = 0;
          System.err.println(  "maxFieldIndex =" + maxFieldIndex );
          
-         for (           ; retVal && fieldIndex < maxFieldIndex; fieldIndex ++ )
+         for (           ; ( retVal  || (parseThruErrors == TransactionReader.PARSE_THRU_ERRORS_CONTINUE) )
+                 && fieldIndex < maxFieldIndex; fieldIndex ++ )
              {
              String dataTypeExpecting = getCustomReaderData().getDataTypesList().get( fieldIndex );
              //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  fieldIndex = " + fieldIndex );
@@ -211,6 +217,12 @@ public class CustomReader extends TransactionReader
              
              if ( dataTypeExpecting.equalsIgnoreCase( DATA_TYPE_IGNORE_REST ) )
                 {
+                while ( fieldIndex < maxFieldIndex )
+                    {
+                    fieldIndex ++;
+                    data.nextField();
+                    fieldString += data.getField();
+                    }
                 break;
                 }
              else if ( dataTypeExpecting.equalsIgnoreCase( DATA_TYPE_IGNORE ) )
@@ -223,7 +235,7 @@ public class CustomReader extends TransactionReader
                     }
                 catch ( Exception ex )
                     {
-                    System.err.println(  "ignore 1 line by erro on field =" + getCustomReaderData().getEmptyFlagsList().get( fieldIndex ).trim() + "=" );
+                    System.err.println(  "assume ignore 1 line by erro on field =" + getCustomReaderData().getEmptyFlagsList().get( fieldIndex ).trim() + "=" );
                     }
                 while ( x > 1 )
                     {
@@ -241,7 +253,8 @@ public class CustomReader extends TransactionReader
                     {
                     //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  but got no value =" + fieldString + "= and STOP ON ERROR" );
                     retVal = false;
-                    break;
+                    data.setFieldErr( "Field Cannot Be Blank" );
+                    //break;
                     }
                 else
                     {
@@ -297,12 +310,14 @@ public class CustomReader extends TransactionReader
                 catch (ParseException e) {
                     System.err.println(  "canParse() parseException: " + sdf.toString() + "<" );
                     retVal = false;
-                    break;
+                    data.setFieldErr( "Invalid Date" );
+                    //break;
                 }
                 catch (IllegalArgumentException e) {
                     System.err.println(  "canParse() IllegalArgumentException: " + sdf.toString() + "<" );
                     retVal = false;
-                    break;
+                    data.setFieldErr( "Invalid Date" );
+                    //break;
                 }
 
                 /**/
@@ -340,13 +355,16 @@ public class CustomReader extends TransactionReader
                         else
                             {
                             retVal = false;
-                            break;
+                            data.setFieldErr( "Invalid Number" );
+                            //break;
                             }
                      }
                      catch ( Exception x )
                      {
+                        x.printStackTrace();
                         retVal = false;
-                        break;
+                        data.setFieldErr( "Invalid Number" );
+                        //break;
                      }
                 }
              else if ( dataTypeExpecting.equalsIgnoreCase( DATA_TYPE_DESCRIPTION ) )

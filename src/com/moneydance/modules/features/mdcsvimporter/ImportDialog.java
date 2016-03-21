@@ -20,7 +20,6 @@ import com.moneydance.apps.md.view.gui.OnlineManager;
 import static com.moneydance.modules.features.mdcsvimporter.TransactionReader.importDialog;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -405,6 +404,10 @@ public class ImportDialog
     public boolean isAutoProcessedAFile() {
         return autoProcessedAFile;
     }
+
+    public File getSelectedFile() {
+        return selectedFile;
+    }
    
     public void setPropertiesFile() {
         this.propertiesFile.setText( Settings.getFilename().toString() );
@@ -453,7 +456,89 @@ public class ImportDialog
                 }
           }
     }
+    
+    protected void processActionPerformed(java.awt.event.ActionEvent evt)                                           
+    {
+       System.err.println( "Process button entered" );
+       Settings.setYesNo( "delete.file", checkDeleteFile.isSelected() );
+       Settings.setYesNo( "importtype.online.radiobutton", onlineImportTypeRB.isSelected() );
+       Settings.setInteger( "selected.account", comboAccount.getSelectedIndex() );
 
+        try
+             {
+             TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
+             System.err.println( "comboFileFormat is string =" + transReader.toString() + "=" );
+             transReader.setDateFormat( (String) comboDateFormat.getSelectedItem() );
+             CSVReader csvReader = null;
+    
+            if ( transReader.getCustomReaderData().getUseRegexFlag() )
+                {
+                System.err.println( "\n================  Regex Reader" );
+                csvReader = new RegexReader( new InputStreamReader( new FileInputStream( selectedFile ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
+                }
+            else
+                {
+                System.err.println( "\n================  Csv Reader" );
+                csvReader = new CSVReader( new InputStreamReader( new FileInputStream( selectedFile ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
+                }
+            CSVData csvData = new CSVData( csvReader );            
+       
+       //System.err.println( "btnProcessActionPerformed  customReaderDialog.getFieldSeparatorChar() =" + (char)customReaderDialog.getFieldSeparatorChar() + "=" );
+       //csvData.getReader().setFieldSeparator( customReaderDialog.getFieldSeparatorChar() );
+
+          Account account = (Account) comboAccount.getSelectedItem();
+          System.err.println( "starting transReader.parse..." );
+          transReader.parse( main, csvData, account, main.getAccountBook() );
+          csvReader.close();
+          System.out.println( "finished transReader.parse" );
+
+          //TESTING! DS
+//         onlineMgr.processDownloadedTxns( account );
+            }
+       catch ( IOException x )
+            {
+          JOptionPane.showMessageDialog( rootPane, "There was a problem importing "
+             + " selected file, probably because the file format was wrong. Some items "
+             + "might have been added to your account.",
+             "Error Importing File",
+             JOptionPane.ERROR_MESSAGE );
+          return;
+            }
+
+       if ( checkDeleteFile.isSelected() )
+        {
+        deleteCsvFile();
+        }
+
+       if ( ! Settings.getBoolean( false, "success.dialog.shown", false ) )
+        {
+          Settings.setYesNo( "success.dialog.shown", true );
+          JOptionPane.showMessageDialog( rootPane,
+             "The file was imported properly. \n\n"
+             + "You can view the imported items when you open the account you have \n"
+             + "selected and click on the 'downloaded transactions' message at the \n"
+             + "bottom of the screen.",
+             "Import Successful", JOptionPane.INFORMATION_MESSAGE );
+        }
+
+       setVisible( false );
+    }
+
+    protected void deleteCsvFile()
+    {
+        try
+        {
+           SecureFileDeleter.delete( selectedFile );
+        }
+        catch ( IOException x )
+        {
+           JOptionPane.showMessageDialog( rootPane, 
+              "The csv file could not be erased as requested.", "Cannot Delete File",
+              JOptionPane.ERROR_MESSAGE );
+           return;
+        }
+    }
+    
    /** This method is called from within the constructor to
     * initialize the form.
     * WARNING: Do NOT modify this code. The content of this method is
@@ -778,6 +863,7 @@ public class ImportDialog
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         getContentPane().add(jButton3, gridBagConstraints);
 
+        textFilename.setEditable(true);
         textFilename.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " " }));
         textFilename.setMinimumSize(new java.awt.Dimension(180, 29));
         textFilename.setPreferredSize(new java.awt.Dimension(180, 29));
@@ -874,79 +960,7 @@ public class ImportDialog
 
     private void btnProcessActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnProcessActionPerformed
     {//GEN-HEADEREND:event_btnProcessActionPerformed
-       System.err.println( "Process button entered" );
-       Settings.setYesNo( "delete.file", checkDeleteFile.isSelected() );
-       Settings.setYesNo( "importtype.online.radiobutton", onlineImportTypeRB.isSelected() );
-       Settings.setInteger( "selected.account", comboAccount.getSelectedIndex() );
-
-        try
-             {
-             TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
-             System.err.println( "comboFileFormat is string =" + transReader.toString() + "=" );
-             transReader.setDateFormat( (String) comboDateFormat.getSelectedItem() );
-             CSVReader csvReader = null;
-    
-            if ( transReader.getCustomReaderData().getUseRegexFlag() )
-                {
-                System.err.println( "\n================  Regex Reader" );
-                csvReader = new RegexReader( new InputStreamReader( new FileInputStream( selectedFile ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
-                }
-            else
-                {
-                System.err.println( "\n================  Csv Reader" );
-                csvReader = new CSVReader( new InputStreamReader( new FileInputStream( selectedFile ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
-                }
-            CSVData csvData = new CSVData( csvReader );            
-       
-       //System.err.println( "btnProcessActionPerformed  customReaderDialog.getFieldSeparatorChar() =" + (char)customReaderDialog.getFieldSeparatorChar() + "=" );
-       //csvData.getReader().setFieldSeparator( customReaderDialog.getFieldSeparatorChar() );
-
-          Account account = (Account) comboAccount.getSelectedItem();
-          System.err.println( "starting transReader.parse..." );
-          transReader.parse( main, csvData, account, main.getAccountBook() );
-          csvReader.close();
-          System.out.println( "finished transReader.parse" );
-
-          //TESTING! DS
-//         onlineMgr.processDownloadedTxns( account );
-            }
-       catch ( IOException x )
-            {
-          JOptionPane.showMessageDialog( rootPane, "There was a problem importing "
-             + " selected file, probably because the file format was wrong. Some items "
-             + "might have been added to your account.",
-             "Error Importing File",
-             JOptionPane.ERROR_MESSAGE );
-          return;
-            }
-
-       if ( checkDeleteFile.isSelected() )
-        {
-          try
-          {
-             SecureFileDeleter.delete( selectedFile );
-          }
-          catch ( IOException x )
-          {
-             JOptionPane.showMessageDialog( rootPane, "The file was imported properly, "
-                + "however it could not be erased as requested.", "Cannot Delete File",
-                JOptionPane.ERROR_MESSAGE );
-             return;
-          }
-        }
-
-       if ( ! Settings.getBoolean( false, "success.dialog.shown", false ) )
-        {
-          Settings.setYesNo( "success.dialog.shown", true );
-          JOptionPane.showMessageDialog( rootPane,
-             "The file was imported properly. \n\n"
-             + "You can view the imported items when you open the account you have \n"
-             + "selected and click on the 'downloaded transactions' message at the \n"
-             + "bottom of the screen.",
-             "Import Successful", JOptionPane.INFORMATION_MESSAGE );
-        }
-
-       setVisible( false );
+       processActionPerformed( evt );
     }//GEN-LAST:event_btnProcessActionPerformed
 
     private void fileFormatChanged(java.awt.event.ItemEvent evt)//GEN-FIRST:event_fileFormatChanged
@@ -1097,34 +1111,17 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
             TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
             System.err.println( "comboFileFormat is string =" + transReader.toString() + "=" );
             transReader.setDateFormat( (String) comboDateFormat.getSelectedItem() );
-            CSVReader csvReader = null;
-    
-            if ( transReader.getCustomReaderData().getUseRegexFlag() )
-                {
-                System.err.println( "\n================  Regex Reader" );
-                csvReader = new RegexReader( new InputStreamReader( new FileInputStream( selectedFile ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
-                }
-            else
-                {
-                System.err.println( "\n================  Csv Reader" );
-                csvReader = new CSVReader( new InputStreamReader( new FileInputStream( selectedFile ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
-                }
-
-            CSVData csvData = new CSVData( csvReader );            
-       
-            //System.err.println( "btnProcessActionPerformed  customReaderDialog.getFieldSeparatorChar() =" + (char)customReaderDialog.getFieldSeparatorChar() + "=" );
-            //csvData.getReader().setFieldSeparator( customReaderDialog.getFieldSeparatorChar() );
 
             Account account = (Account) comboAccount.getSelectedItem();
             //System.err.println( "starting transReader.parse..." );
             //transReader.parse( main, csvData, account, main.getRootAccount() );
                       
             transReader.setAccountBook(main.getAccountBook());
-                
+
             PreviewImportWin previewImportWin = new PreviewImportWin();
-            previewImportWin.myInit( this, transReader, csvData, csvReader );
+            previewImportWin.myInit( this, transReader );
             }
-       catch ( IOException x )
+       catch ( Exception x )
             {
             JOptionPane.showMessageDialog( rootPane, "There was a problem with Preview importing "
                 + " selected file, probably because the file format was wrong. ",

@@ -13,17 +13,20 @@ public class PreviewImportTblModel extends AbstractTableModel
 {
     private ArrayList<String>colNames;
     private String[][] data;
+    private int colCount;    
     
-    public PreviewImportTblModel( ArrayList<String> colNamesArg, String[][] dataArg )
+    public PreviewImportTblModel( ArrayList<String> colNamesArg, String[][] dataArg, int colCountArg )
         {
         colNames = colNamesArg;
         data = dataArg;
+        //headerCount = headerCountArg;
+        colCount = colCountArg;
         
         System.err.println( "row count =" + data.length );
-        System.err.println( "col count =" + data[0].length );
+        System.err.println( "col count =" + colCount );
         }
 
-    public int getColumnCount() { return data[0].length; }
+    public int getColumnCount() { return colCount; }
     public int getRowCount() { return data.length;}
     public Object getValueAt(int row, int col) 
         {

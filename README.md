@@ -7,3 +7,16 @@ Remove old version. Restart. Install via 'Add From File'.
 The plug-in is still considered BETA, however, it works well for people who have tried it.
 
 It is distributed under GNU LGPL. Among other things this means that it is free, but that the authors cannot take any responsibility for you using this code.
+
+Quick Usage:<br/>
+This is a top down window process. I might look at getting rid of 'Date Format', but when I have time. 
+You have to define a reader first of all and tell it how to match filenames. An improvement I plan to make is to tell people if they do not have one and that they need to create one first.
+
+1.) So, what I do is download a new trans list csv file from my bank (XYZ)
+2.) in MD do, "Import File" (my extension)
+3.) I have say 6 defined so I pick the "File Reader" for my bank (XYZ).
+4.) I hit button "Find Import File(s) for this Reader."
+It populates "Select Import File:" dropdown with my list of files that match my reader "filename matcher". It also gives the number of files that match. Hopefully 1. If not I pick the file I want to import.
+5.) Hit "Preview Import" so it validates the importing transactions.
+6.) "Process" button becomes enabled. I hit it.
+Done.

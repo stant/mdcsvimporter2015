@@ -2,15 +2,23 @@ package com.moneydance.modules.features.mdcsvimporter;
 
 import static com.moneydance.modules.features.mdcsvimporter.formats.CustomReader.DATA_TYPE_IGNORE;
 import static com.moneydance.modules.features.mdcsvimporter.formats.CustomReader.DATA_TYPE_IGNORE_REST;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 /**
@@ -21,34 +29,77 @@ import javax.swing.KeyStroke;
 
 public class PreviewImportWin extends javax.swing.JFrame {
 
+    private ImportDialog importDialog = null;
     private TransactionReader transReader = null;
     private CSVData csvData = null;
-            
+    private CSVReader csvReader = null;
+    
     /**
      * Creates new form PreviewImportWin
      */
     public PreviewImportWin() {
-        initComponents();
+        try {
+            initComponents();
+            this.setSize( 800, 600 );
+            this.setLocationRelativeTo( getRootPane() );
+            this.setVisible( true );
+            this.validate();
+            this.addEscapeListener( this );
+            }
+        catch( Exception fex )
+            {
+                ;
+            }
     }
 
-    public void myInit( ImportDialog importDialog, TransactionReader transReaderArg, CSVData csvDataArg, CSVReader csvReader )
+    public void myInit( ImportDialog importDialog, TransactionReader transReaderArg )  //, CSVData csvDataArg, CSVReader csvReader )
     {
-      System.err.println( "entered PreviewImportWin.myInit()" + "< ==============================" );
-      transReader = transReaderArg;
-      csvData = csvDataArg;
+        System.err.println( "entered PreviewImportWin.myInit()" + "< ==============================" );
+        this.importDialog = importDialog;
+        transReader = transReaderArg;
+        selectedFile.setText( importDialog.getSelectedFile().getPath() );
+      
+        parseFile();
+    }
+    
+    public void parseFile()
+    {
       boolean gotError = false;
       
         try {
-            if ( transReader.canParse( csvData ) )
+            CSVReader csvReader = null;
+    
+            if ( transReader.getCustomReaderData().getUseRegexFlag() )
+                {
+                System.err.println( "\n================  Regex Reader" );
+                csvReader = new RegexReader( new InputStreamReader( new FileInputStream( importDialog.getSelectedFile() ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
+                }
+            else
+                {
+                System.err.println( "\n================  Csv Reader" );
+                csvReader = new CSVReader( new InputStreamReader( new FileInputStream( importDialog.getSelectedFile() ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
+                }
+
+            CSVData csvData = new CSVData( csvReader );            
+       
+            //System.err.println( "btnProcessActionPerformed  customReaderDialog.getFieldSeparatorChar() =" + (char)customReaderDialog.getFieldSeparatorChar() + "=" );
+            //csvData.getReader().setFieldSeparator( customReaderDialog.getFieldSeparatorChar() );
+                
+            csvData.reset();
+            if ( transReader.canParse( csvData, TransactionReader.PARSE_THRU_ERRORS_CONTINUE ) )
                   {
                   this.setTitle( "For Reader: " + transReader.toString() + "    - Parse file works having " + csvData.getData().length + " rows" );
                   importDialog.btnProcess.setEnabled( true );
+                  processBtn.setEnabled( true );
+                  processBtn.requestFocusInWindow();
                   System.err.println( "=============== at canparse WORKS for >" + transReader.getFormatName() + "< ===============" );
                   }
             else
                   {
                   this.setTitle( "For Reader: " + transReader.toString() + "    - Parse file does not work!" );
                   importDialog.btnProcess.setEnabled( false );
+                  processBtn.setEnabled( false );
+                  parseFileBtn.requestFocusInWindow();
                   System.err.println( "=============== at canparse NOT WORK for >" + transReader.getFormatName() + " at row,col " 
                           + csvData.getCurrentLineIndex() + "," + csvData.getCurrentFieldIndex() + "< ===============" );
                   gotError = true;
@@ -56,11 +107,12 @@ public class PreviewImportWin extends javax.swing.JFrame {
       
             //csvData.parseIntoLines( transReader.getCustomReaderData().getFieldSeparatorChar() );
             System.err.println( "after parse row count =" + csvData.getData().length );
-            System.err.println( "after parse col count =" + (csvData.getData())[0].length );
+            System.err.println( "after parse col count =" + (csvData.getData())[ transReader.getHeaderCount() ].length );
 
             // Find and Insert User DataTypes as a Header row to show if they line up:
             
             int fieldIndex = 0;
+            int colCount = 0;
             int maxFieldIndex = transReader.getCustomReaderData().getNumberOfCustomReaderFieldsUsed();
             System.err.println(  "maxFieldIndex =" + maxFieldIndex );
             ArrayList<String> headerDataTypesList = new ArrayList();
@@ -73,6 +125,7 @@ public class PreviewImportWin extends javax.swing.JFrame {
                 if ( dataTypeExpecting.equalsIgnoreCase( DATA_TYPE_IGNORE_REST ) )
                    {
                    headerDataTypesList.add( dataTypeExpecting );
+                   colCount++;
                    break;
                    }
                 else if ( dataTypeExpecting.equalsIgnoreCase( DATA_TYPE_IGNORE ) )
@@ -85,63 +138,86 @@ public class PreviewImportWin extends javax.swing.JFrame {
                        }
                    catch ( Exception ex )
                        {
-                       System.err.println(  "ignore 1 line by erro on field =" + transReader.getCustomReaderData().getEmptyFlagsList().get( fieldIndex ).trim() + "=" );
+                       System.err.println(  "assume ignore 1 column on field =" + transReader.getCustomReaderData().getEmptyFlagsList().get( fieldIndex ).trim() + "=" );
                        }
                    int cnt = x;
                    headerDataTypesList.add( dataTypeExpecting + "-" + cnt );
+                   colCount++;
                    while ( x > 1 )
                        {
                        headerDataTypesList.add( dataTypeExpecting + "-" + cnt );
+                       colCount++;
                        x--;
                        }
                    }
                 else
                    {
                    headerDataTypesList.add( dataTypeExpecting );
+                   colCount++;
                    }
                 }
-            previewImportTbl.setModel( new PreviewImportTblModel( headerDataTypesList, csvData.getData() ) );
-            if ( gotError )
-                {
-                    //csvData.getCurrentLineIndex() + "," + csvData.getCurrentFieldIndex()
-                CustomTableCellRenderer customTableCellRenderer = new CustomTableCellRenderer();
-                customTableCellRenderer.setForRowCol( csvData.getCurrentLineIndex(), csvData.getCurrentFieldIndex() );
-                //previewImportTbl.getColumnModel().getColumn( csvData.getCurrentFieldIndexWithinBounds() ).setCellRenderer( customTableCellRenderer );
-                previewImportTbl.setDefaultRenderer( Object.class, customTableCellRenderer );
-                }
+            System.err.println( "after parse col count =" + colCount );
+            previewImportTbl.setModel( new PreviewImportTblModel( headerDataTypesList, csvData.getData(),  colCount ) );
+
+            CustomTableCellRenderer customTableCellRenderer = new CustomTableCellRenderer();
+          //  previewImportTbl.setDefaultRenderer( Object.class, customTableCellRenderer );
+            previewImportTbl.setDefaultRenderer( Object.class, customTableCellRenderer );
+            
+            // Colorize errors
+            int totalErrs = 0;
+            int maxr = csvData.getDataErr().length;
+            for ( int r = 0; r < maxr; r++ )
+               {
+                //System.err.println( "Check Data Err row =" + r );
+                int maxc = (csvData.getDataErr())[r].length;
+                for ( int c = 0; c < maxc; c++ )
+                  {
+                  //System.err.println( "Check Data Err col =" + c );
+                    if ( ! csvData.getFieldErr(r, c).equals( "" ) )
+                      {
+                      System.err.println( "dataErr [" + r + "][" + c + "] =" + csvData.getFieldErr(r, c) );
+                      customTableCellRenderer.setForRowCol( r, c, csvData.getFieldErr(r, c) );
+                      totalErrs++;
+                      //previewImportTbl.getColumnModel().getColumn( csvData.getCurrentFieldIndexWithinBounds() ).setCellRenderer( customTableCellRenderer );
+                      }
+                  }
+               }
+            message.setText( "Errors =" + totalErrs );
+            
+//            if ( 1 == 2 && gotError )
+//                {
+//                    //csvData.getCurrentLineIndex() + "," + csvData.getCurrentFieldIndex()
+//                CustomTableCellRenderer customTableCellRenderer = new CustomTableCellRenderer();
+//                customTableCellRenderer.setForRowCol( csvData.getCurrentLineIndex(), csvData.getCurrentFieldIndex() );
+//                //previewImportTbl.getColumnModel().getColumn( csvData.getCurrentFieldIndexWithinBounds() ).setCellRenderer( customTableCellRenderer );
+//                previewImportTbl.setDefaultRenderer( Object.class, customTableCellRenderer );
+//                }
             } 
         catch (Exception ex) 
             {
             //Logger.getLogger(CustomReader.class.getName()).log(Level.SEVERE, null, ex);
             //return false;
             }
-        finally
-            {
-            try
-                {
-                csvReader.close();
-                csvData = null;
-                transReader = null;
-                this.setSize( 800, 600 );
-                this.setLocationRelativeTo( getRootPane() );
-                this.setVisible( true );
-                this.validate();
-                this.addEscapeListener( this );
-                }
-            catch( Exception fex )
-                {
-                    ;
-                }
-            }
-    }
+        }
     
-    public static void addEscapeListener(final JFrame win) {
+    public void addEscapeListener(final JFrame win) {
         ActionListener escListener = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.err.println( "previewImportWin formWindow dispose()" );
-                win.dispose();
+                try {
+                    //System.err.println( "previewImportWin formWindow dispose()" );
+                    csvReader.close();
+                    csvData = null;
+                    transReader = null;
+                } catch (IOException ex) {
+                    Logger.getLogger(PreviewImportWin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                finally
+                    {
+                    win.dispatchEvent( new WindowEvent( win, WindowEvent.WINDOW_CLOSING )); 
+                    win.dispose();
+                    }
             }
         };
 
@@ -150,6 +226,71 @@ public class PreviewImportWin extends javax.swing.JFrame {
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
     }    
 
+        public void desktopEdit( File file )
+        {
+        //File file = fpath.toFile();
+        //first check if Desktop is supported by Platform or not
+        if ( ! Desktop.isDesktopSupported() )
+            {
+            System.out.println("Desktop is not supported");
+            return;
+            }
+         
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            if ( file.exists() )
+                {
+                desktop.edit( file );
+                }
+            } 
+        catch (Exception ex) 
+            {
+            //logger.log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog( this, "Edit not supported in this desktop.\nWill try Open.", "Error", JOptionPane.ERROR_MESSAGE );
+            desktopOpen( file );
+            }
+        }
+
+    public void desktopOpen( File file )
+        {
+        //File file = fpath.toFile();
+        //first check if Desktop is supported by Platform or not
+        if ( ! Desktop.isDesktopSupported() )
+            {
+            System.out.println("Desktop is not supported");
+            return;
+            }
+         
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            if ( file.exists() )
+                {
+                desktop.open( file );
+                }
+            } 
+        catch (Exception ex) 
+            {
+            //logger.log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog( this, "Open not supported in this desktop", "Error", JOptionPane.ERROR_MESSAGE );
+            }
+        
+//        //let's try to open PDF file
+//        fpath = new File("/Users/pankaj/java.pdf");
+//        if(fpath.exists()) desktop.open(fpath);
+        
+//        //let's try to open PDF file
+//        fpath = new File("/Users/pankaj/java.pdf");
+//        if(fpath.exists()) desktop.open(fpath);
+        
+//        //let's try to open PDF file
+//        fpath = new File("/Users/pankaj/java.pdf");
+//        if(fpath.exists()) desktop.open(fpath);
+        
+//        //let's try to open PDF file
+//        fpath = new File("/Users/pankaj/java.pdf");
+//        if(fpath.exists()) desktop.open(fpath);
+        }
+        
     /**
      * @param args the command line arguments
      */
@@ -172,7 +313,7 @@ public class PreviewImportWin extends javax.swing.JFrame {
                     };
 
                 //dialog.myInit( null, null );
-                dialog.previewImportTbl.setModel( new PreviewImportTblModel( header, data ) );
+                dialog.previewImportTbl.setModel( new PreviewImportTblModel( header, data, 3 ) );
                 dialog.setSize( 800, 600 );
                 dialog.setVisible(true);
                 dialog.addEscapeListener( dialog );
@@ -192,6 +333,12 @@ public class PreviewImportWin extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         previewImportTbl = new javax.swing.JTable();
+        processBtn = new javax.swing.JButton();
+        deleteFileBtn = new javax.swing.JButton();
+        parseFileBtn = new javax.swing.JButton();
+        message = new javax.swing.JLabel();
+        selectedFile = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -217,6 +364,7 @@ public class PreviewImportWin extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 456;
         gridBagConstraints.ipady = 400;
@@ -225,6 +373,74 @@ public class PreviewImportWin extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         getContentPane().add(jScrollPane1, gridBagConstraints);
+
+        processBtn.setText("Process");
+        processBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                processBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
+        getContentPane().add(processBtn, gridBagConstraints);
+
+        deleteFileBtn.setText("Delete File");
+        deleteFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteFileBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
+        getContentPane().add(deleteFileBtn, gridBagConstraints);
+
+        parseFileBtn.setText("Parse File");
+        parseFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parseFileBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
+        getContentPane().add(parseFileBtn, gridBagConstraints);
+
+        message.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        message.setText("   ");
+        message.setMaximumSize(new java.awt.Dimension(9999, 23));
+        message.setMinimumSize(new java.awt.Dimension(90, 23));
+        message.setPreferredSize(new java.awt.Dimension(90, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        getContentPane().add(message, gridBagConstraints);
+
+        selectedFile.setText("  ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
+        getContentPane().add(selectedFile, gridBagConstraints);
+
+        jButton1.setText("Open");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
+        getContentPane().add(jButton1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -235,9 +451,33 @@ public class PreviewImportWin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowClosing
 
+    private void deleteFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteFileBtnActionPerformed
+        importDialog.deleteCsvFile();
+    }//GEN-LAST:event_deleteFileBtnActionPerformed
+
+    private void processBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processBtnActionPerformed
+        importDialog.processActionPerformed( evt );
+        this.dispose();
+    }//GEN-LAST:event_processBtnActionPerformed
+
+    private void parseFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parseFileBtnActionPerformed
+        //csvData.reset();
+        parseFile();
+    }//GEN-LAST:event_parseFileBtnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        desktopEdit( new File( selectedFile.getText() ) );
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton deleteFileBtn;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel message;
+    private javax.swing.JButton parseFileBtn;
     private javax.swing.JTable previewImportTbl;
+    private javax.swing.JButton processBtn;
+    private javax.swing.JLabel selectedFile;
     // End of variables declaration//GEN-END:variables
 }

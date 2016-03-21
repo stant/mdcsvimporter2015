@@ -16,7 +16,6 @@ package com.moneydance.modules.features.mdcsvimporter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  *
@@ -25,9 +24,10 @@ import java.util.Collections;
 public class CSVData
 {
    private String[][] data;
+   private String[][] dataErr = { { "" } };
    private int currentLineIndex = -1;
    private int currentFieldIndex = -1;
-
+   
    public CSVReader reader;
    
    public CSVData( CSVReader readerArg )
@@ -39,11 +39,17 @@ public class CSVData
    {
       currentLineIndex = -1;
       currentFieldIndex = -1;
+      //reader.reset();  NOT SUPPORTED
    }
 
    public String[][] getData()
    {
       return data;
+   }
+
+   public String[][] getDataErr()
+   {
+      return dataErr;
    }
 
    public void parseIntoLines( CustomReaderData customReaderData )
@@ -52,7 +58,8 @@ public class CSVData
       ArrayList<String> line = new ArrayList<String>();
       ArrayList<String[]> file = new ArrayList<String[]>();
       int fieldSeparator = customReaderData.getFieldSeparatorChar();
-
+      int maxFoundCols = 0;
+      
       if ( customReaderData != null )
         {
         reader.setFieldSeparator( fieldSeparator );
@@ -62,11 +69,15 @@ public class CSVData
         {
          for ( String s = reader.nextField(); s != null; s = reader.nextField() )
             {
-            System.err.println( "         line.add string =" + s + "=" );
+            //System.err.println( "         line.add string =" + s + "=" );
             line.add( s );
             }
 
          System.err.println( "         line.size() =" + line.size() + "=\n" );
+         if ( line.size() > maxFoundCols )
+            {
+            maxFoundCols = line.size();
+            }
          String[] newLine = new String[ line.size() ];
          line.toArray( newLine );
          file.add( newLine );
@@ -75,9 +86,37 @@ public class CSVData
 
       data = new String[file.size()][];
       file.toArray( data );
-      System.err.println( "    parsed lines total =" + file.size() + "=" );
+      System.err.println( "    parsed lines total =" + file.size() + "=   maxFoundCols =" + maxFoundCols );
       currentLineIndex = -1;
       currentFieldIndex = -1;      
+      
+      int maxr = file.size();
+      dataErr = new String[maxr][];
+      //System.err.println( " reset maxr =" + maxr );
+      for ( int r = 0; r < maxr; r++ )
+      {
+          int maxc = maxFoundCols + 1;
+          String[] newLine = new String[ maxFoundCols + 1 ];
+          for ( int c = 0; c < maxc; c++ )
+              {
+              //System.err.println( " reset r =" + r + "   c =" + c );
+              newLine[c] = "";
+              }
+          dataErr[r] = newLine;
+      }
+
+//      System.err.println( "PRINT OUT RESET dataErr" );
+//      maxr = dataErr.length;
+//      System.err.println( " reset maxr =" + maxr );
+//      for ( int r = 0; r < maxr; r++ )
+//      {
+//          int maxc = dataErr[r].length;
+//          System.err.println( " reset maxc =" + maxc );
+//          for ( int c = 0; c < maxc; c++ )
+//              {
+//              System.err.println( "dataErr blank [" + r + "][" + c +"] =" + dataErr[r][c] );
+//              }
+//      }
    }
 
    public void reverseListRangeOrder( long beg, long end )
@@ -117,7 +156,7 @@ public class CSVData
 
    public boolean hasEnoughFieldsPerCurrentLine( int neededFields )
    {
-      //System.err.println(  "fieldsPerCurrentLine()   data[currentLineIndex].length + 1 =" + (data[currentLineIndex].length + 1)  );
+      System.err.println(  "fieldsPerCurrentLine()   data[currentLineIndex].length + 1 =" + (data[currentLineIndex].length + 1) + " >= neededFields =" + neededFields );
       return data[currentLineIndex].length + 1 >= neededFields;
    }
 
@@ -156,14 +195,74 @@ public class CSVData
    {
       if ( currentLineIndex < 0 || currentLineIndex >= data.length )
       {
-         return null;
+         return "";
       }
       if ( currentFieldIndex < 0 || currentFieldIndex >= data[currentLineIndex].length )
       {
-         return null;
+         return "";
       }
 
       return data[currentLineIndex][currentFieldIndex];
+   }
+
+   public String getFieldErr()
+   {
+    //System.err.println( "getFieldErr current ptr [" + currentLineIndex + "][" + currentFieldIndex + "]" );
+      if ( currentLineIndex < 0 || currentLineIndex >= dataErr.length )
+      {
+         return "";
+      }
+      if ( currentFieldIndex < 0 || currentFieldIndex >= dataErr[currentLineIndex].length )
+      {
+         return "";
+      }
+
+      return dataErr[currentLineIndex][currentFieldIndex];
+   }
+
+   public void setFieldErr( String errStr )
+   {
+    //System.err.println( "setFieldErr current ptr [" + currentLineIndex + "][" + currentFieldIndex + "]" );
+      if ( currentLineIndex < 0 || currentLineIndex >= dataErr.length )
+      {
+         return;
+      }
+      if ( currentFieldIndex < 0 || currentFieldIndex >= dataErr[currentLineIndex].length )
+      {
+         return;
+      }
+
+      dataErr[currentLineIndex][currentFieldIndex] = errStr;
+   }
+
+   public String getFieldErr( int row, int col )
+   {
+    //System.err.println( "getFieldErr [" + row + "][" + col + "]" );
+      if ( row < 0 || row >= dataErr.length )
+      {
+         return "";
+      }
+      if ( col < 0 || col >= dataErr[row].length )
+      {
+         return "";
+      }
+
+      return dataErr[row][col];
+   }
+
+   public void setFieldErr( int row, int col, String errStr )
+   {
+    //System.err.println( "setFieldErr [" + row + "][" + col + "]" );
+      if ( row < 0 || row >= dataErr.length )
+      {
+          return;
+      }
+      if ( col < 0 || col >= dataErr[row].length )
+      {
+          return;
+      }
+
+      dataErr[row][col] = errStr;
    }
 
    public int getCurrentLineIndex()
@@ -207,7 +306,7 @@ public class CSVData
       if ( currentLineIndex < 0 || currentLineIndex >= data.length )
           {
           System.err.append( "currentLineIndex out of range =" + currentLineIndex );
-          return null;
+          return "";
           }
 
       System.err.append( "\n curr line >" );
@@ -224,7 +323,7 @@ public class CSVData
         System.err.append( "*** Error in printCurrentLine at currentLineIndex =" + currentLineIndex + "   currentFieldIndex =" + currentFieldIndex );
         }
        System.err.append( "< curr line." );
-       return null;
+       return "";
    }
 
    public void printFile()

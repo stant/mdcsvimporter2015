@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 
 
-public class CustomTableCellRenderer extends DefaultTableCellRenderer {
+public class CustomTableCellRenderer1 extends JLabel implements TableCellRenderer {
     
   int forRow = -1;
   int forCol = -1;
@@ -27,15 +27,15 @@ public class CustomTableCellRenderer extends DefaultTableCellRenderer {
       forRow = row;
       forCol = col;
       if ( errCells.containsKey( row ) )
-        {
-        rowSet = errCells.get( row );
-        }
+      {
+          rowSet = errCells.get( row );
+      }
       else
-        {
-        rowSet = new HashSet();
-        errCells.put( row, rowSet );
-        System.err.println( "ERROR RED Cell " + row + ", " + col );
-        }
+      {
+          rowSet = new HashSet();
+          errCells.put( row, rowSet );
+          System.err.println( "ADD ERROR YELLOW Cell " + row + ", " + col );
+      }
       rowSet.add( col );
       toolTip.put( row + "," + col, cellToolTip );
   }
@@ -43,28 +43,20 @@ public class CustomTableCellRenderer extends DefaultTableCellRenderer {
   @Override
   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) 
     {
-    JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-
-    if ( table.isRowSelected( row ) )
-        {
-        setForeground( Color.BLACK );
-        }
-    
     if ( errCells.containsKey( row ) )
         {
         rowSet = errCells.get( row );
         if ( rowSet.contains( col ) )
             {
-            lbl.setBackground( Color.YELLOW );
-            lbl.setToolTipText( toolTip.get( row + "," + col ) );
-            return lbl;
+            setBackground( Color.YELLOW );
+            setToolTipText( row + "," + col + toolTip.get( row + "," + col ) );
+            return this;
             }
         }
 
     //lbl.setBackground( javax.swing.UIManager.getColor( "Table.dropCellBackground" ) );
-    lbl.setBackground( Color.WHITE );
-    lbl.setToolTipText( null );
+    setBackground( Color.WHITE );
     //Return the JLabel which renders the cell.
-    return lbl;    
+    return this;    
     }
 }

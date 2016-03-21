@@ -33,8 +33,8 @@ import javax.swing.JFrame;
 public class Main
    extends FeatureModule
 {
-   private static final int VERSION = 19;
-   protected static final String VERSION_STRING = " v19 for MD2015";
+   private static final int VERSION = 20;
+   protected static final String VERSION_STRING = " v20 for MD2015";
    private static final String NAME = "CSV Importer";
    private static final String VENDOR = "Stan Towianski, Milutin Jovanović";
    private static final String URL = "http://code.google.com/p/mdcsvimporter/";

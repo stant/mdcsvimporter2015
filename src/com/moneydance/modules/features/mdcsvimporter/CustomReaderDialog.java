@@ -1292,7 +1292,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
 
         fieldSeparatorChar.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         fieldSeparatorChar.setText(",");
-        fieldSeparatorChar.setMinimumSize(new java.awt.Dimension(20, 25));
+        fieldSeparatorChar.setMinimumSize(new java.awt.Dimension(40, 25));
         fieldSeparatorChar.setPreferredSize(new java.awt.Dimension(20, 25));
         fieldSeparatorChar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1367,7 +1367,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
         amountGroupingSeparatorChar.setText(",");
         amountGroupingSeparatorChar.setEnabled(false);
         amountGroupingSeparatorChar.setFocusable(false);
-        amountGroupingSeparatorChar.setMinimumSize(new java.awt.Dimension(20, 25));
+        amountGroupingSeparatorChar.setMinimumSize(new java.awt.Dimension(40, 25));
         amountGroupingSeparatorChar.setPreferredSize(new java.awt.Dimension(20, 25));
         amountGroupingSeparatorChar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1390,7 +1390,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
 
         amountDecimalSignChar.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         amountDecimalSignChar.setText(".");
-        amountDecimalSignChar.setMinimumSize(new java.awt.Dimension(20, 25));
+        amountDecimalSignChar.setMinimumSize(new java.awt.Dimension(40, 25));
         amountDecimalSignChar.setPreferredSize(new java.awt.Dimension(20, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;

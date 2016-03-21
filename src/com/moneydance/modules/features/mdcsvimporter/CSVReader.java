@@ -116,6 +116,16 @@ public class CSVReader
       lastChar = -1;
    }
 
+   // THIS IS NOT SUPPORTED
+//   protected final void reset()
+//   {
+//       try {
+//           this.reader.reset();
+//       } catch (IOException ex) {
+//           Logger.getLogger(CSVReader.class.getName()).log(Level.SEVERE, null, ex);
+//       }
+//   }
+
    /**
     * Used to move to the next line in the CSV file. It must be called before the each
     * line is processed, including before the very first line in the file. Any fields on
