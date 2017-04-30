@@ -36,10 +36,10 @@ It populates "Select Import File:" dropdown with my list of files that match my 
 
 `download.*\.(csv|CSV) almost the same but it has to begin with "download" then anything, then .csv or .CSV`
 
-for VISA: 
+`for VISA: `
 `Transactions_\d+_\d+.csv matches Transactions_(1 or more numbers)_(1 or more numbers).csv`
 `like: Transactions_20170325_214425.csv`
 
-for Discover: 
-`(DFS-|Discover).*\.(csv|CSV) matches DFS- or Discover, then anything, then .csv or .CSV
+`for Discover: `
+`(DFS-|Discover).*\.(csv|CSV) matches DFS- or Discover, then anything, then .csv or .CSV`
 `like DFS-whatever.csv   or   Discover.1234.CSV`
