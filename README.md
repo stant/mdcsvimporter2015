@@ -45,7 +45,8 @@ It populates "Select Import File:" dropdown with my list of files that match my 
 `like DFS-whatever.csv   or   Discover.1234.CSV`
 
 ** regex field parsing changed in v21 to hopefully give more flexibility. you need to use "named capture groups", as in: 
-`"?(?<value>.*?)"?(?:[,]|\Z)(?<rest>.*)`
+
+`"?(?<value>.*?)"?(?:[,]|\Z)(?<rest>.*)
 
 value = what string you want to pull out for the field value.
 rest = is left over line to parse next.
@@ -68,3 +69,4 @@ rest = whatever
 
 get value = whatever
 rest = 
+`
