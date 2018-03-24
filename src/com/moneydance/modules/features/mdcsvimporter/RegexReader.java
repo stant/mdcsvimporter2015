@@ -243,17 +243,18 @@ public class RegexReader extends CSVReader
 
         if ( ! rgLine.isEmpty() )
             {
-            System.err.println( "\n----- left =" + rgLine + "=   use regex =" + matcherAl.get( rgFieldCnt ).pattern() + "=" );
+            System.err.println( "\n----- left =" + rgLine + "=   use regex [" + rgFieldCnt + "] =" + matcherAl.get( rgFieldCnt ).pattern() + "=" );
             matcher = (matcherAl.get( rgFieldCnt ));
             matcher.reset( rgLine ); //reset the input
             if ( matcher.matches() )
                 {
                 //System.err.println("Num groups: " + matcher.groupCount());
-                item = matcher.group(1) == null ? "" : matcher.group(1);
-                rgLine = rgLine.substring( item.length() );
-                if ( item.endsWith( "," ) )
-                    item = item.substring( 0, item.length() - 1 );
-                System.err.println( "rgFieldCnt =" + rgFieldCnt + "   item >" + item + "<    item2 >" + matcher.group(2) + "<" );
+                item = matcher.group("value") == null ? "" : matcher.group("value");
+//                rgLine = rgLine.substring( item.length() );
+                rgLine = matcher.group("rest") == null ? "" : matcher.group("rest");
+//                if ( item.endsWith( "," ) )
+//                    item = item.substring( 0, item.length() - 1 );
+                System.err.println( "rgFieldCnt =" + rgFieldCnt + "   item >" + item + "<    item2 to become leftover line >" + rgLine + "<" );
                 }
             else 
                 {
