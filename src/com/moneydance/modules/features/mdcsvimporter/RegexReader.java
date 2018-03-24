@@ -243,21 +243,40 @@ public class RegexReader extends CSVReader
 
         if ( ! rgLine.isEmpty() )
             {
-            System.err.println( "\n----- left =" + rgLine + "=   use regex [" + rgFieldCnt + "] =" + matcherAl.get( rgFieldCnt ).pattern() + "=" );
-            matcher = (matcherAl.get( rgFieldCnt ));
-            matcher.reset( rgLine ); //reset the input
-            if ( matcher.matches() )
-                {
-                //System.err.println("Num groups: " + matcher.groupCount());
-                item = matcher.group("value") == null ? "" : matcher.group("value");
-//                rgLine = rgLine.substring( item.length() );
-                rgLine = matcher.group("rest") == null ? "" : matcher.group("rest");
-//                if ( item.endsWith( "," ) )
-//                    item = item.substring( 0, item.length() - 1 );
-                System.err.println( "rgFieldCnt =" + rgFieldCnt + "   item >" + item + "<    item2 to become leftover line >" + rgLine + "<" );
+            try {
+                System.err.println( "\n----- left =" + rgLine + "=   use regex [" + rgFieldCnt + "] =" + matcherAl.get( rgFieldCnt ).pattern() + "=" );
+                matcher = (matcherAl.get( rgFieldCnt ));
+                matcher.reset( rgLine ); //reset the input
+                if ( matcher.matches() )
+                    {
+                    //System.err.println("Num groups: " + matcher.groupCount());
+                    try {
+                        item = matcher.group("value") == null ? "" : matcher.group("value");
+                        }
+                    catch( Exception exc )
+                        {
+                        exc.printStackTrace();
+                        System.err.println("regex <value> probably does not exist.");
+                        item = "";
+                        }
+    //                rgLine = rgLine.substring( item.length() );
+                    try {
+                        rgLine = matcher.group("rest") == null ? "" : matcher.group("rest");
+                        }
+                    catch( Exception exc )
+                        {
+                        exc.printStackTrace();
+                        System.err.println("regex <rest> probably does not exist.");
+                        rgLine = "";
+                        }
+    //                if ( item.endsWith( "," ) )
+    //                    item = item.substring( 0, item.length() - 1 );
+                    System.err.println( "rgFieldCnt =" + rgFieldCnt + "   item >" + item + "<    item2 to become leftover line >" + rgLine + "<" );
+                    }
                 }
-            else 
+            catch( Exception exc )
                 {
+                exc.printStackTrace();
                 System.err.println("Input does not match pattern.");
                 rgLine = "";
                 return null;
