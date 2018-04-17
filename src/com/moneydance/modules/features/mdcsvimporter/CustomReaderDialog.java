@@ -199,152 +199,185 @@ public class CustomReaderDialog extends javax.swing.JDialog {
     
     public boolean getReaderConfig( String readerNameToGet )
         {
-        message.setText( "" );
-        if ( ! ReaderConfigsHM.containsKey( readerNameToGet ) )
+        try {
+            message.setText( "" );
+            if ( ! ReaderConfigsHM.containsKey( readerNameToGet ) )
+                {
+                message.setText( "There is no reader by that name '" + readerNameToGet + "'" );
+                return false;
+                }
+
+            CustomReaderData customReaderData = ReaderConfigsHM.get( readerNameToGet );
+            readerName.setText( readerNameToGet );
+            regexsList = customReaderData.getRegexsList();
+            dataTypesList = customReaderData.getDataTypesList();
+            emptyFlagsList = customReaderData.getEmptyFlagsList();
+            //dateFormatList = customReaderData.getDateFormatList();
+            setFieldSeparatorChar( customReaderData.getFieldSeparatorChar() );
+            setFileEncodingSelectedItem( customReaderData.getFileEncoding() );
+            setHeaderLines( customReaderData.getHeaderLines() );
+            setFooterLines( customReaderData.getFooterLines() );
+
+            setAmountCurrencyChar( customReaderData.getAmountCurrencyChar() );
+            setAmountDecimalSignChar( customReaderData.getAmountDecimalSignChar() );
+            setAmountGroupingSeparatorChar( customReaderData.getAmountGroupingSeparatorChar() );
+            setAmountFormat( customReaderData.getAmountFormat() );
+            setImportReverseOrderFlg( customReaderData.getImportReverseOrderFlg() );
+            setUseRegexFlag( customReaderData.getUseRegexFlag() );
+            setFilenameMatcher( customReaderData.getFilenameMatcher() );
+
+            DefaultListModel listModel = (DefaultListModel) customReadersList.getModel();
+            customReadersList.setSelectedValue( readerNameToGet, true );
+
+            System.err.println( "get UseRegexFlag   customReaderData.getUseRegexFlag()=" + customReaderData.getUseRegexFlag() + "=  and gui getUseRegexFlag() =" + getUseRegexFlag() );
+            System.err.println( "get regexsList arraylist =" + regexsList + "=" );
+            System.err.println( "get dataTypesList arraylist =" + dataTypesList + "=" );
+            System.err.println( "get emptyFlagsList arraylist =" + emptyFlagsList + "=" );
+
+            int i = 0;
+            /*
+    //            System.out.println( "get datatype===================================" );
+    //            System.out.println( "get datatype===================================" );
+            for ( String dataType : dataTypesList )
+                {
+    //            System.out.println( "get datatype " + i + " =" + dataType + "=" );
+                i++;
+                }
+             */
+
+                System.err.println( "get regex ===================================" );
+            regex0.setText( regexsList.get( 0 ) );
+            regex1.setText( regexsList.get( 1 ) );
+            regex2.setText( regexsList.get( 2 ) );
+            regex3.setText( regexsList.get( 3 ) );
+            regex4.setText( regexsList.get( 4 ) );
+            regex5.setText( regexsList.get( 5 ) );
+            regex6.setText( regexsList.get( 6 ) );
+            regex7.setText( regexsList.get( 7 ) );
+            regex8.setText( regexsList.get( 8 ) );
+            regex9.setText( regexsList.get( 9 ) );
+
+                System.err.println( "get datatype ===================================" );
+            dataType0.setSelectedItem( dataTypesList.get( 0 ) );
+            dataType1.setSelectedItem( dataTypesList.get( 1 ) );
+            dataType2.setSelectedItem( dataTypesList.get( 2 ) );
+            dataType3.setSelectedItem( dataTypesList.get( 3 ) );
+            dataType4.setSelectedItem( dataTypesList.get( 4 ) );
+            dataType5.setSelectedItem( dataTypesList.get( 5 ) );
+            dataType6.setSelectedItem( dataTypesList.get( 6 ) );
+            dataType7.setSelectedItem( dataTypesList.get( 7 ) );
+            dataType8.setSelectedItem( dataTypesList.get( 8 ) );
+            dataType9.setSelectedItem( dataTypesList.get( 9 ) );
+
+            i = 0;
+            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 0 ) + "=" );
+            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 1 ) + "=" );
+            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 2 ) + "=" );
+            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 3 ) + "=" );
+            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 4 ) + "=" );
+            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 5 ) + "=" );
+            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 6 ) + "=" );
+            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 7 ) + "=" );
+            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 8 ) + "=" );
+            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 9 ) + "=" );
+
+            if ( getUseRegexFlag() )
+                {
+                isNullable0.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
+                isNullable1.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
+                isNullable2.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
+                isNullable3.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
+                isNullable4.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
+                isNullable5.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
+                isNullable6.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
+                isNullable7.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
+                isNullable8.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
+                isNullable9.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
+                }
+            else
+                {
+                isNullable0.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
+                isNullable1.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
+                isNullable2.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
+                isNullable3.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
+                isNullable4.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
+                isNullable5.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
+                isNullable6.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
+                isNullable7.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
+                isNullable8.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
+                isNullable9.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
+                }
+
+            i = 0;
+            System.err.println( "get emptyFlagsList ===================================" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 0 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 1 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 2 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 3 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 4 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 5 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 6 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 7 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 8 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 9 ) + "=" );
+
+
+            isNullable0.setSelectedItem( emptyFlagsList.get( 0 ) );
+            isNullable1.setSelectedItem( emptyFlagsList.get( 1 ) );
+            isNullable2.setSelectedItem( emptyFlagsList.get( 2 ) );
+            isNullable3.setSelectedItem( emptyFlagsList.get( 3 ) );
+            isNullable4.setSelectedItem( emptyFlagsList.get( 4 ) );
+            isNullable5.setSelectedItem( emptyFlagsList.get( 5 ) );
+            isNullable6.setSelectedItem( emptyFlagsList.get( 6 ) );
+            isNullable7.setSelectedItem( emptyFlagsList.get( 7 ) );
+            isNullable8.setSelectedItem( emptyFlagsList.get( 8 ) );
+            isNullable9.setSelectedItem( emptyFlagsList.get( 9 ) );
+
+            i = 0;
+            System.err.println( "get isNullable ===================================" );
+            System.err.println( "isNullable0.getSelectedItem()  =" + isNullable0.getSelectedItem() + "=" );
+            System.err.println( "isNullable1.getSelectedItem()  =" + isNullable1.getSelectedItem() + "=" );
+            System.err.println( "isNullable2.getSelectedItem()  =" + isNullable2.getSelectedItem() + "=" );
+            System.err.println( "isNullable3.getSelectedItem()  =" + isNullable3.getSelectedItem() + "=" );
+            System.err.println( "isNullable4.getSelectedItem()  =" + isNullable4.getSelectedItem() + "=" );
+            System.err.println( "isNullable5.getSelectedItem()  =" + isNullable5.getSelectedItem() + "=" );
+            System.err.println( "isNullable6.getSelectedItem()  =" + isNullable6.getSelectedItem() + "=" );
+            System.err.println( "isNullable7.getSelectedItem()  =" + isNullable7.getSelectedItem() + "=" );
+            System.err.println( "isNullable8.getSelectedItem()  =" + isNullable8.getSelectedItem() + "=" );
+            System.err.println( "isNullable8.getSelectedItem()  =" + isNullable9.getSelectedItem() + "=" );
+            
+            /*
+            DefaultComboBoxModel dateFormatModel = new DefaultComboBoxModel();
+            for ( String format : dateFormatList )
+                {
+                System.out.println( "add date format =" + format + "=" );
+                dateFormatModel.addElement( format );
+                }
+
+            dateFormatCB.setModel( dateFormatModel );
+                if ( this.parent != null )
+                    {
+                    this.parent.comboDateFormatSetModel( dateFormatModel );
+                    }
+
+            TransactionReader customReader = ReaderHM.get( readerName.getText() );
+            String [] tmpArray = new String[0];
+            customReader.setSupportedDateFormats( dateFormatList.toArray( tmpArray ) );
+             */
+
+            CustomReader customReader = (CustomReader) ReaderHM.get( readerName.getText() );
+            setDateFormatString( customReaderData.getDateFormatString() );
+
+            customReader.createSupportedDateFormats( getDateFormatString() );
+            this.parent.createSupportedDateFormats( getDateFormatString() );
+
+            System.err.println( "getNumberOfCustomReaderFieldsUsed() =" + getNumberOfCustomReaderFieldsUsed() );
+            }
+        catch( Exception exc )
             {
-            message.setText( "There is no reader by that name '" + readerNameToGet + "'" );
+            exc.printStackTrace();
             return false;
             }
-        
-        CustomReaderData customReaderData = ReaderConfigsHM.get( readerNameToGet );
-        readerName.setText( readerNameToGet );
-        regexsList = customReaderData.getRegexsList();
-        dataTypesList = customReaderData.getDataTypesList();
-        emptyFlagsList = customReaderData.getEmptyFlagsList();
-        //dateFormatList = customReaderData.getDateFormatList();
-        setFieldSeparatorChar( customReaderData.getFieldSeparatorChar() );
-        setFileEncodingSelectedItem( customReaderData.getFileEncoding() );
-        setHeaderLines( customReaderData.getHeaderLines() );
-        setFooterLines( customReaderData.getFooterLines() );
-        
-        setAmountCurrencyChar( customReaderData.getAmountCurrencyChar() );
-        setAmountDecimalSignChar( customReaderData.getAmountDecimalSignChar() );
-        setAmountGroupingSeparatorChar( customReaderData.getAmountGroupingSeparatorChar() );
-        setAmountFormat( customReaderData.getAmountFormat() );
-        setImportReverseOrderFlg( customReaderData.getImportReverseOrderFlg() );
-        setUseRegexFlag( customReaderData.getUseRegexFlag() );
-        setFilenameMatcher( customReaderData.getFilenameMatcher() );
-
-        DefaultListModel listModel = (DefaultListModel) customReadersList.getModel();
-        customReadersList.setSelectedValue( readerNameToGet, true );
-
-        System.err.println( "get regexsList arraylist =" + regexsList + "=" );
-        System.err.println( "get dataTypesList arraylist =" + dataTypesList + "=" );
-        System.err.println( "get emptyFlagsList arraylist =" + emptyFlagsList + "=" );
-
-        /*
-        int i = 0;
-//            System.out.println( "get datatype===================================" );
-//            System.out.println( "get datatype===================================" );
-        for ( String dataType : dataTypesList )
-            {
-//            System.out.println( "get datatype " + i + " =" + dataType + "=" );
-            i++;
-            }
-         */
-        
-//            System.out.println( "get regex ===================================" );
-        regex0.setText( regexsList.get( 0 ) );
-        regex1.setText( regexsList.get( 1 ) );
-        regex2.setText( regexsList.get( 2 ) );
-        regex3.setText( regexsList.get( 3 ) );
-        regex4.setText( regexsList.get( 4 ) );
-        regex5.setText( regexsList.get( 5 ) );
-        regex6.setText( regexsList.get( 6 ) );
-        regex7.setText( regexsList.get( 7 ) );
-        regex8.setText( regexsList.get( 8 ) );
-        regex9.setText( regexsList.get( 9 ) );
-
-//            System.out.println( "get datatype ===================================" );
-        dataType0.setSelectedItem( dataTypesList.get( 0 ) );
-        dataType1.setSelectedItem( dataTypesList.get( 1 ) );
-        dataType2.setSelectedItem( dataTypesList.get( 2 ) );
-        dataType3.setSelectedItem( dataTypesList.get( 3 ) );
-        dataType4.setSelectedItem( dataTypesList.get( 4 ) );
-        dataType5.setSelectedItem( dataTypesList.get( 5 ) );
-        dataType6.setSelectedItem( dataTypesList.get( 6 ) );
-        dataType7.setSelectedItem( dataTypesList.get( 7 ) );
-        dataType8.setSelectedItem( dataTypesList.get( 8 ) );
-        dataType9.setSelectedItem( dataTypesList.get( 9 ) );
-
-        /*
-        System.out.println( "get datatype===================================" );
-        System.out.println( "get datatype " + i + " =" + dataTypesList.get( 0 ) + "=" );
-        System.out.println( "get datatype " + i + " =" + dataTypesList.get( 1 ) + "=" );
-        System.out.println( "get datatype " + i + " =" + dataTypesList.get( 2 ) + "=" );
-        System.out.println( "get datatype " + i + " =" + dataTypesList.get( 3 ) + "=" );
-        System.out.println( "get datatype " + i + " =" + dataTypesList.get( 4 ) + "=" );
-        System.out.println( "get datatype " + i + " =" + dataTypesList.get( 5 ) + "=" );
-        System.out.println( "get datatype " + i + " =" + dataTypesList.get( 6 ) + "=" );
-        System.out.println( "get datatype " + i + " =" + dataTypesList.get( 7 ) + "=" );
-        System.out.println( "get datatype " + i + " =" + dataTypesList.get( 8 ) + "=" );
-        System.out.println( "get datatype " + i + " =" + dataTypesList.get( 9 ) + "=" );
-        */
-        
-        if ( getUseRegexFlag() )
-            {
-            isNullable0.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
-            isNullable1.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
-            isNullable2.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
-            isNullable3.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
-            isNullable4.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
-            isNullable5.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
-            isNullable6.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
-            isNullable7.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
-            isNullable8.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
-            isNullable9.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyRegexFlag ) );
-            }
-        else
-            {
-            isNullable0.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
-            isNullable1.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
-            isNullable2.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
-            isNullable3.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
-            isNullable4.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
-            isNullable5.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
-            isNullable6.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
-            isNullable7.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
-            isNullable8.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
-            isNullable9.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
-            }
-        
-        isNullable0.setSelectedItem( emptyFlagsList.get( 0 ) );
-        isNullable1.setSelectedItem( emptyFlagsList.get( 1 ) );
-        isNullable2.setSelectedItem( emptyFlagsList.get( 2 ) );
-        isNullable3.setSelectedItem( emptyFlagsList.get( 3 ) );
-        isNullable4.setSelectedItem( emptyFlagsList.get( 4 ) );
-        isNullable5.setSelectedItem( emptyFlagsList.get( 5 ) );
-        isNullable6.setSelectedItem( emptyFlagsList.get( 6 ) );
-        isNullable7.setSelectedItem( emptyFlagsList.get( 7 ) );
-        isNullable8.setSelectedItem( emptyFlagsList.get( 8 ) );
-        isNullable9.setSelectedItem( emptyFlagsList.get( 9 ) );
-                
-        /*
-        DefaultComboBoxModel dateFormatModel = new DefaultComboBoxModel();
-        for ( String format : dateFormatList )
-            {
-            System.out.println( "add date format =" + format + "=" );
-            dateFormatModel.addElement( format );
-            }
-        
-        dateFormatCB.setModel( dateFormatModel );
-            if ( this.parent != null )
-                {
-                this.parent.comboDateFormatSetModel( dateFormatModel );
-                }
-        
-        TransactionReader customReader = ReaderHM.get( readerName.getText() );
-        String [] tmpArray = new String[0];
-        customReader.setSupportedDateFormats( dateFormatList.toArray( tmpArray ) );
-         */
-        
-        CustomReader customReader = (CustomReader) ReaderHM.get( readerName.getText() );
-        setDateFormatString( customReaderData.getDateFormatString() );
-
-        customReader.createSupportedDateFormats( getDateFormatString() );
-        this.parent.createSupportedDateFormats( getDateFormatString() );
-
-        System.err.println( "getNumberOfCustomReaderFieldsUsed() =" + getNumberOfCustomReaderFieldsUsed() );
         return true;
         }
     
@@ -1925,12 +1958,12 @@ public class CustomReaderDialog extends javax.swing.JDialog {
 //                regex4.setText( "([^,]*([,]|\\Z)).*" );
 //                regex5.setText( "([^,]*([,]|\\Z)).*" );
 
-                regex0.setText( "\"?(?<value>.*?)\"?(?:[,]|\\Z)(?<rest>.*)" );
+                regex0.setText( "\"?(?<value>.*?)\"?(?:[,]|\\Z)(?<rest>(.*|\\Z))" );
                 regex1.setText( "(?:CHECK[ ](?<value>\\d*)|(.{0,0}))(?<rest>.*)" );
-                regex2.setText( "\"?(?<value>.*?)\"?(?:[,]|\\Z)(?<rest>.*)" );
-                regex3.setText( "\"?(?<value>.*?)\"?(?:[,]|\\Z)(?<rest>.*)" );
-                regex4.setText( "\"?(?<value>.*?)\"?(?:[,]|\\Z)(?<rest>.*)" );
-                regex5.setText( "\"?(?<value>.*?)\"?(?:[,]|\\Z)(?<rest>.*)" );
+                regex2.setText( "\"?(?<value>.*?)\"?(?:[,]|\\Z)(?<rest>(.*|\\Z))" );
+                regex3.setText( "\"(?<value>.*?)\"(?:[,]|\\Z)(?<rest>(.*|\\Z))" );
+                regex4.setText( "\"?(?<value>.*?)\"?(?:[,]|\\Z)(?<rest>(.*|\\Z))" );
+                regex5.setText( "\"?(?<value>.*?)\"?(?:[,]|\\Z)" );
                 }
             regex0.setVisible( true );
             regex1.setVisible( true );
@@ -1985,6 +2018,31 @@ public class CustomReaderDialog extends javax.swing.JDialog {
             isNullable8.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
             isNullable9.setModel(new javax.swing.DefaultComboBoxModel( allowEmptyFlag ) );
             }
+
+            int i = 0;
+            System.err.println( "get emptyFlagsList ===================================" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 0 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 1 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 2 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 3 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 4 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 5 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 6 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 7 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 8 ) + "=" );
+            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 9 ) + "=" );
+
+
+            isNullable0.setSelectedItem( emptyFlagsList.get( 0 ) );
+            isNullable1.setSelectedItem( emptyFlagsList.get( 1 ) );
+            isNullable2.setSelectedItem( emptyFlagsList.get( 2 ) );
+            isNullable3.setSelectedItem( emptyFlagsList.get( 3 ) );
+            isNullable4.setSelectedItem( emptyFlagsList.get( 4 ) );
+            isNullable5.setSelectedItem( emptyFlagsList.get( 5 ) );
+            isNullable6.setSelectedItem( emptyFlagsList.get( 6 ) );
+            isNullable7.setSelectedItem( emptyFlagsList.get( 7 ) );
+            isNullable8.setSelectedItem( emptyFlagsList.get( 8 ) );
+            isNullable9.setSelectedItem( emptyFlagsList.get( 9 ) );
     }//GEN-LAST:event_useRegexFlagActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

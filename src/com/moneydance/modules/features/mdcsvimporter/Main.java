@@ -33,7 +33,7 @@ import javax.swing.JFrame;
 public class Main
    extends FeatureModule
 {
-   private static final int VERSION = 21;
+   private static final int VERSION = 22;
    protected static final String VERSION_STRING = " " + VERSION + " for MD2015";
    private static final String NAME = "CSV Importer";
    private static final String VENDOR = "Stan Towianski, Milutin Jovanović";
