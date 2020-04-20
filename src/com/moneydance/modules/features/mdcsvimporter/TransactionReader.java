@@ -58,8 +58,11 @@ public abstract class TransactionReader
    protected final static String DEFAULT_ENCODING = "UTF-8";  // "UTF-16LE"; "windows-1250"; Preselect this value in Encoding JComboBox.
    //protected String fileEncoding = DEFAULT_ENCODING;
    protected boolean isUsingCategorynameFlag = false;
-
-   protected abstract boolean canParse( CSVData data );
+   
+   public static int PARSE_THRU_ERRORS_STOP_AT_FIRST = 1;
+   public static int PARSE_THRU_ERRORS_CONTINUE = 0;
+   
+   protected abstract boolean canParse( CSVData data, int parseThruErrors );
 
    protected abstract boolean parseNext() throws IOException;
 
@@ -98,7 +101,7 @@ public abstract class TransactionReader
    {
         this.book = book;
    }
-
+  
    public final String calcFITxnIdAbstract( AbstractTxn atxn )
       throws IOException
        {
@@ -631,7 +634,7 @@ public abstract class TransactionReader
                       System.err.println( "=============== add all readers for >" + key + "< ===============" );
                       formats.add( transactionReader );
                       }
-                else if ( transactionReader.canParse( csvData ) )
+                else if ( transactionReader.canParse( csvData, PARSE_THRU_ERRORS_STOP_AT_FIRST ) )
                       {
                       System.err.println( "=============== at canparse WORKS for >" + key + "< ===============" );
                       formats.add( transactionReader );
