@@ -33,11 +33,11 @@ import javax.swing.JFrame;
 public class Main
    extends FeatureModule
 {
-   private static final int VERSION = 22;
-   protected static final String VERSION_STRING = " " + VERSION + " for MD2015";
+   private static final int VERSION = 23;
+   protected static final String VERSION_STRING = " " + VERSION + " for MD2022";
    private static final String NAME = "CSV Importer";
-   private static final String VENDOR = "Stan Towianski, Milutin Jovanović";
-   private static final String URL = "http://code.google.com/p/mdcsvimporter/";
+   private static final String VENDOR = "Stan Towianski";
+   private static final String URL = "https://github.com/stant/mdcsvimporter2015";
    private static final String DESCRIPTION =
       "Let's you create configs for say: Discover card, VISA, your private bank, etc... " +
       "You denote columns like: -Payment-, -Deposit-, date, amount, memo, etc... " +
@@ -122,17 +122,17 @@ public class Main
       return NAME;
    }
 
-   @Override
-   public int getBuild()
-   {
-      return VERSION;
-   }
+//   @Override
+//   public int getBuild()
+//   {
+//      return VERSION;
+//   }
 
-   @Override
-   public String getDescription()
-   {
-      return DESCRIPTION;
-   }
+//   @Override
+//   public String getDescription()
+//   {
+//      return DESCRIPTION;
+//   }
 
    @Override
    public void invoke( String uri )
@@ -215,17 +215,17 @@ public class Main
         return errCodeList;
     }
 
-   @Override
-   public String getVendorURL()
-   {
-      return URL;
-   }
+//   @Override
+//   public String getVendorURL()
+//   {
+//      return URL;
+//   }
 
-   @Override
-   public String getVendor()
-   {
-      return VENDOR;
-   }
+//   @Override
+//   public String getVendor()
+//   {
+//      return VENDOR;
+//   }
 
    @Override
    public Image getIconImage()

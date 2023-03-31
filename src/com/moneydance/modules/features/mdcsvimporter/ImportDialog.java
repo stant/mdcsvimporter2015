@@ -546,8 +546,7 @@ public class ImportDialog
     */
    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jLabel3 = new javax.swing.JLabel();
@@ -586,14 +585,11 @@ public class ImportDialog
         setMinimumSize(new java.awt.Dimension(750, 470));
         setName("importDialog"); // NOI18N
         setPreferredSize(new java.awt.Dimension(800, 470));
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
-            public void windowOpened(java.awt.event.WindowEvent evt)
-            {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
@@ -612,10 +608,8 @@ public class ImportDialog
         btnBrowse.setMaximumSize(new java.awt.Dimension(50, 23));
         btnBrowse.setMinimumSize(new java.awt.Dimension(50, 23));
         btnBrowse.setPreferredSize(new java.awt.Dimension(50, 23));
-        btnBrowse.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnBrowse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBrowseActionPerformed(evt);
             }
         });
@@ -639,10 +633,8 @@ public class ImportDialog
         getContentPane().add(checkDeleteFile, gridBagConstraints);
 
         btnClose.setText("Close");
-        btnClose.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCloseActionPerformed(evt);
             }
         });
@@ -655,10 +647,8 @@ public class ImportDialog
 
         btnProcess.setText("Process");
         btnProcess.setEnabled(false);
-        btnProcess.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnProcess.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProcessActionPerformed(evt);
             }
         });
@@ -721,17 +711,13 @@ public class ImportDialog
         comboFileFormat.setMaximumSize(new java.awt.Dimension(180, 29));
         comboFileFormat.setMinimumSize(new java.awt.Dimension(180, 29));
         comboFileFormat.setPreferredSize(new java.awt.Dimension(180, 29));
-        comboFileFormat.addItemListener(new java.awt.event.ItemListener()
-        {
-            public void itemStateChanged(java.awt.event.ItemEvent evt)
-            {
+        comboFileFormat.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 fileFormatChanged(evt);
             }
         });
-        comboFileFormat.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        comboFileFormat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboFileFormatActionPerformed(evt);
             }
         });
@@ -774,10 +760,8 @@ public class ImportDialog
         comboDateFormat.setMaximumSize(new java.awt.Dimension(180, 29));
         comboDateFormat.setMinimumSize(new java.awt.Dimension(180, 29));
         comboDateFormat.setPreferredSize(new java.awt.Dimension(180, 29));
-        comboDateFormat.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        comboDateFormat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboDateFormatActionPerformed(evt);
             }
         });
@@ -791,10 +775,8 @@ public class ImportDialog
         getContentPane().add(comboDateFormat, gridBagConstraints);
 
         jButton1.setText("Maintain Custom File Readers");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
@@ -827,10 +809,8 @@ public class ImportDialog
         getContentPane().add(comboFileFormatLabel, gridBagConstraints);
 
         jButton2.setText("Suggestions");
-        jButton2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
@@ -860,10 +840,8 @@ public class ImportDialog
         getContentPane().add(propertiesFile, gridBagConstraints);
 
         PreviewImportBtn.setText("Preview Import");
-        PreviewImportBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        PreviewImportBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PreviewImportBtnActionPerformed(evt);
             }
         });
@@ -873,10 +851,8 @@ public class ImportDialog
         getContentPane().add(PreviewImportBtn, gridBagConstraints);
 
         jButton3.setText("Find Reader(s) that Work on Import File");
-        jButton3.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
@@ -891,10 +867,8 @@ public class ImportDialog
         textFilename.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " " }));
         textFilename.setMinimumSize(new java.awt.Dimension(180, 29));
         textFilename.setPreferredSize(new java.awt.Dimension(180, 29));
-        textFilename.addItemListener(new java.awt.event.ItemListener()
-        {
-            public void itemStateChanged(java.awt.event.ItemEvent evt)
-            {
+        textFilename.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 textFilenameItemStateChanged(evt);
             }
         });
@@ -908,10 +882,8 @@ public class ImportDialog
         getContentPane().add(textFilename, gridBagConstraints);
 
         jButton4.setText("Find Import File(s) for this Reader");
-        jButton4.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
@@ -923,10 +895,8 @@ public class ImportDialog
         getContentPane().add(jButton4, gridBagConstraints);
 
         jButton5.setText("List All Readers");
-        jButton5.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
