@@ -591,9 +591,9 @@ public class ImportDialog extends javax.swing.JDialog
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(Main.EXTN_NAME + "(build: " + main.getBuild() + ")");
-        setMinimumSize(new java.awt.Dimension(750, 470));
+        setMinimumSize(new java.awt.Dimension(950, 470));
         setName("importDialog"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(800, 470));
+        setPreferredSize(new java.awt.Dimension(950, 470));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -1347,34 +1347,40 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
             }
 
             Util.logConsole(true, "***HERE3");
-            TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
-            Util.logConsole(true, "***HERE4");
-            if (transReader.getCustomReaderData().getFilenameMatcher() == null ||
-                    transReader.getCustomReaderData().getFilenameMatcher().equals("")) {
-                transReader.getCustomReaderData().setFilenameMatcher(".*\\.[Cc][Ss][Vv]");
-            }
 
-            // create new filename filter
-            FilenameFilter fileNameFilter = new FilenameFilter() {
+            try {
                 TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
-
-                {
-                    Util.logConsole("popTextFilenameList() transReader.getFormatName() >" + transReader.getFormatName() + "<");
+                Util.logConsole(true, "***HERE4");
+                if (transReader.getCustomReaderData().getFilenameMatcher() == null ||
+                        transReader.getCustomReaderData().getFilenameMatcher().equals("")) {
+                    transReader.getCustomReaderData().setFilenameMatcher(".*\\.[Cc][Ss][Vv]");
                 }
 
-                @Override
-                public boolean accept(File dir, String name) {
-                    Util.logConsole("popTextFilenameList() match name? >" + name + "<");
-                    //Util.logConsole( "popTextFilenameList() getFilenameMatcher() >" + transReader.getCustomReaderData().getFilenameMatcher() + "<" );
-                    if (name.matches(transReader.getCustomReaderData().getFilenameMatcher())) {
-                        return true;
+                // create new filename filter
+                FilenameFilter fileNameFilter = new FilenameFilter() {
+                    TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
+
+                    {
+                        Util.logConsole("popTextFilenameList() transReader.getFormatName() >" + transReader.getFormatName() + "<");
                     }
-                    return false;
-                }
-            };
 
-            // returns pathnames for files and directory
-            filenames = dir.list(fileNameFilter);
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        Util.logConsole("popTextFilenameList() match name? >" + name + "<");
+                        //Util.logConsole( "popTextFilenameList() getFilenameMatcher() >" + transReader.getCustomReaderData().getFilenameMatcher() + "<" );
+                        if (name.matches(transReader.getCustomReaderData().getFilenameMatcher())) {
+                            return true;
+                        }
+                        return false;
+                    }
+                };
+
+                // returns pathnames for files and directory
+                filenames = dir.list(fileNameFilter);
+            } catch (Exception e) {
+//                e.printStackTrace();
+                filenames = null;
+            }
 
             textFilename.removeAllItems();
             if (filenames != null) {
