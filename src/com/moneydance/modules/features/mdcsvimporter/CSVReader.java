@@ -201,11 +201,11 @@ public class CSVReader
    public String nextField()
       throws IOException
    {
-      //System.err.println( "nextField() fieldSeparator =" + (char)fieldSeparator + "=" );
+      //Util.logConsole( "nextField() fieldSeparator =" + (char)fieldSeparator + "=" );
 
       if ( isEol( lastChar ) || isEof( lastChar ) )
       {
-         //System.err.println( "nextField() return null for Eol or Eof" );
+         //Util.logConsole( "nextField() return null for Eol or Eof" );
          return null;
       }
 
@@ -219,10 +219,10 @@ public class CSVReader
          {
             builder.appendCodePoint( lastChar );
             lastChar = reader.read();
-            //System.err.println( "lastChar =" + lastChar + "=" );
+            //Util.logConsole( "lastChar =" + lastChar + "=" );
          }
-         //System.err.println( "end field" );
-         //System.err.println( "read field =" + builder.toString() + "=" );
+         //Util.logConsole( "end field" );
+         //Util.logConsole( "read field =" + builder.toString() + "=" );
          
          if ( !isQuote( lastChar ) )
          {
@@ -261,19 +261,19 @@ public class CSVReader
 
       if ( trimFields )
       {
-         //System.err.println( "CSVReader return nextField trim =" + builder.toString().trim() + "=" );
+         //Util.logConsole( "CSVReader return nextField trim =" + builder.toString().trim() + "=" );
          return builder.toString().trim();
       }
       else
       {
-         //System.err.println( "CSVReader return nextField =" + builder.toString() + "=" );
+         //Util.logConsole( "CSVReader return nextField =" + builder.toString() + "=" );
          return builder.toString();
       }
    }
 
    public void setFieldSeparator( int fieldSeparator )
    {
-      //System.err.println( "CSVReader.setFieldSeparator =" + (char)fieldSeparator + "=" );
+      //Util.logConsole( "CSVReader.setFieldSeparator =" + (char)fieldSeparator + "=" );
       this.fieldSeparator = fieldSeparator;
    }
 

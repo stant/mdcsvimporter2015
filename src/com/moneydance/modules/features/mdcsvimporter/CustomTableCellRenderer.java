@@ -34,7 +34,7 @@ public class CustomTableCellRenderer extends DefaultTableCellRenderer {
         {
         rowSet = new HashSet();
         errCells.put( row, rowSet );
-        System.err.println( "ERROR RED Cell " + row + ", " + col );
+        Util.logConsole( "ERROR RED Cell " + row + ", " + col );
         }
       rowSet.add( col );
       toolTip.put( row + "," + col, cellToolTip );

@@ -54,7 +54,7 @@ public class PreviewImportWin extends javax.swing.JFrame {
 
     public void myInit( ImportDialog importDialog, TransactionReader transReaderArg )  //, CSVData csvDataArg, CSVReader csvReader )
     {
-        System.err.println( "entered PreviewImportWin.myInit()" + "< ==============================" );
+        Util.logConsole( "entered PreviewImportWin.myInit()" + "< ==============================" );
         this.importDialog = importDialog;
         transReader = transReaderArg;
         selectedFile.setText( importDialog.getSelectedFile().getPath() );
@@ -71,18 +71,18 @@ public class PreviewImportWin extends javax.swing.JFrame {
     
             if ( transReader.getCustomReaderData().getUseRegexFlag() )
                 {
-                System.err.println( "\n================  Regex Reader" );
+                Util.logConsole( "\n================  Regex Reader" );
                 csvReader = new RegexReader( new InputStreamReader( new FileInputStream( importDialog.getSelectedFile() ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
                 }
             else
                 {
-                System.err.println( "\n================  Csv Reader" );
+                Util.logConsole( "\n================  Csv Reader" );
                 csvReader = new CSVReader( new InputStreamReader( new FileInputStream( importDialog.getSelectedFile() ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
                 }
 
             CSVData csvData = new CSVData( csvReader );            
        
-            //System.err.println( "btnProcessActionPerformed  customReaderDialog.getFieldSeparatorChar() =" + (char)customReaderDialog.getFieldSeparatorChar() + "=" );
+            //Util.logConsole( "btnProcessActionPerformed  customReaderDialog.getFieldSeparatorChar() =" + (char)customReaderDialog.getFieldSeparatorChar() + "=" );
             //csvData.getReader().setFieldSeparator( customReaderDialog.getFieldSeparatorChar() );
                 
             csvData.reset();
@@ -92,7 +92,7 @@ public class PreviewImportWin extends javax.swing.JFrame {
                   importDialog.btnProcess.setEnabled( true );
                   processBtn.setEnabled( true );
                   processBtn.requestFocusInWindow();
-                  System.err.println( "=============== at canparse WORKS for >" + transReader.getFormatName() + "< ===============" );
+                  Util.logConsole( "=============== at canparse WORKS for >" + transReader.getFormatName() + "< ===============" );
                   }
             else
                   {
@@ -100,27 +100,27 @@ public class PreviewImportWin extends javax.swing.JFrame {
                   importDialog.btnProcess.setEnabled( false );
                   processBtn.setEnabled( false );
                   parseFileBtn.requestFocusInWindow();
-                  System.err.println( "=============== at canparse NOT WORK for >" + transReader.getFormatName() + " at row,col " 
+                  Util.logConsole( "=============== at canparse NOT WORK for >" + transReader.getFormatName() + " at row,col " 
                           + csvData.getCurrentLineIndex() + "," + csvData.getCurrentFieldIndex() + "< ===============" );
                   gotError = true;
                   }
       
             //csvData.parseIntoLines( transReader.getCustomReaderData().getFieldSeparatorChar() );
-            System.err.println( "after parse row count =" + csvData.getData().length );
-            System.err.println( "after parse col count =" + (csvData.getData())[ transReader.getHeaderCount() ].length );
+            Util.logConsole( "after parse row count =" + csvData.getData().length );
+            Util.logConsole( "after parse col count =" + (csvData.getData())[ transReader.getHeaderCount() ].length );
 
             // Find and Insert User DataTypes as a Header row to show if they line up:
             
             int fieldIndex = 0;
             int colCount = 0;
             int maxFieldIndex = transReader.getCustomReaderData().getNumberOfCustomReaderFieldsUsed();
-            System.err.println(  "maxFieldIndex =" + maxFieldIndex );
+            Util.logConsole(  "maxFieldIndex =" + maxFieldIndex );
             ArrayList<String> headerDataTypesList = new ArrayList();
             
             for (           ; fieldIndex < maxFieldIndex; fieldIndex ++ )
                 {
                 String dataTypeExpecting = transReader.getCustomReaderData().getDataTypesList().get( fieldIndex );
-                //System.err.println(  "dataTypeExpecting =" + dataTypeExpecting + "=  fieldIndex = " + fieldIndex );
+                //Util.logConsole(  "dataTypeExpecting =" + dataTypeExpecting + "=  fieldIndex = " + fieldIndex );
 
                 if ( dataTypeExpecting.equalsIgnoreCase( DATA_TYPE_IGNORE_REST ) )
                    {
@@ -134,11 +134,11 @@ public class PreviewImportWin extends javax.swing.JFrame {
                    try
                        {
                        x = Integer.parseInt( transReader.getCustomReaderData().getEmptyFlagsList().get( fieldIndex ).trim() );
-                       System.err.println(  "ignore " + x + " lines" );
+                       Util.logConsole(  "ignore " + x + " lines" );
                        }
                    catch ( Exception ex )
                        {
-                       System.err.println(  "assume ignore 1 column on field =" + transReader.getCustomReaderData().getEmptyFlagsList().get( fieldIndex ).trim() + "=" );
+                       Util.logConsole(  "assume ignore 1 column on field =" + transReader.getCustomReaderData().getEmptyFlagsList().get( fieldIndex ).trim() + "=" );
                        }
                    int cnt = x;
                    headerDataTypesList.add( dataTypeExpecting + "-" + cnt );
@@ -156,7 +156,7 @@ public class PreviewImportWin extends javax.swing.JFrame {
                    colCount++;
                    }
                 }
-            System.err.println( "after parse col count =" + colCount );
+            Util.logConsole( "after parse col count =" + colCount );
             previewImportTbl.setModel( new PreviewImportTblModel( headerDataTypesList, csvData.getData(),  colCount ) );
 
             CustomTableCellRenderer customTableCellRenderer = new CustomTableCellRenderer();
@@ -168,14 +168,14 @@ public class PreviewImportWin extends javax.swing.JFrame {
             int maxr = csvData.getDataErr().length;
             for ( int r = 0; r < maxr; r++ )
                {
-                //System.err.println( "Check Data Err row =" + r );
+                //Util.logConsole( "Check Data Err row =" + r );
                 int maxc = (csvData.getDataErr())[r].length;
                 for ( int c = 0; c < maxc; c++ )
                   {
-                  //System.err.println( "Check Data Err col =" + c );
+                  //Util.logConsole( "Check Data Err col =" + c );
                     if ( ! csvData.getFieldErr(r, c).equals( "" ) )
                       {
-                      System.err.println( "dataErr [" + r + "][" + c + "] =" + csvData.getFieldErr(r, c) );
+                      Util.logConsole( "dataErr [" + r + "][" + c + "] =" + csvData.getFieldErr(r, c) );
                       customTableCellRenderer.setForRowCol( r, c, csvData.getFieldErr(r, c) );
                       totalErrs++;
                       //previewImportTbl.getColumnModel().getColumn( csvData.getCurrentFieldIndexWithinBounds() ).setCellRenderer( customTableCellRenderer );
@@ -206,8 +206,10 @@ public class PreviewImportWin extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    //System.err.println( "previewImportWin formWindow dispose()" );
-                    csvReader.close();
+                    //Util.logConsole( "previewImportWin formWindow dispose()" );
+                    if (csvReader != null) {
+                        csvReader.close();
+                    }
                     csvData = null;
                     transReader = null;
                 } catch (IOException ex) {
@@ -445,7 +447,7 @@ public class PreviewImportWin extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         try {
-            System.err.println( "previewImportWin formWindowClosing()" );
+            Util.logConsole( "previewImportWin formWindowClosing()" );
         } catch (Exception ex) {
             Logger.getLogger(PreviewImportWin.class.getName()).log(Level.SEVERE, null, ex);
         }

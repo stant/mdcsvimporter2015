@@ -18,7 +18,7 @@ import com.moneydance.apps.md.model.OnlineTxn;
 import com.moneydance.modules.features.mdcsvimporter.CSVData;
 import com.moneydance.modules.features.mdcsvimporter.TransactionReader;
 import com.moneydance.util.CustomDateFormat;
-import com.moneydance.util.StringUtils;
+import com.infinitekind.util.StringUtils;
 import java.io.IOException;
 
 /*
@@ -237,7 +237,7 @@ public class YodleeReader
 	}
 
 	public void createSupportedDateFormats(String dateFormatArg) {
-		System.err.println("\n---------   entered createSupportedDateFormats() dateFormatArg =" + dateFormatArg + "=  -------------");
+		Util.logConsole("\n---------   entered createSupportedDateFormats() dateFormatArg =" + dateFormatArg + "=  -------------");
 		String[] tmp = new String[1];
 		tmp[0] = dateFormatArg;
 		SUPPORTED_DATE_FORMATS = tmp;
@@ -261,7 +261,7 @@ public class YodleeReader
 			return;
 		}
 
-		System.err.println("setDateFormat() format =" + format + "=   dateFormatString =" + dateFormatString + "=");
+		Util.logConsole("setDateFormat() format =" + format + "=   dateFormatString =" + dateFormatString + "=");
 		if (!format.equals(dateFormatStringSelected)) {
 			dateFormat = new CustomDateFormat(format);
 			dateFormatStringSelected = format;

@@ -69,11 +69,11 @@ public class CSVData
         {
          for ( String s = reader.nextField(); s != null; s = reader.nextField() )
             {
-            //System.err.println( "         line.add string =" + s + "=" );
+            //Util.logConsole( "         line.add string =" + s + "=" );
             line.add( s );
             }
 
-         System.err.println( "         line.size() =" + line.size() + "=\n" );
+         Util.logConsole( "         line.size() =" + line.size() + "=\n" );
          if ( line.size() > maxFoundCols )
             {
             maxFoundCols = line.size();
@@ -86,44 +86,44 @@ public class CSVData
 
       data = new String[file.size()][];
       file.toArray( data );
-      System.err.println( "    parsed lines total =" + file.size() + "=   maxFoundCols =" + maxFoundCols );
+      Util.logConsole( "    parsed lines total =" + file.size() + "=   maxFoundCols =" + maxFoundCols );
       currentLineIndex = -1;
       currentFieldIndex = -1;      
       
       int maxr = file.size();
       dataErr = new String[maxr][];
-      //System.err.println( " reset maxr =" + maxr );
+      //Util.logConsole( " reset maxr =" + maxr );
       for ( int r = 0; r < maxr; r++ )
       {
           int maxc = maxFoundCols + 1;
           String[] newLine = new String[ maxFoundCols + 1 ];
           for ( int c = 0; c < maxc; c++ )
               {
-              //System.err.println( " reset r =" + r + "   c =" + c );
+              //Util.logConsole( " reset r =" + r + "   c =" + c );
               newLine[c] = "";
               }
           dataErr[r] = newLine;
       }
 
-//      System.err.println( "PRINT OUT RESET dataErr" );
+//      Util.logConsole( "PRINT OUT RESET dataErr" );
 //      maxr = dataErr.length;
-//      System.err.println( " reset maxr =" + maxr );
+//      Util.logConsole( " reset maxr =" + maxr );
 //      for ( int r = 0; r < maxr; r++ )
 //      {
 //          int maxc = dataErr[r].length;
-//          System.err.println( " reset maxc =" + maxc );
+//          Util.logConsole( " reset maxc =" + maxc );
 //          for ( int c = 0; c < maxc; c++ )
 //              {
-//              System.err.println( "dataErr blank [" + r + "][" + c +"] =" + dataErr[r][c] );
+//              Util.logConsole( "dataErr blank [" + r + "][" + c +"] =" + dataErr[r][c] );
 //              }
 //      }
    }
 
    public void reverseListRangeOrder( long beg, long end )
         {
-        //System.err.println(  "hasZeroFields() ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length );
-        System.err.println( "revLine beg: " +  beg );
-        System.err.println( "revLine end: " +  end );
+        //Util.logConsole(  "hasZeroFields() ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length );
+        Util.logConsole( "revLine beg: " +  beg );
+        Util.logConsole( "revLine end: " +  end );
         if ( end <= beg )
             {
             return;
@@ -150,22 +150,22 @@ public class CSVData
          currentFieldIndex = -1;
       }
 
-      //System.err.println(  "nextLine() ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length + "   ans =" + (currentLineIndex < data.length ? "true" : "false" ) );
+      //Util.logConsole(  "nextLine() ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length + "   ans =" + (currentLineIndex < data.length ? "true" : "false" ) );
       return currentLineIndex < data.length;
    }
 
    public boolean hasEnoughFieldsPerCurrentLine( int neededFields )
    {
-      System.err.println(  "fieldsPerCurrentLine()   data[currentLineIndex].length + 1 =" + (data[currentLineIndex].length + 1) + " >= neededFields =" + neededFields );
+      Util.logConsole(  "fieldsPerCurrentLine()   data[currentLineIndex].length + 1 =" + (data[currentLineIndex].length + 1) + " >= neededFields =" + neededFields );
       return data[currentLineIndex].length + 1 >= neededFields;
    }
 
    public boolean nextField()
    {
-      //System.err.println(  "nextField() ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length );
+      //Util.logConsole(  "nextField() ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length );
       if ( currentLineIndex < 0 || currentLineIndex >= data.length )
       {
-      //System.err.println(  "nextField() ----  return false" );
+      //Util.logConsole(  "nextField() ----  return false" );
          return false;
       }
 
@@ -174,20 +174,20 @@ public class CSVData
          ++currentFieldIndex;
       }
 
-      //System.err.println(  "nextField()2 ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length + "   ans =" + (currentFieldIndex < data[currentLineIndex].length ? "true" : "false" ) );
+      //Util.logConsole(  "nextField()2 ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length + "   ans =" + (currentFieldIndex < data[currentLineIndex].length ? "true" : "false" ) );
       return currentFieldIndex < data[currentLineIndex].length;
    }
 
    public boolean hasZeroFields()
    {
-      //System.err.println(  "hasZeroFields() ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length );
+      //Util.logConsole(  "hasZeroFields() ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length );
       if ( currentLineIndex < 0 || currentLineIndex >= data.length )
       {
-      //System.err.println(  "hasZeroFields() ----  return false" );
+      //Util.logConsole(  "hasZeroFields() ----  return false" );
          return false;
       }
 
-      //System.err.println(  "hasZeroFields()2 ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length + "   ans =" + (0 < data[currentLineIndex].length ? "true" : "false" ) );
+      //Util.logConsole(  "hasZeroFields()2 ----  currentLineIndex =" + currentLineIndex + "=    data.length =" + data.length + "   ans =" + (0 < data[currentLineIndex].length ? "true" : "false" ) );
       return 0 < data[currentLineIndex].length;
    }
 
@@ -207,7 +207,7 @@ public class CSVData
 
    public String getFieldErr()
    {
-    //System.err.println( "getFieldErr current ptr [" + currentLineIndex + "][" + currentFieldIndex + "]" );
+    //Util.logConsole( "getFieldErr current ptr [" + currentLineIndex + "][" + currentFieldIndex + "]" );
       if ( currentLineIndex < 0 || currentLineIndex >= dataErr.length )
       {
          return "";
@@ -222,7 +222,7 @@ public class CSVData
 
    public void setFieldErr( String errStr )
    {
-    //System.err.println( "setFieldErr current ptr [" + currentLineIndex + "][" + currentFieldIndex + "]" );
+    //Util.logConsole( "setFieldErr current ptr [" + currentLineIndex + "][" + currentFieldIndex + "]" );
       if ( currentLineIndex < 0 || currentLineIndex >= dataErr.length )
       {
          return;
@@ -237,7 +237,7 @@ public class CSVData
 
    public String getFieldErr( int row, int col )
    {
-    //System.err.println( "getFieldErr [" + row + "][" + col + "]" );
+    //Util.logConsole( "getFieldErr [" + row + "][" + col + "]" );
       if ( row < 0 || row >= dataErr.length )
       {
          return "";
@@ -252,7 +252,7 @@ public class CSVData
 
    public void setFieldErr( int row, int col, String errStr )
    {
-    //System.err.println( "setFieldErr [" + row + "][" + col + "]" );
+    //Util.logConsole( "setFieldErr [" + row + "][" + col + "]" );
       if ( row < 0 || row >= dataErr.length )
       {
           return;
@@ -305,43 +305,43 @@ public class CSVData
    {
       if ( currentLineIndex < 0 || currentLineIndex >= data.length )
           {
-          System.err.append( "currentLineIndex out of range =" + currentLineIndex );
+          Util.logConsoleAppend( "currentLineIndex out of range =" + currentLineIndex );
           return "";
           }
 
-      System.err.append( "\n curr line >" );
+      Util.logConsoleAppend( "\n curr line >" );
       try {
        for ( int i = 0; i < data[currentLineIndex].length; i ++ )
            {
            if ( i > 0 )
-                System.err.append( "|" );
-           System.err.append( data[currentLineIndex][currentFieldIndex] );
+                Util.logConsoleAppend( "|" );
+           Util.logConsoleAppend( data[currentLineIndex][currentFieldIndex] );
            }
         }
       catch( Exception ex )
         {
-        System.err.append( "*** Error in printCurrentLine at currentLineIndex =" + currentLineIndex + "   currentFieldIndex =" + currentFieldIndex );
+        Util.logConsoleAppend( "*** Error in printCurrentLine at currentLineIndex =" + currentLineIndex + "   currentFieldIndex =" + currentFieldIndex );
         }
-       System.err.append( "< curr line." );
+       Util.logConsoleAppend( "< curr line." );
        return "";
    }
 
    public void printFile()
     {
-    System.err.append( "\n ------------- PRINT FILE  ---------------" );
+    Util.logConsoleAppend( "\n ------------- PRINT FILE  ---------------" );
     int maxRows = data.length;
     for ( int row = 0; row < maxRows; row++ )
         {
-        System.err.append( "\n line [" +  row + "] >" );
+        Util.logConsoleAppend( "\n line [" +  row + "] >" );
         for ( int fieldIndex = 0; fieldIndex < data[ row ].length; fieldIndex++ )
             {
             if ( fieldIndex > 0 )
-                    System.err.append( "|" );
-            System.err.append( data[ row ][ fieldIndex ] );
+                    Util.logConsoleAppend( "|" );
+            Util.logConsoleAppend( data[ row ][ fieldIndex ] );
             }
-        System.err.append( "<" );
+        Util.logConsoleAppend( "<" );
         }
-    System.err.append( "\n -------------  END PRINT FILE  ---------------" );
+    Util.logConsoleAppend( "\n -------------  END PRINT FILE  ---------------" );
     }
 
     public CSVReader getReader() {

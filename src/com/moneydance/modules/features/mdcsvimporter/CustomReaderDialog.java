@@ -101,7 +101,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.err.println( "CustomReaderDialog formWindow WINDOW_CLOSING()" );
+                //Util.logConsole( "CustomReaderDialog formWindow WINDOW_CLOSING()" );
                 win.dispatchEvent( new WindowEvent( win, WindowEvent.WINDOW_CLOSING )); 
                 win.dispose();
             }
@@ -173,7 +173,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
         message.setText( "" );
         DefaultListModel listModel = (DefaultListModel) customReadersList.getModel();
         int index = customReadersList.getSelectedIndex();
-        //System.err.println( " selected index =" + index + "   item =" + listModel.getElementAt( index ) + "=" );
+        //Util.logConsole( " selected index =" + index + "   item =" + listModel.getElementAt( index ) + "=" );
         
         Settings.removeCustomReaderConfig( ReaderConfigsHM.get( listModel.getElementAt( index ) ) );
         
@@ -229,10 +229,10 @@ public class CustomReaderDialog extends javax.swing.JDialog {
             DefaultListModel listModel = (DefaultListModel) customReadersList.getModel();
             customReadersList.setSelectedValue( readerNameToGet, true );
 
-            System.err.println( "get UseRegexFlag   customReaderData.getUseRegexFlag()=" + customReaderData.getUseRegexFlag() + "=  and gui getUseRegexFlag() =" + getUseRegexFlag() );
-            System.err.println( "get regexsList arraylist =" + regexsList + "=" );
-            System.err.println( "get dataTypesList arraylist =" + dataTypesList + "=" );
-            System.err.println( "get emptyFlagsList arraylist =" + emptyFlagsList + "=" );
+            Util.logConsole( "get UseRegexFlag   customReaderData.getUseRegexFlag()=" + customReaderData.getUseRegexFlag() + "=  and gui getUseRegexFlag() =" + getUseRegexFlag() );
+            Util.logConsole( "get regexsList arraylist =" + regexsList + "=" );
+            Util.logConsole( "get dataTypesList arraylist =" + dataTypesList + "=" );
+            Util.logConsole( "get emptyFlagsList arraylist =" + emptyFlagsList + "=" );
 
             int i = 0;
             /*
@@ -245,7 +245,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
                 }
              */
 
-                System.err.println( "get regex ===================================" );
+                Util.logConsole( "get regex ===================================" );
             regex0.setText( regexsList.get( 0 ) );
             regex1.setText( regexsList.get( 1 ) );
             regex2.setText( regexsList.get( 2 ) );
@@ -257,7 +257,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
             regex8.setText( regexsList.get( 8 ) );
             regex9.setText( regexsList.get( 9 ) );
 
-                System.err.println( "get datatype ===================================" );
+                Util.logConsole( "get datatype ===================================" );
             dataType0.setSelectedItem( dataTypesList.get( 0 ) );
             dataType1.setSelectedItem( dataTypesList.get( 1 ) );
             dataType2.setSelectedItem( dataTypesList.get( 2 ) );
@@ -270,16 +270,16 @@ public class CustomReaderDialog extends javax.swing.JDialog {
             dataType9.setSelectedItem( dataTypesList.get( 9 ) );
 
             i = 0;
-            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 0 ) + "=" );
-            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 1 ) + "=" );
-            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 2 ) + "=" );
-            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 3 ) + "=" );
-            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 4 ) + "=" );
-            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 5 ) + "=" );
-            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 6 ) + "=" );
-            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 7 ) + "=" );
-            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 8 ) + "=" );
-            System.err.println( "get datatype " + (i++) + " =" + dataTypesList.get( 9 ) + "=" );
+            Util.logConsole( "get datatype " + (i++) + " =" + dataTypesList.get( 0 ) + "=" );
+            Util.logConsole( "get datatype " + (i++) + " =" + dataTypesList.get( 1 ) + "=" );
+            Util.logConsole( "get datatype " + (i++) + " =" + dataTypesList.get( 2 ) + "=" );
+            Util.logConsole( "get datatype " + (i++) + " =" + dataTypesList.get( 3 ) + "=" );
+            Util.logConsole( "get datatype " + (i++) + " =" + dataTypesList.get( 4 ) + "=" );
+            Util.logConsole( "get datatype " + (i++) + " =" + dataTypesList.get( 5 ) + "=" );
+            Util.logConsole( "get datatype " + (i++) + " =" + dataTypesList.get( 6 ) + "=" );
+            Util.logConsole( "get datatype " + (i++) + " =" + dataTypesList.get( 7 ) + "=" );
+            Util.logConsole( "get datatype " + (i++) + " =" + dataTypesList.get( 8 ) + "=" );
+            Util.logConsole( "get datatype " + (i++) + " =" + dataTypesList.get( 9 ) + "=" );
 
             if ( getUseRegexFlag() )
                 {
@@ -309,17 +309,17 @@ public class CustomReaderDialog extends javax.swing.JDialog {
                 }
 
             i = 0;
-            System.err.println( "get emptyFlagsList ===================================" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 0 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 1 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 2 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 3 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 4 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 5 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 6 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 7 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 8 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 9 ) + "=" );
+            Util.logConsole( "get emptyFlagsList ===================================" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 0 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 1 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 2 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 3 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 4 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 5 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 6 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 7 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 8 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 9 ) + "=" );
 
 
             isNullable0.setSelectedItem( emptyFlagsList.get( 0 ) );
@@ -334,17 +334,17 @@ public class CustomReaderDialog extends javax.swing.JDialog {
             isNullable9.setSelectedItem( emptyFlagsList.get( 9 ) );
 
             i = 0;
-            System.err.println( "get isNullable ===================================" );
-            System.err.println( "isNullable0.getSelectedItem()  =" + isNullable0.getSelectedItem() + "=" );
-            System.err.println( "isNullable1.getSelectedItem()  =" + isNullable1.getSelectedItem() + "=" );
-            System.err.println( "isNullable2.getSelectedItem()  =" + isNullable2.getSelectedItem() + "=" );
-            System.err.println( "isNullable3.getSelectedItem()  =" + isNullable3.getSelectedItem() + "=" );
-            System.err.println( "isNullable4.getSelectedItem()  =" + isNullable4.getSelectedItem() + "=" );
-            System.err.println( "isNullable5.getSelectedItem()  =" + isNullable5.getSelectedItem() + "=" );
-            System.err.println( "isNullable6.getSelectedItem()  =" + isNullable6.getSelectedItem() + "=" );
-            System.err.println( "isNullable7.getSelectedItem()  =" + isNullable7.getSelectedItem() + "=" );
-            System.err.println( "isNullable8.getSelectedItem()  =" + isNullable8.getSelectedItem() + "=" );
-            System.err.println( "isNullable8.getSelectedItem()  =" + isNullable9.getSelectedItem() + "=" );
+            Util.logConsole( "get isNullable ===================================" );
+            Util.logConsole( "isNullable0.getSelectedItem()  =" + isNullable0.getSelectedItem() + "=" );
+            Util.logConsole( "isNullable1.getSelectedItem()  =" + isNullable1.getSelectedItem() + "=" );
+            Util.logConsole( "isNullable2.getSelectedItem()  =" + isNullable2.getSelectedItem() + "=" );
+            Util.logConsole( "isNullable3.getSelectedItem()  =" + isNullable3.getSelectedItem() + "=" );
+            Util.logConsole( "isNullable4.getSelectedItem()  =" + isNullable4.getSelectedItem() + "=" );
+            Util.logConsole( "isNullable5.getSelectedItem()  =" + isNullable5.getSelectedItem() + "=" );
+            Util.logConsole( "isNullable6.getSelectedItem()  =" + isNullable6.getSelectedItem() + "=" );
+            Util.logConsole( "isNullable7.getSelectedItem()  =" + isNullable7.getSelectedItem() + "=" );
+            Util.logConsole( "isNullable8.getSelectedItem()  =" + isNullable8.getSelectedItem() + "=" );
+            Util.logConsole( "isNullable8.getSelectedItem()  =" + isNullable9.getSelectedItem() + "=" );
             
             /*
             DefaultComboBoxModel dateFormatModel = new DefaultComboBoxModel();
@@ -371,7 +371,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
             customReader.createSupportedDateFormats( getDateFormatString() );
             this.parent.createSupportedDateFormats( getDateFormatString() );
 
-            System.err.println( "getNumberOfCustomReaderFieldsUsed() =" + getNumberOfCustomReaderFieldsUsed() );
+            Util.logConsole( "getNumberOfCustomReaderFieldsUsed() =" + getNumberOfCustomReaderFieldsUsed() );
             }
         catch( Exception exc )
             {
@@ -546,7 +546,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
         
         for (       ; c < max; c++ )
             {
-            //System.err.println( "(String) dataTypesList.get(" + c + ") =" + (String) dataTypesList.get( c ) + "=" );
+            //Util.logConsole( "(String) dataTypesList.get(" + c + ") =" + (String) dataTypesList.get( c ) + "=" );
             if ( ((String) dataTypesList.get( c )).equalsIgnoreCase( "" ) )
                 return c;
             }
@@ -556,12 +556,12 @@ public class CustomReaderDialog extends javax.swing.JDialog {
     public void setHeaderLines( int xxx ) 
         {
         headerLines.setText( String.valueOf( xxx ) );
-        //System.err.println( "CustomReaderDialog.setHeaderLines(" + xxx +") text =" + headerLines.getText().trim() + "=" );
+        //Util.logConsole( "CustomReaderDialog.setHeaderLines(" + xxx +") text =" + headerLines.getText().trim() + "=" );
         }
     
     public int getHeaderLines() {
         int x = 0;
-        //System.err.println( "CustomReaderDialog.getHeaderLines() text =" + headerLines.getText().trim() + "=" );
+        //Util.logConsole( "CustomReaderDialog.getHeaderLines() text =" + headerLines.getText().trim() + "=" );
         try
             {
             x = Integer.parseInt( headerLines.getText().trim() );
@@ -576,12 +576,12 @@ public class CustomReaderDialog extends javax.swing.JDialog {
     public void setFooterLines( int xxx ) 
         {
         footerLines.setText( String.valueOf( xxx ) );
-        //System.err.println( "CustomReaderDialog.setFooterLines(" + xxx +") text =" + footerLines.getText().trim() + "=" );
+        //Util.logConsole( "CustomReaderDialog.setFooterLines(" + xxx +") text =" + footerLines.getText().trim() + "=" );
         }
     
     public int getFooterLines() {
         int x = 0;
-        //System.err.println( "CustomReaderDialog.getFooterLines() text =" + footerLines.getText().trim() + "=" );
+        //Util.logConsole( "CustomReaderDialog.getFooterLines() text =" + footerLines.getText().trim() + "=" );
         try
             {
             x = Integer.parseInt( footerLines.getText().trim() );
@@ -685,8 +685,8 @@ public class CustomReaderDialog extends javax.swing.JDialog {
         WinProps winProps = Settings.getWinProps( false, "winprops.CustomReaderDialog" );
         this.setLocation( winProps.getAtX(), winProps.getAtY() );
         this.setSize( new Dimension( winProps.getWidth(), winProps.getHeight() ) );
-        //System.err.println( "winProps.getWidth() =" + winProps.getWidth() + "=" );
-        //System.err.println( "winProps.getHeight() =" + winProps.getHeight() + "=" );
+        //Util.logConsole( "winProps.getWidth() =" + winProps.getWidth() + "=" );
+        //Util.logConsole( "winProps.getHeight() =" + winProps.getHeight() + "=" );
 
         /******  Quit using the built in readers !  Force people to make their own
         ReaderConfigsHM.put( "citiBankCanadaReader", null );
@@ -716,7 +716,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
         for ( Iterator it=ReaderHM.keySet().iterator(); it.hasNext(); ) 
             {
             String readerName = (String) it.next();
-            System.err.println( "fill out readerName =" + readerName + "=" );
+            Util.logConsole( "fill out readerName =" + readerName + "=" );
             if ( ReaderHM.get( readerName ).isCustomReaderFlag() )
                 {
                 listModel.addElement( readerName );
@@ -729,7 +729,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
                 }
             if ( this.parent != null )
                 {
-                System.err.println( "call add readerName to import dlg reader list =" + readerName + "=" );
+                Util.logConsole( "call add readerName to import dlg reader list =" + readerName + "=" );
                 this.parent.comboFileFormat1AddItem( ReaderHM.get( readerName ) );
                 }
             }
@@ -2020,17 +2020,17 @@ public class CustomReaderDialog extends javax.swing.JDialog {
             }
 
             int i = 0;
-            System.err.println( "get emptyFlagsList ===================================" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 0 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 1 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 2 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 3 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 4 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 5 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 6 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 7 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 8 ) + "=" );
-            System.err.println( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 9 ) + "=" );
+            Util.logConsole( "get emptyFlagsList ===================================" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 0 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 1 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 2 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 3 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 4 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 5 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 6 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 7 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 8 ) + "=" );
+            Util.logConsole( "get emptyFlagsList " + (i++) + " =" + emptyFlagsList.get( 9 ) + "=" );
 
 
             isNullable0.setSelectedItem( emptyFlagsList.get( 0 ) );
@@ -2048,7 +2048,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
        WinProps winProps = new WinProps( this.getWidth(), this.getHeight(), this.getX(), this.getY() );
        Settings.setWinProps( "winprops.CustomReaderDialog", winProps );
-       //System.err.println( "doing event CustomReaderDialog formWindow WINDOW_CLOSING()" );
+       //Util.logConsole( "doing event CustomReaderDialog formWindow WINDOW_CLOSING()" );
     }//GEN-LAST:event_formWindowClosing
 
     private void customReadersListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_customReadersListMouseClicked

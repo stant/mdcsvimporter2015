@@ -17,9 +17,6 @@ import java.util.ArrayList;
  * <li><strong>\ uXXXX</strong> : Hexadecimal based Unicode character.</li>
  * </ul>
  * 
- * @param st
- *            A string optionally containing standard java escape sequences.
- * @return The translated string.
  */
 
 public class StringUtils
