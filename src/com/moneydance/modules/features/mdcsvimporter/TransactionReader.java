@@ -135,7 +135,7 @@ public abstract class TransactionReader
       String origtxn = atxn.getParameter("ol.orig-txn");
       //String origCheckNumber = origtxn.replaceAll( ".*\\\"chknum\\\" = \\\"(.*?)\\\"\\\n.*", "$1" );
 
-      //System.out.println( "\norigtxn ="+origtxn + "=" );
+      //Util.logTerminal( "\norigtxn ="+origtxn + "=" );
 
       // Run some matches
       if ( origtxn != null )
@@ -144,12 +144,12 @@ public abstract class TransactionReader
           if ( m.find() )
                 {
                 origCheckNumber = m.group( 1 );
-                //System.out.println("Found orig check num ="+m.group( 1 ) + "=" );
+                //Util.logTerminal("Found orig check num ="+m.group( 1 ) + "=" );
                 }
           else
                 {
                 origCheckNumber = atxn.getCheckNumber();
-                //System.out.println("have orig-txn but no check num so use getchecknum() ="+origCheckNumber + "=" );
+                //Util.logTerminal("have orig-txn but no check num so use getchecknum() ="+origCheckNumber + "=" );
                 }
           
           m = amtPat.matcher( origtxn );
@@ -157,18 +157,18 @@ public abstract class TransactionReader
                 {
                 long lamt = Long.valueOf( m.group( 1 ) ).longValue();
                 amt = currency.format( lamt, '.' );
-                //System.out.println("Found orig amt ="+m.group( 1 ) + "= formatted =" + amt );
+                //Util.logTerminal("Found orig amt ="+m.group( 1 ) + "= formatted =" + amt );
                 }
           else
                 {
                 amt = currency.format( atxn.getValue(), '.' );
-                //System.out.println("have orig-txn but no check num so use getchecknum() ="+origCheckNumber + "=" );
+                //Util.logTerminal("have orig-txn but no check num so use getchecknum() ="+origCheckNumber + "=" );
                 }
           }
       else
           {
           origCheckNumber = atxn.getCheckNumber();
-          //System.out.println("no orig check num so use getchecknum() ="+origCheckNumber + "=" );
+          //Util.logTerminal("no orig check num so use getchecknum() ="+origCheckNumber + "=" );
           amt = currency.format( atxn.getValue(), '.' );
           }
 
@@ -362,7 +362,7 @@ public abstract class TransactionReader
       long totalDuplicates = 0;
       long stopAtLine = fileLineCount - getHeaderCount() - getCustomReaderData().getFooterLines() - endingBlankLines;
 //		priorAccountNameFromCSV = "";
-//		System.out.println("calling while (csvData.nextLine())...");
+//		Util.logTerminal("calling while (csvData.nextLine())...");
     boolean accountMissingError = false;
 
 //    csvData.printFile();
@@ -377,19 +377,19 @@ public abstract class TransactionReader
         {
         accountNameFromCSV = "";
         totalProcessed++;
-        //			System.out.println("calling parseNext...");
+        //			Util.logTerminal("calling parseNext...");
         
         if ( parseNext() )
             {
             if ( null == accountNameFromCSV || accountNameFromCSV.isEmpty() )
                 {
-                System.out.println( "accountNameFromCSV is empty. Used selected acct." );
+                Util.logTerminal( "accountNameFromCSV is empty. Used selected acct." );
                 this.account = accountIn;
                 }
             else
                 {
                 this.account = book.getRootAccount().getAccountByName( accountNameFromCSV );
-                System.out.println( "accountNameFromCSV: " +  accountNameFromCSV );
+                Util.logTerminal( "accountNameFromCSV: " +  accountNameFromCSV );
                 if ( this.account == null )
                     {
                     Util.logConsole( "ERROR: account is null" );
@@ -402,7 +402,7 @@ public abstract class TransactionReader
                     totalRejected++;
                     continue;
                     }
-                System.out.println( "account.getAccountName(): " + this.account.getAccountName() );
+                Util.logTerminal( "account.getAccountName(): " + this.account.getAccountName() );
                 }
           //TODO: per-account currency assignment is unfinished.
           //it requires separating parsing logic from matching logic. 2011.11.25 ds
@@ -416,7 +416,7 @@ public abstract class TransactionReader
           Util.logConsole( "tset.getSize() = " + tset.getSize() + "   online txns.getSize() = " + transactionList.getTxnCount() );
 
         //				}
-          System.out.println("OnlineTxn txn = transactionList.newTxn();");
+          Util.logTerminal("OnlineTxn txn = transactionList.newTxn();");
           OnlineTxn txn = transactionList.newTxn();
           assignDataToTxn( txn );
           txn.setProtocolType( OnlineTxn.PROTO_TYPE_OFX );

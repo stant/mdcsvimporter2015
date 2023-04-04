@@ -94,7 +94,7 @@ public class YodleeReader
 				&& data.nextField() && ACCOUNT.equals(data.getField().toLowerCase())
 				&& !data.nextField();
 
-		System.out.println( "can parse Yodlee format =" + String.valueOf(retVal) + "=" );
+		Util.logTerminal( "can parse Yodlee format =" + String.valueOf(retVal) + "=" );
 		return retVal;
 	}
 
@@ -123,67 +123,67 @@ public class YodleeReader
 
 		csvData.nextField();
 		status = csvData.getField();
-//		System.out.println("status: " + status);
+//		Util.logTerminal("status: " + status);
 
-//		System.out.println("getting Yodlee dateString...");
+//		Util.logTerminal("getting Yodlee dateString...");
 		csvData.nextField();
 		String dateString = csvData.getField();
 		if (dateString == null || dateString.isEmpty()) {
 			// skip lines without valid dates (or empty)
 			return false;
 		}
-//		System.out.println("dateString: " + dateString);
+//		Util.logTerminal("dateString: " + dateString);
 
 		csvData.nextField();
 		description = csvData.getField();
-//		System.out.println("description: " + description);
+//		Util.logTerminal("description: " + description);
 
 		csvData.nextField();
 		splitType = csvData.getField();
-//		System.out.println("splitType: " + splitType);
+//		Util.logTerminal("splitType: " + splitType);
 
 		csvData.nextField();
 		category = csvData.getField();//NOTE: don't set in Txn object!
-//		System.out.println("category: " + category);
+//		Util.logTerminal("category: " + category);
 
 		csvData.nextField();
 		currencyString = csvData.getField();//NOTE: not used
-//		System.out.println("currencyString: " + currencyString);
+//		Util.logTerminal("currencyString: " + currencyString);
 
 		csvData.nextField();
 		amountString = csvData.getField().trim();
-//		System.out.println("amountString: " + amountString);
+//		Util.logTerminal("amountString: " + amountString);
 
 		csvData.nextField();
 		userDescription = csvData.getField();
-//		System.out.println("userDescription: " + userDescription);
+//		Util.logTerminal("userDescription: " + userDescription);
 
 		csvData.nextField();
 		memo = csvData.getField();
-//		System.out.println("memo: " + memo);
+//		Util.logTerminal("memo: " + memo);
 
 		csvData.nextField();
 		classification = csvData.getField();
-//		System.out.println("classification: " + classification);
+//		Util.logTerminal("classification: " + classification);
 
 		csvData.nextField();
 		this.accountNameFromCSV = csvData.getField();
-//		System.out.println("accountNameFromCSV: " + accountNameFromCSV);
+//		Util.logTerminal("accountNameFromCSV: " + accountNameFromCSV);
 
-//		System.out.println( "parsing Yodlee amount...");
+//		Util.logTerminal( "parsing Yodlee amount...");
 //		amount = 0;
 //		try {
 //			double amountDouble;
 //			amountDouble = StringUtils.parseDoubleWithException(amountString, '.');
-//			System.out.println( "after parseDoubleWithException...");
+//			Util.logTerminal( "after parseDoubleWithException...");
 //			amount = currency.getLongValue(amountDouble);
 //		} catch (Exception x) {
 //			throwException("Invalid amount.");
 //		}
-//		System.out.println( "parsing Yodlee date...");
+//		Util.logTerminal( "parsing Yodlee date...");
 		date = dateFormat.parseInt(dateString);
 
-//		System.out.println( "parsed Yodlee txn on " + dateString + " for " + accountNameFromCSV);
+//		Util.logTerminal( "parsed Yodlee txn on " + dateString + " for " + accountNameFromCSV);
 		return true;
 	}
 
@@ -208,7 +208,7 @@ public class YodleeReader
 		try {
 			double amountDouble;
 			amountDouble = StringUtils.parseDoubleWithException(amountString, '.');
-			System.out.println( "after parseDoubleWithException...");
+			Util.logTerminal( "after parseDoubleWithException...");
 			amount = currency.getLongValue(amountDouble);
 		} catch (Exception x) {
 			throwException("Invalid amount.");

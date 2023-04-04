@@ -101,7 +101,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Util.logConsole( "CustomReaderDialog formWindow WINDOW_CLOSING()" );
+                //Util.logConsole(true, "CustomReaderDialog formWindow WINDOW_CLOSING()" );
                 win.dispatchEvent( new WindowEvent( win, WindowEvent.WINDOW_CLOSING )); 
                 win.dispose();
             }
@@ -142,11 +142,11 @@ public class CustomReaderDialog extends javax.swing.JDialog {
         customReaderData.setFilenameMatcher( getFilenameMatcher() );
         
         /*
-        System.out.println( "add datatype===================================" );
+        Util.logTerminal( "add datatype===================================" );
         int i = 0;
         for ( String dataType : customReaderData.getDataTypesList() )
             {
-            System.out.println( "add datatype " + i + " =" + dataType + "=" );
+            Util.logTerminal( "add datatype " + i + " =" + dataType + "=" );
             i++;
             }
          */
@@ -173,7 +173,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
         message.setText( "" );
         DefaultListModel listModel = (DefaultListModel) customReadersList.getModel();
         int index = customReadersList.getSelectedIndex();
-        //Util.logConsole( " selected index =" + index + "   item =" + listModel.getElementAt( index ) + "=" );
+        //Util.logConsole(true, " selected index =" + index + "   item =" + listModel.getElementAt( index ) + "=" );
         
         Settings.removeCustomReaderConfig( ReaderConfigsHM.get( listModel.getElementAt( index ) ) );
         
@@ -236,11 +236,11 @@ public class CustomReaderDialog extends javax.swing.JDialog {
 
             int i = 0;
             /*
-    //            System.out.println( "get datatype===================================" );
-    //            System.out.println( "get datatype===================================" );
+    //            Util.logTerminal( "get datatype===================================" );
+    //            Util.logTerminal( "get datatype===================================" );
             for ( String dataType : dataTypesList )
                 {
-    //            System.out.println( "get datatype " + i + " =" + dataType + "=" );
+    //            Util.logTerminal( "get datatype " + i + " =" + dataType + "=" );
                 i++;
                 }
              */
@@ -350,7 +350,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
             DefaultComboBoxModel dateFormatModel = new DefaultComboBoxModel();
             for ( String format : dateFormatList )
                 {
-                System.out.println( "add date format =" + format + "=" );
+                Util.logTerminal( "add date format =" + format + "=" );
                 dateFormatModel.addElement( format );
                 }
 
@@ -1784,7 +1784,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
 //        int i = 0;
 //        for ( String dataType : dataTypesList )
 //            {
-//            System.out.println( "datatype " + i + " =" + dataType + "=" );
+//            Util.logTerminal( "datatype " + i + " =" + dataType + "=" );
 //            i++;
 //            }
 
@@ -1856,7 +1856,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
         parent.fileChanged();
         this.parent.comboFileFormat1SetItem( ReaderHM.get( readerName.getText() ) );
         parent.setSkipDuringInit( false );
-        //System.out.println( "done button  (String) dateFormatCB.getSelectedItem() =" + (String) dateFormatCB.getSelectedItem() + "=" );
+        //Util.logTerminal( "done button  (String) dateFormatCB.getSelectedItem() =" + (String) dateFormatCB.getSelectedItem() + "=" );
         //this.parent.comboDateFormatSetItem( getDateFormatString() );
         this.parent.createSupportedDateFormats( getDateFormatString() );
         **/
@@ -1901,7 +1901,7 @@ public class CustomReaderDialog extends javax.swing.JDialog {
     //        {
             format += decForSyms.getDecimalSeparator();
     //        }
-        //System.out.println( "decFormat.getMinimumIntegerDigits() =" + decFormat.getMinimumIntegerDigits() );
+        //Util.logTerminal( "decFormat.getMinimumIntegerDigits() =" + decFormat.getMinimumIntegerDigits() );
         for ( i = 0; i < 2; i ++ )
             {
             format+= "0";

@@ -498,7 +498,7 @@ public class ImportDialog extends javax.swing.JDialog
           Util.logConsole( "starting transReader.parse..." );
           transReader.parse( main, csvData, account, main.getAccountBook() );
           csvReader.close();
-          System.out.println( "finished transReader.parse" );
+          Util.logTerminal( "finished transReader.parse" );
 
           //TESTING! DS
 //         onlineMgr.processDownloadedTxns( account );
@@ -1296,7 +1296,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
     public void createSupportedDateFormats( String dateFormatArg ) 
         {
         DefaultComboBoxModel dateFormatModel = new DefaultComboBoxModel();
-        System.out.println( "ImportDialog.createSupportedDateFormats() dateFormatArg =" + dateFormatArg + "=" );
+        Util.logTerminal( "ImportDialog.createSupportedDateFormats() dateFormatArg =" + dateFormatArg + "=" );
         dateFormatModel.addElement( dateFormatArg );
         
         comboDateFormat.setModel( dateFormatModel );

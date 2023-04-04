@@ -85,10 +85,10 @@ public class Main extends FeatureModule
     public static void main(String args[]) 
     {
        String amt = "($157.86)";
-       System.out.println( "converted amount =" + amt.replaceAll( "\\((.*)\\)", "-$1" ) );
+       Util.logTerminal( "converted amount =" + amt.replaceAll( "\\((.*)\\)", "-$1" ) );
 
        amt = "$123.86";
-       System.out.println( "converted amount =" + amt.replaceAll( "\\((.*)\\)", "-$1" ) );
+       Util.logTerminal( "converted amount =" + amt.replaceAll( "\\((.*)\\)", "-$1" ) );
    }
     */
 

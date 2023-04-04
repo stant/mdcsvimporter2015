@@ -26,23 +26,23 @@ public static ArrayList<Character> UnescapeJavaString(String st) {
     StringBuilder sb = new StringBuilder(st.length());
     ArrayList<Character> charList = new ArrayList<Character>();
     String fsb = "";
-    System.out.println( "in string =" + st + "=" );
-    System.out.println( "in string length =" + st.length() + "=" );
+    Util.logTerminal( "in string =" + st + "=" );
+    Util.logTerminal( "in string length =" + st.length() + "=" );
  
     Character ch = ' ';
     
     for (int i = 0; i < st.length(); i++) {
-        System.out.println( "at char index =" + i + "=" );
+        Util.logTerminal( "at char index =" + i + "=" );
 
         //char ch = st.charAt(i);
         ch = st.charAt(i);
         if (ch == '\\') {
-            System.out.println( "found char \\\\" );
+            Util.logTerminal( "found char \\\\" );
             char nextChar = (i == st.length() - 1) ? '\\' : st
                     .charAt(i + 1);
             // Octal escape?
             if (nextChar >= '0' && nextChar <= '7') {
-            System.out.println( "found octal" );
+            Util.logTerminal( "found octal" );
                 String code = "" + nextChar;
                 i++;
                 if ((i < st.length() - 1) && st.charAt(i + 1) >= '0'
@@ -58,10 +58,10 @@ public static ArrayList<Character> UnescapeJavaString(String st) {
                 //sb.append((char) Integer.parseInt(code, 8));
                 ch = (char) Integer.parseInt(code, 8);
                 charList.add( ch );
-                //System.out.println( "at octal char index =" + i + "=" );
+                //Util.logTerminal( "at octal char index =" + i + "=" );
                 continue;
             }
-            //System.out.println( "do switch" );
+            //Util.logTerminal( "do switch" );
 
             switch (nextChar) {
             case '\\':
@@ -80,7 +80,7 @@ public static ArrayList<Character> UnescapeJavaString(String st) {
                 ch = '\r';
                 break;
             case 't':
-                //System.out.println( "found \\  t" );
+                //Util.logTerminal( "found \\  t" );
                 ch = '\t';
                 break;
             case '\"':
@@ -91,7 +91,7 @@ public static ArrayList<Character> UnescapeJavaString(String st) {
                 break;
             // Hex Unicode: u????
             case 'u':
-            System.out.println( "found unicode u" );
+            Util.logTerminal( "found unicode u" );
                 if (i >= st.length() - 5) {
                     ch = 'u';
                     break;
@@ -100,18 +100,18 @@ public static ArrayList<Character> UnescapeJavaString(String st) {
                         "" + st.charAt(i + 2) + st.charAt(i + 3)
                                 + st.charAt(i + 4) + st.charAt(i + 5), 16);
                 //sb.append(Character.toChars(code));
-                System.out.println( "Character.toChars(code) =" + Character.toChars(code) + "<" );
+                Util.logTerminal( "Character.toChars(code) =" + Character.toChars(code) + "<" );
                 ch = Character.toChars(code)[0];
                 charList.add( ch );
                 i += 5;
                 continue;
             }
-            System.out.println( "after switch" );
+            Util.logTerminal( "after switch" );
             i++;
         }
-        System.out.println( "append char as int >" + (int) ch + "<   index i =" + i);
-        System.out.println( "character ch =" + ch + "<" );
-        System.out.println( "String.valueOf(ch) =" + String.valueOf(ch) + "<" );
+        Util.logTerminal( "append char as int >" + (int) ch + "<   index i =" + i);
+        Util.logTerminal( "character ch =" + ch + "<" );
+        Util.logTerminal( "String.valueOf(ch) =" + String.valueOf(ch) + "<" );
          
         //sb.append( ch );
 //        sb.append( String.valueOf(ch) );

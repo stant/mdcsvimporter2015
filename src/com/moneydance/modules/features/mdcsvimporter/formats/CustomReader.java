@@ -171,7 +171,7 @@ public class CustomReader extends TransactionReader
       long totalProcessed = 0;
       long stopAtLine = fileLineCount - getHeaderCount() - getCustomReaderData().getFooterLines() - endingBlankLines;
 //		priorAccountNameFromCSV = "";
-//		System.out.println("calling while (csvData.nextLine())...");
+//		Util.logTerminal("calling while (csvData.nextLine())...");
  
 //    data.printFile();
 //    data.reverseListRangeOrder( begAtLine, stopAtLine - 1 );

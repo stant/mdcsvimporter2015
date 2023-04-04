@@ -234,7 +234,7 @@ public class PreviewImportWin extends javax.swing.JFrame {
         //first check if Desktop is supported by Platform or not
         if ( ! Desktop.isDesktopSupported() )
             {
-            System.out.println("Desktop is not supported");
+            Util.logTerminal("Desktop is not supported");
             return;
             }
          
@@ -259,7 +259,7 @@ public class PreviewImportWin extends javax.swing.JFrame {
         //first check if Desktop is supported by Platform or not
         if ( ! Desktop.isDesktopSupported() )
             {
-            System.out.println("Desktop is not supported");
+            Util.logTerminal("Desktop is not supported");
             return;
             }
          

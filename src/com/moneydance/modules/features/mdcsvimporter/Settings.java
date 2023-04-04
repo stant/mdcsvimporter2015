@@ -45,7 +45,7 @@ public final class Settings
     //static String emptyRegexsArrayProperty = "[ a a a a a a a a a  ]";
    public static File getFilename()
    {
-      Util.logConsole( "os.name =" + System.getProperty( "os.name" ) + "=" );
+      Util.logConsole(true, "os.name =" + System.getProperty( "os.name" ) + "=" );
       File moneydanceHome = null;
       File moneydanceHome1 = null;
       File moneydanceHome2 = null;
@@ -56,7 +56,7 @@ public final class Settings
       if ( System.getProperty( "os.name" ).toLowerCase().startsWith( "mac" ) )
         {
         moneydanceHome1 = new File( System.getProperty( "user.home" ) + "/Library/Application Support", "Moneydance" );
-        Util.logConsole( "try moneydanceHome folder =" + moneydanceHome1 + "=" );
+        Util.logConsole(true, "try moneydanceHome folder =" + moneydanceHome1 + "=" );
         if ( moneydanceHome1.exists() )
             {
             moneydanceHome = moneydanceHome1;
@@ -64,7 +64,7 @@ public final class Settings
         else
             {
             moneydanceHome2 = new File( System.getProperty( "user.home" ) + "/Library/Preferences", "Moneydance" );
-            Util.logConsole( "try moneydanceHome folder =" + moneydanceHome2 + "=" );
+            Util.logConsole(true,"try moneydanceHome folder =" + moneydanceHome2 + "=" );
             if ( moneydanceHome2.exists() )
                 {
                 moneydanceHome = moneydanceHome2;
@@ -72,7 +72,7 @@ public final class Settings
             else
                 {
                 moneydanceHome3 = new File( "/Library/Preferences", "Moneydance" );
-                Util.logConsole( "try moneydanceHome folder =" + moneydanceHome3 + "=" );
+                Util.logConsole(true,"try moneydanceHome folder =" + moneydanceHome3 + "=" );
                 if ( moneydanceHome3.exists() )
                     {
                     moneydanceHome = moneydanceHome3;
@@ -80,7 +80,7 @@ public final class Settings
                 else
                     {
                     moneydanceHome4 = new File( System.getProperty( "user.home" ) + "/Library", "Moneydance" );
-                    Util.logConsole( "try moneydanceHome folder =" + moneydanceHome4 + "=" );
+                    Util.logConsole(true,"try moneydanceHome folder =" + moneydanceHome4 + "=" );
                     if ( moneydanceHome4.exists() )
                         moneydanceHome = moneydanceHome4;
                     } // 3
@@ -91,7 +91,7 @@ public final class Settings
         
         if ( moneydanceHome == null )
             {
-            Util.logConsole( "Could not find so assuming moneydanceHome folder =" + moneydanceHome1 + "=" );
+            Util.logConsole(true,"Could not find so assuming moneydanceHome folder =" + moneydanceHome1 + "=" );
             moneydanceHome = moneydanceHome1;
             missingHomeErrMsg = "\n\nI looked in these 4 places in this order: \n\n"
                         + moneydanceHome1 + "\n"
@@ -103,13 +103,13 @@ public final class Settings
       else  // windows + Linux : test for moneydance folder
         {
         moneydanceHome1 = new File( System.getProperty( "user.home" ), ".moneydance" );
-        Util.logConsole( "try moneydanceHome folder =" + moneydanceHome1 + "=" );
+        Util.logConsole(true,"try moneydanceHome folder =" + moneydanceHome1 + "=" );
         if ( moneydanceHome1.exists() )
             moneydanceHome = moneydanceHome1;
 
         if ( moneydanceHome == null )
             {
-            Util.logConsole( "Could not find so assuming moneydanceHome folder =" + moneydanceHome1 + "=" );
+            Util.logConsole(true,"Could not find so assuming moneydanceHome folder =" + moneydanceHome1 + "=" );
             moneydanceHome = moneydanceHome1;
             missingHomeErrMsg = "";   //\n\nI looked in this place: \n\n"
                                       //+ moneydanceHome + "\n";
@@ -178,7 +178,7 @@ public final class Settings
       OutputStream os = new FileOutputStream( getFilename() );  //, Charset.forName( "UTF-8" ) ); //(String) transReader.getCustomReaderData().getFileEncoding() ) );
       try
       {
-         //Util.logConsole( "DOING SAVE TO PROPS FILE" );
+         //Util.logConsole(true, "DOING SAVE TO PROPS FILE" );
          props.store( os, "MDCSVImporter - Moneydance CSV Importer" );
       }
       finally
@@ -303,10 +303,10 @@ public final class Settings
    public static WinProps getWinProps( boolean loadProps, String name )
     {
     String value = get( loadProps, name );
-    //Util.logConsole( "getWinProps(" + name + ")   value =" + value + "=" );
+    //Util.logConsole(true, "getWinProps(" + name + ")   value =" + value + "=" );
     if ( value == null )
         {
-        //Util.logConsole( "getWinProps() string value is null" );
+        //Util.logConsole(true, "getWinProps() string value is null" );
         return new WinProps();
         }
 
@@ -315,9 +315,9 @@ public final class Settings
     ArrayList<Integer> numList = new ArrayList<Integer>();
     for ( String one : tmpList )
         {
-        //Util.logConsole( "one =" + one + "=" );
+        //Util.logConsole(true, "one =" + one + "=" );
         numList.add( Integer.parseInt( one.trim() ) );
-        //Util.logConsole( "getWinProps set name =" + name + "=   list value =" + one.getWinPropsAsList().toString() + "=" );
+        //Util.logConsole(true, "getWinProps set name =" + name + "=   list value =" + one.getWinPropsAsList().toString() + "=" );
         }
     return new WinProps( numList );
     }
@@ -325,7 +325,7 @@ public final class Settings
    public static void setWinProps( String name, WinProps value )
    {
       set( name, value.getWinPropsAsList().toString() );
-      //Util.logConsole( "set name =" + name + "=   list value =" + value.getWinPropsAsList().toString() + "=" );
+      //Util.logConsole(true, ƒ"set name =" + name + "=   list value =" + value.getWinPropsAsList().toString() + "=" );
    }
 
    public static HashMap<String, CustomReaderData> createReaderConfigsHM()
@@ -340,11 +340,11 @@ public final class Settings
         for ( Enumeration enu = props.propertyNames(); enu.hasMoreElements(); )
             {
             String key = (String) enu.nextElement();
-            System.out.println( "props key =" + key + "=" );
+            Util.logTerminal( "props key =" + key + "=" );
             if ( key.startsWith( "reader:" ) && key.endsWith( ".Name" ) )
                 {
                 String readerName = key.replaceAll( "reader\\:(.*)\\..*", "reader:$1" );
-                Util.logConsole(  "readerName >" + readerName + "<" );
+                Util.logConsole("readerName >" + readerName + "<" );
                    
                 CustomReaderData customReaderData = new CustomReaderData();
                 customReaderData.setReaderName( props.getProperty( readerName + ".Name" ) );
@@ -370,7 +370,7 @@ public final class Settings
                 customReaderData.setEmptyFlagsList( new ArrayList<String>(Arrays.asList( props.getProperty( readerName + ".EmptyFlagsList", emptyArrayProperty ).split( "[\\[\\],]" ) ) ) );
 
                 int max = customReaderData.getDataTypesList().size();
-                Util.logConsole( "props customReaderData.getRegexsList().size() =" + customReaderData.getRegexsList().size() + "=   max =" + max );
+                Util.logConsole(true, "props customReaderData.getRegexsList().size() =" + customReaderData.getRegexsList().size() + "=   max =" + max );
                 for ( int c = 1; c < max; c++ )
                     {
                     customReaderData.getRegexsList().set( c - 1, props.getProperty( readerName + ".RegexsList." + (c-1), "" ) );
