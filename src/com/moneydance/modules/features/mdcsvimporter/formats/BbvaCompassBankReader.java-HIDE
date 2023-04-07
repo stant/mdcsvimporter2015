@@ -19,7 +19,7 @@ import com.moneydance.modules.features.mdcsvimporter.CSVData;
 import com.moneydance.modules.features.mdcsvimporter.DateGuesser;
 import com.moneydance.modules.features.mdcsvimporter.TransactionReader;
 import com.moneydance.util.CustomDateFormat;
-import com.moneydance.util.StringUtils;
+import com.infinitekind.util.StringUtils;
 import java.io.IOException;
 
 /**
@@ -46,7 +46,7 @@ public class BbvaCompassBankReader
 
 	@Override
 	public boolean canParse(CSVData data) {
-//		System.out.println("enter BbvaCompassBankReader.canParse");
+//		Util.logTerminal("enter BbvaCompassBankReader.canParse");
 		try {
 			data.parseIntoLines(0);
 		} catch (IOException ex) {
@@ -60,7 +60,7 @@ public class BbvaCompassBankReader
 				continue;
 			}
 			//this next statement raises an exception - don't use it
-			//System.out.println("BbvaReader:skip: " + data.printCurrentLine());
+			//Util.logTerminal("BbvaReader:skip: " + data.printCurrentLine());
 		}
 
 		boolean retVal = data.nextLine()
@@ -86,8 +86,8 @@ public class BbvaCompassBankReader
 				setDateFormat(guesser.getBestFormat());
 			}
 		}
-		System.out.println("BbvaCompassBankReader.dateFormat = " + getDateFormat());
-		System.out.println("BbvaCompassBankReader.canParse = " + String.valueOf(retVal));
+		Util.logTerminal("BbvaCompassBankReader.dateFormat = " + getDateFormat());
+		Util.logTerminal("BbvaCompassBankReader.canParse = " + String.valueOf(retVal));
 		return retVal;
 	}
 
@@ -98,7 +98,7 @@ public class BbvaCompassBankReader
 
 	@Override
 	protected boolean parseNext() throws IOException {
-		System.out.println("enter BbvaCompassBankReader parseNext");
+		Util.logTerminal("enter BbvaCompassBankReader parseNext");
 		csvData.nextField();
 		dateString = csvData.getField();
 		if (dateString == null || dateString.length() == 0) { // empty line
@@ -118,32 +118,32 @@ public class BbvaCompassBankReader
 		credit = csvData.getField();
 
 		if (credit == null && debit == null) {
-			System.out.println("BbvaCompassBankReader Invalid line-debit and credit are null.");
+			Util.logTerminal("BbvaCompassBankReader Invalid line-debit and credit are null.");
 			throwException("Invalid line");
 		}
 
 		if (credit.length() == 0 && debit.length() == 0) {
-			System.out.println("BbvaCompassBankReader Invalid line-debit and credit are empty.");
+			Util.logTerminal("BbvaCompassBankReader Invalid line-debit and credit are empty.");
 			throwException("Credit and debit fields are both empty.");
 		}
-		System.out.println("exit BbvaCompassBankReader parseNext");
+		Util.logTerminal("exit BbvaCompassBankReader parseNext");
 		return true;
 	}
 
 	@Override
 	protected boolean assignDataToTxn(OnlineTxn txn) throws IOException {
-		System.out.println("enter BbvaCompassBankReader assignDataToTxn");
+		Util.logTerminal("enter BbvaCompassBankReader assignDataToTxn");
 		long amount = 0;
 		try {
 			double amountDouble;
 			if (credit.length() > 0) {
-				System.out.println("credit = " + String.valueOf(credit));
+				Util.logTerminal("credit = " + String.valueOf(credit));
 				amountDouble = StringUtils.parseDoubleWithException(credit, '.');
 			} else {
-				System.out.println("credit.length() <= 0");
+				Util.logTerminal("credit.length() <= 0");
 				amountDouble = -StringUtils.parseDoubleWithException(debit, '.');
 			}
-			System.out.println("amountDouble = " + String.valueOf(amountDouble));
+			Util.logTerminal("amountDouble = " + String.valueOf(amountDouble));
 			amount = currency.getLongValue(amountDouble);
 		} catch (Exception x) {
 			throwException("Invalid amount.");
@@ -163,7 +163,7 @@ public class BbvaCompassBankReader
 		txn.setDatePostedInt(date);
 		txn.setDateInitiatedInt(date);
 		txn.setDateAvailableInt(date);
-		System.out.println("exit BbvaCompassBankReader assignDataToTxn");
+		Util.logTerminal("exit BbvaCompassBankReader assignDataToTxn");
 		return true;
 	}
 
