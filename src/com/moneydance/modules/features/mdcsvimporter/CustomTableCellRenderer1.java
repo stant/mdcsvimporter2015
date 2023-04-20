@@ -34,7 +34,7 @@ public class CustomTableCellRenderer1 extends JLabel implements TableCellRendere
       {
           rowSet = new HashSet();
           errCells.put( row, rowSet );
-          System.err.println( "ADD ERROR YELLOW Cell " + row + ", " + col );
+          Util.logConsole( "ADD ERROR YELLOW Cell " + row + ", " + col );
       }
       rowSet.add( col );
       toolTip.put( row + "," + col, cellToolTip );

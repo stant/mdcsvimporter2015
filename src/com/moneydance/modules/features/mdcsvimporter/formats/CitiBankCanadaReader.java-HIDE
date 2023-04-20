@@ -18,7 +18,7 @@ import com.moneydance.modules.features.mdcsvimporter.TransactionReader;
 import com.moneydance.apps.md.model.OnlineTxn;
 import com.moneydance.modules.features.mdcsvimporter.CSVData;
 import com.moneydance.util.CustomDateFormat;
-import com.moneydance.util.StringUtils;
+import com.infinitekind.util.StringUtils;
 import java.io.IOException;
 
 public class CitiBankCanadaReader

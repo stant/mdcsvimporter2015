@@ -81,7 +81,7 @@ public class OtherActionsDialog extends javax.swing.JDialog {
         //java.util.Calendar today = new java.util.Calendar( 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Calendar cal = Calendar.getInstance();
-        System.out.println(dateFormat.format(cal.getTime()));
+        Util.logTerminal(dateFormat.format(cal.getTime()));
         RootAccount rootAccount = main.getRootAccount();
         ReminderSet reminderSet = rootAccount.getReminderSet();
         Vector remindersOverdueVec = reminderSet.getOverdueItems( cal );
@@ -90,13 +90,13 @@ public class OtherActionsDialog extends javax.swing.JDialog {
         Iterator itr = remindersOverdueVec.iterator();
    
         //use hasNext() and next() methods of Iterator to iterate through the elements
-        System.out.println("Iterating through Vector elements...");
+        Util.logTerminal("Iterating through Vector elements...");
         while(itr.hasNext())
             {
             DateReminderPair rem = (DateReminderPair) itr.next();
             //reminderSet.removeReminder( rem );
 
-            System.out.println( "rem.desc =" + rem. + "=" );
+            Util.logTerminal( "rem.desc =" + rem. + "=" );
             }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -12,11 +12,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+
+// Fixed by Stuart Beesley - 4th April 2023 - null filename check
+
 package com.moneydance.modules.features.mdcsvimporter;
 
+import java.awt.FileDialog;
 import com.infinitekind.moneydance.model.*;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.apps.md.view.gui.OnlineManager;
+import com.moneydance.util.Platform;
+
 import static com.moneydance.modules.features.mdcsvimporter.TransactionReader.importDialog;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -41,10 +48,9 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author miki & Stan Towianski
+ * @author miki and Stan Towianski
  */
-public class ImportDialog
-   extends javax.swing.JDialog
+public class ImportDialog extends javax.swing.JDialog
 {
    private OnlineManager onlineMgr = null;
    private File selectedFile;
@@ -86,6 +92,9 @@ public class ImportDialog
    public ImportDialog( Main main, HashMap runArgsHM )
    {
       super( main.getMoneydanceWindow(), true );
+
+      this.main = main;
+
       initComponents();
       
       this.runArgsHM = runArgsHM;
@@ -114,8 +123,7 @@ public class ImportDialog
       } );
       **/
       
-      this.main = main;
-      
+
       if ( main.getMainContext() != null )
         {
         com.moneydance.apps.md.controller.Main mainApp =
@@ -139,7 +147,7 @@ public class ImportDialog
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.err.println( "previewImportWin formWindow dispose()" );
+                //Util.logConsole( "previewImportWin formWindow dispose()" );
                 win.dispatchEvent( new WindowEvent( win, WindowEvent.WINDOW_CLOSING )); 
                 win.dispose();
             }
@@ -174,8 +182,8 @@ public class ImportDialog
             {
             if ( ! runArgsHM.containsKey( RUN_ARGS_JUNIT ) && ! runArgsHM.containsKey( RUN_ARGS_NOPOPERRORSFLAG ) )
                 {
-                JOptionPane.showMessageDialog( this, "Cannot proceed with processing of csv file because \nfile \'" 
-                                                                        + (String) runArgsHM.get( RUN_ARGS_FILE ) + "\' does not exist.", "Error", JOptionPane.ERROR_MESSAGE );
+                JOptionPane.showMessageDialog( this, "Cannot proceed with processing of csv file because \nfile '" 
+                                                                        + (String) runArgsHM.get( RUN_ARGS_FILE ) + "' does not exist.", "Error", JOptionPane.ERROR_MESSAGE );
                 }
             errCodeList.add( RUN_ARGS_ERRORCODE_INVALID_FILE );
             errorInRunArgs = true;
@@ -251,12 +259,12 @@ public class ImportDialog
                         {
                         dcbm = (DefaultComboBoxModel) comboAccount.getModel();
                         int max = comboAccount.getItemCount();
-                        System.err.println( "runArgs at importaccount max =" + max );
+                        Util.logConsole( "runArgs at importaccount max =" + max );
                         Account foundAccount = null;
 
                         for ( idx = max - 1; idx >= 0; idx-- )
                             {
-                            System.err.println( "getAcountName() =" + ((Account) dcbm.getElementAt( idx )).getAccountName()
+                            Util.logConsole( "getAcountName() =" + ((Account) dcbm.getElementAt( idx )).getAccountName()
                                             + "=   importaccount =" + (String) runArgsHM.get( RUN_ARGS_IMPORTACCOUNT ) + "=" );
                             if ( ((Account) dcbm.getElementAt( idx )).getAccountName().equalsIgnoreCase( (String) runArgsHM.get( RUN_ARGS_IMPORTACCOUNT ) ) )
                                 {
@@ -358,7 +366,7 @@ public class ImportDialog
 
       if ( comboAccount.getItemCount() > 0 )
       {
-         System.err.println( "Settings.getInteger( false, \"selected.account\", 0 ) =" + Settings.getInteger( false, "selected.account", 0 ) );
+         Util.logConsole( "Settings.getInteger( false, \"selected.account\", 0 ) =" + Settings.getInteger( false, "selected.account", 0 ) );
          try {
             comboAccount.setSelectedIndex( Settings.getInteger( false, "selected.account", 0 ) );
             }
@@ -397,7 +405,7 @@ public class ImportDialog
     }
 
     public boolean isSelectedOnlineImportTypeRB() {
-        System.err.println( "onlineImportTypeRB.isSelected() =" + onlineImportTypeRB.isSelected() + "=" );
+        Util.logConsole( "onlineImportTypeRB.isSelected() =" + onlineImportTypeRB.isSelected() + "=" );
         return onlineImportTypeRB.isSelected();
     }
 
@@ -415,17 +423,17 @@ public class ImportDialog
     
     private void processFileFormatChanged( TransactionReader transReader )
     {                                       
-      System.err.println( "processFileFormatChanged()  --------------- " );
+      Util.logConsole( "processFileFormatChanged()  --------------- " );
 
           if ( transReader != null )
             {
             if ( transReader.isCustomReaderFlag() )
                 {
-                System.err.println( "Have a custom reader. Read config for =" + transReader.toString() + "=" );
+                Util.logConsole( "Have a custom reader. Read config for =" + transReader.toString() + "=" );
                 customReaderDialog.getReaderConfig( transReader.toString() );
                 
-//                System.err.println( "importDialog() isSelectedOnlineImportTypeRB()) =" + isSelectedOnlineImportTypeRB()+ "=" );
-//                System.err.println( "importDialog() reader.isUsingCategorynameFlag() =" + transReader.isUsingCategorynameFlag() + "=" );
+//                Util.logConsole( "importDialog() isSelectedOnlineImportTypeRB()) =" + isSelectedOnlineImportTypeRB()+ "=" );
+//                Util.logConsole( "importDialog() reader.isUsingCategorynameFlag() =" + transReader.isUsingCategorynameFlag() + "=" );
 //                if ( importDialog.isSelectedOnlineImportTypeRB() && transReader.isUsingCategorynameFlag() )
 //                    {
 //                    JOptionPane.showMessageDialog( this, "Categories will not import using \'Online\' import type. Set to \'Regular\'" 
@@ -434,7 +442,7 @@ public class ImportDialog
                 }
 
              String[] formats = transReader.getSupportedDateFormats();
-             System.err.println( "importDialog().processFileFormatChanged()  formats =" + formats + "=" );
+             Util.logConsole( "importDialog().processFileFormatChanged()  formats =" + formats + "=" );
 
              popComboDateFormatList( formats );
 
@@ -451,7 +459,7 @@ public class ImportDialog
              else
                 {
                 comboDateFormat.setEnabled( true );
-                System.err.println( "importDialog() customReaderDialog set Date Format Selected  =" + customReaderDialog.getDateFormatSelected() + "=" );
+                Util.logConsole( "importDialog() customReaderDialog set Date Format Selected  =" + customReaderDialog.getDateFormatSelected() + "=" );
                 comboDateFormat.setSelectedItem( customReaderDialog.getDateFormatSelected() );
                 }
           }
@@ -459,7 +467,7 @@ public class ImportDialog
     
     protected void processActionPerformed(java.awt.event.ActionEvent evt)                                           
     {
-       System.err.println( "Process button entered" );
+       Util.logConsole( "Process button entered" );
        Settings.setYesNo( "delete.file", checkDeleteFile.isSelected() );
        Settings.setYesNo( "importtype.online.radiobutton", onlineImportTypeRB.isSelected() );
        Settings.setInteger( "selected.account", comboAccount.getSelectedIndex() );
@@ -467,30 +475,30 @@ public class ImportDialog
         try
              {
              TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
-             System.err.println( "comboFileFormat is string =" + transReader.toString() + "=" );
+             Util.logConsole( "comboFileFormat is string =" + transReader.toString() + "=" );
              transReader.setDateFormat( (String) comboDateFormat.getSelectedItem() );
              CSVReader csvReader = null;
     
             if ( transReader.getCustomReaderData().getUseRegexFlag() )
                 {
-                System.err.println( "\n================  Regex Reader" );
+                Util.logConsole( "\n================  Regex Reader" );
                 csvReader = new RegexReader( new InputStreamReader( new FileInputStream( selectedFile ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
                 }
             else
                 {
-                System.err.println( "\n================  Csv Reader" );
+                Util.logConsole( "\n================  Csv Reader" );
                 csvReader = new CSVReader( new InputStreamReader( new FileInputStream( selectedFile ), Charset.forName( (String) transReader.getCustomReaderData().getFileEncoding() )), transReader.getCustomReaderData() );
                 }
             CSVData csvData = new CSVData( csvReader );            
        
-       //System.err.println( "btnProcessActionPerformed  customReaderDialog.getFieldSeparatorChar() =" + (char)customReaderDialog.getFieldSeparatorChar() + "=" );
+       //Util.logConsole( "btnProcessActionPerformed  customReaderDialog.getFieldSeparatorChar() =" + (char)customReaderDialog.getFieldSeparatorChar() + "=" );
        //csvData.getReader().setFieldSeparator( customReaderDialog.getFieldSeparatorChar() );
 
           Account account = (Account) comboAccount.getSelectedItem();
-          System.err.println( "starting transReader.parse..." );
+          Util.logConsole( "starting transReader.parse..." );
           transReader.parse( main, csvData, account, main.getAccountBook() );
           csvReader.close();
-          System.out.println( "finished transReader.parse" );
+          Util.logTerminal( "finished transReader.parse" );
 
           //TESTING! DS
 //         onlineMgr.processDownloadedTxns( account );
@@ -546,6 +554,7 @@ public class ImportDialog
     */
    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
@@ -581,10 +590,10 @@ public class ImportDialog
         jLabel3.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Import File: " + main.VERSION_STRING);
-        setMinimumSize(new java.awt.Dimension(750, 470));
+        setTitle(Main.EXTN_NAME + "(build: " + main.getBuild() + ")");
+        setMinimumSize(new java.awt.Dimension(950, 470));
         setName("importDialog"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(800, 470));
+        setPreferredSize(new java.awt.Dimension(950, 470));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -920,38 +929,75 @@ public class ImportDialog
 
     private void btnBrowseActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBrowseActionPerformed
     {//GEN-HEADEREND:event_btnBrowseActionPerformed
-       JFileChooser dialog = new JFileChooser();
-       dialog.setFileHidingEnabled( true );
-       dialog.setDialogTitle( "Select text file" );
-       dialog.setCurrentDirectory(
-          new File( Settings.get( false, "last.directory",
-          dialog.getCurrentDirectory().getAbsolutePath() ) ) );
-       dialog.addChoosableFileFilter( new FileFilter()
-       {
-          @Override
-          public boolean accept( File f )
-          {
-             return f.isDirectory() || f.getName().toUpperCase().endsWith( ".CSV" );
-          }
 
-          @Override
-          public String getDescription()
-          {
-             return "Formatted Text File (*.csv)";
-          }
-       } );
-    if ( dialog.showDialog( this, "Select" ) == JFileChooser.APPROVE_OPTION )
-        {
-        selectedFile = dialog.getSelectedFile();
-        Settings.set( "last.directory", dialog.getCurrentDirectory().getAbsolutePath() );
-        // textFilename.setSelectedItem( selectedFile.getPath() );
-        String[] tt = { selectedFile.getPath() };
-        popTextFilenameList( tt );
+        if (Platform.isMac()) {
+
+            FileDialog dialog = new FileDialog(this, "Select text file");
+            dialog.setDirectory(Settings.get(false, "last.directory", dialog.getDirectory()));
+            dialog.setMultipleMode(false);
+            dialog.setMode(FileDialog.LOAD);
+            dialog.setFilenameFilter(new FilenameFilter() {
+                public boolean accept(File dir, String name) {
+                    return dir.isDirectory() || name.toUpperCase().endsWith(".CSV");
+                }
+            });
+            dialog.setVisible(true);
+
+            if (dialog.getFile() == null || dialog.getFile().equals("") || dialog.getFiles().length < 1){
+                Util.logConsole("(Mac) No file selected?");
+            } else {
+                selectedFile = dialog.getFiles()[0];
+                Settings.set("last.directory", dialog.getDirectory());
+
+                String[] tt = new String[]{dialog.getFiles()[0].getAbsolutePath()};
+
+//                Util.logConsole(true, "***HERE1a: " + selectedFile + " " + selectedFile.getPath() + " " + dialog.getFiles()[0] + " " + selectedFile.getName());
+                popTextFilenameList(tt);
+                fileChanged2();
+                btnProcess.setEnabled(false);
+            }
+        } else {
+
+            JFileChooser dialog = new JFileChooser();
+            dialog.setFileHidingEnabled(true);
+            dialog.setDialogTitle("Select text file");
+            dialog.setCurrentDirectory(
+                    new File(Settings.get(false, "last.directory",
+                            dialog.getCurrentDirectory().getAbsolutePath())));
+            dialog.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+
+                    Util.logConsole(true, "inside FileFilter... File: " + f);
+                    return f.isDirectory() || f.getName().toUpperCase().endsWith(".CSV");
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Formatted Text File (*.csv)";
+                }
+            });
+            if (dialog.showDialog(this, "Select") == JFileChooser.APPROVE_OPTION) {
+                selectedFile = dialog.getSelectedFile();
+                Settings.set("last.directory", dialog.getCurrentDirectory().getAbsolutePath());
+                // textFilename.setSelectedItem( selectedFile.getPath() );
+
+                String[] tt;
+
+                if (Platform.isMac() && dialog.getSelectedFiles().length > 0) {
+                    tt = new String[]{dialog.getSelectedFiles()[0].getAbsolutePath()};
+                } else {
+                    tt = new String[]{selectedFile.getPath()};
+                }
+//                Util.logConsole(true, "***HERE1b: " + selectedFile + " " + selectedFile.getPath() + " " + dialog.getSelectedFiles()[0] + " " + selectedFile.getName());
+                popTextFilenameList(tt);
 //          fileChanged();
-        fileChanged2();
-        btnProcess.setEnabled( false );
+                fileChanged2();
+                btnProcess.setEnabled(false);
+            }
         }
-}//GEN-LAST:event_btnBrowseActionPerformed
+
+    }//GEN-LAST:event_btnBrowseActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnCloseActionPerformed
     {//GEN-HEADEREND:event_btnCloseActionPerformed
@@ -965,19 +1011,19 @@ public class ImportDialog
 
     private void fileFormatChanged(java.awt.event.ItemEvent evt)//GEN-FIRST:event_fileFormatChanged
     {//GEN-HEADEREND:event_fileFormatChanged
-      System.err.println( "fileFormatChanged()  event  --------------- " + evt );
+      Util.logConsole( "fileFormatChanged()  event  --------------- " + evt );
       if ( skipDuringInit )
             {
-            System.err.println( "fileFormatChanged()  skipDuringInit  ---------------" );
+            Util.logConsole( "fileFormatChanged()  skipDuringInit  ---------------" );
             return;
             }
       
       if ( evt.getStateChange() == ItemEvent.SELECTED )
        {
-       System.err.println( "fileFormatChanged()  event == ItemEvent.SELECTED  ---------------" );
+       Util.logConsole( "fileFormatChanged()  event == ItemEvent.SELECTED  ---------------" );
         if ( comboFileFormat.getSelectedItem() instanceof String )
                 {
-                System.err.println( "comboFileFormat is string =" + (String) comboFileFormat.getSelectedItem() + "=" );
+                Util.logConsole( "comboFileFormat is string =" + (String) comboFileFormat.getSelectedItem() + "=" );
                 return;
                 }
 
@@ -1015,7 +1061,7 @@ private void comboFileFormatActionPerformed(java.awt.event.ActionEvent evt) {//G
     /*  use actionPerformed - not both !
 if ( comboFileFormat.getSelectedItem() instanceof String )
         {
-        System.err.println( "comboFileFormat is string =" + (String) comboFileFormat.getSelectedItem() + "=" );
+        Util.logConsole( "comboFileFormat is string =" + (String) comboFileFormat.getSelectedItem() + "=" );
         return;
         }
     
@@ -1024,7 +1070,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
           {
             if ( transReader.isCustomReaderFlag() )
                 {
-                System.err.println( "Have a custom reader. Read config for =" + transReader.toString() + "=" );
+                Util.logConsole( "Have a custom reader. Read config for =" + transReader.toString() + "=" );
                 customReaderDialog.getReaderConfig( transReader.toString() );
                 }
 
@@ -1049,7 +1095,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
              else
                 {
                 comboDateFormat.setEnabled( true );
-                System.err.println( "importDialog() customReaderDialog set Date Format Selected  =" + customReaderDialog.getDateFormatSelected() + "=" );
+                Util.logConsole( "importDialog() customReaderDialog set Date Format Selected  =" + customReaderDialog.getDateFormatSelected() + "=" );
                 comboDateFormat.setSelectedItem( customReaderDialog.getDateFormatSelected() );
                 }
           }
@@ -1104,16 +1150,16 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
     }//GEN-LAST:event_formWindowOpened
 
     private void PreviewImportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewImportBtnActionPerformed
-       System.err.println( "Preview Import button entered" );
+       Util.logConsole( "Preview Import button entered" );
 
         try
             {
             TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
-            System.err.println( "comboFileFormat is string =" + transReader.toString() + "=" );
+            Util.logConsole( "comboFileFormat is string =" + transReader.toString() + "=" );
             transReader.setDateFormat( (String) comboDateFormat.getSelectedItem() );
 
             Account account = (Account) comboAccount.getSelectedItem();
-            //System.err.println( "starting transReader.parse..." );
+            //Util.logConsole( "starting transReader.parse..." );
             //transReader.parse( main, csvData, account, main.getRootAccount() );
                       
             transReader.setAccountBook(main.getAccountBook());
@@ -1136,28 +1182,33 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Util.logConsole(true, "***HERE2");
         popTextFilenameList( null );
         btnProcess.setEnabled( false );
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void textFilenameItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_textFilenameItemStateChanged
-      System.err.println( "textFilenameItemStateChanged()  event  --------------- " + evt );
+      Util.logConsole( "textFilenameItemStateChanged()  event  --------------- " + evt );
       if ( skipDuringInit )
             {
-            System.err.println( "textFilenameItemStateChanged()  skipDuringInit  ---------------" );
+            Util.logConsole( "textFilenameItemStateChanged()  skipDuringInit  ---------------" );
             return;
             }
       
+        Util.logConsole(true, "***HERE5: " + evt.getStateChange());
+
       if ( evt.getStateChange() == ItemEvent.SELECTED )
        {
-       System.err.println( "textFilenameItemStateChanged()  event == ItemEvent.SELECTED  ---------------" );
+        Util.logConsole(true, "***HERE6");
+       Util.logConsole( "textFilenameItemStateChanged()  event == ItemEvent.SELECTED  ---------------" );
         if ( textFilename.getSelectedItem() instanceof String )
                 {
-                System.err.println( "textFilename is string =" + (String) textFilename.getSelectedItem() + "=" );
+                Util.logConsole( "textFilename is string =" + (String) textFilename.getSelectedItem() + "=" );
                 textFilenameChanged();
                 return;
                 }
        }
+        Util.logConsole(true, "***HERE7 exit");
     }//GEN-LAST:event_textFilenameItemStateChanged
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -1167,7 +1218,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
        WinProps winProps = new WinProps( this.getWidth(), this.getHeight(), this.getX(), this.getY() );
        Settings.setWinProps( "winprops.ImportDialog", winProps );
-       //System.err.println( "setting winprops of importdlg wid =" + winProps.getWidth() );
+       //Util.logConsole( "setting winprops of importdlg wid =" + winProps.getWidth() );
     }//GEN-LAST:event_formWindowClosing
 
     
@@ -1224,28 +1275,28 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
 
     public void comboFileFormat1AddItem( TransactionReader customReader )
         {
-        System.err.println( "importDialog() add reader item =" + customReader.toString() + "=" );
+        Util.logConsole( "importDialog() add reader item =" + customReader.toString() + "=" );
         //customReaderCB.addItem( xxx );
         comboFileFormat.addItem( customReader );
         }
     
     public void comboFileFormat1SetItem( TransactionReader customReader )
         {
-        System.err.println( "importDialog() comboFileFormat1SetItem() =" + customReader.toString() + "=" );
+        Util.logConsole( "importDialog() comboFileFormat1SetItem() =" + customReader.toString() + "=" );
         //customReaderCB.setSelectedItem( xxx );
         comboFileFormat.setSelectedItem( customReader );
         }
     
     public void comboDateFormatSetItem( String xxx )
         {
-        System.err.println( "importDialog() comboDateFormat.setSelectedItem( xxx ) =" + xxx + "=" );
+        Util.logConsole( "importDialog() comboDateFormat.setSelectedItem( xxx ) =" + xxx + "=" );
         comboDateFormat.setSelectedItem( xxx );
         }
 
     public void createSupportedDateFormats( String dateFormatArg ) 
         {
         DefaultComboBoxModel dateFormatModel = new DefaultComboBoxModel();
-        System.out.println( "ImportDialog.createSupportedDateFormats() dateFormatArg =" + dateFormatArg + "=" );
+        Util.logTerminal( "ImportDialog.createSupportedDateFormats() dateFormatArg =" + dateFormatArg + "=" );
         dateFormatModel.addElement( dateFormatArg );
         
         comboDateFormat.setModel( dateFormatModel );
@@ -1255,20 +1306,20 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
     
     public String comboDateFormatGetItem()
         {
-        System.err.println( "importDialog() comboDateFormat.comboDateFormat.getSelectedItem() =" + comboDateFormat.getSelectedItem() + "=" );
+        Util.logConsole( "importDialog() comboDateFormat.comboDateFormat.getSelectedItem() =" + comboDateFormat.getSelectedItem() + "=" );
         return (String) comboDateFormat.getSelectedItem();
         }
 
     public void comboDateFormatAddItem( String format )
         {
-        System.err.println( "importDialog() add date format item =" + comboDateFormat + "=" );
+        Util.logConsole( "importDialog() add date format item =" + comboDateFormat + "=" );
         //customReaderCB.addItem( xxx );
         comboDateFormat.addItem( format );
         }
 
     public void comboDateFormatSetModel( DefaultComboBoxModel model )
         {
-        System.err.println( "importDialog() comboDateFormatSetModel()" );
+        Util.logConsole( "importDialog() comboDateFormatSetModel()" );
         comboDateFormat.setModel( model );
         }
 
@@ -1285,58 +1336,67 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
 
     public void popTextFilenameList( String [] filenames )
         {
-        System.err.println( "entered popTextFilenameList()" );
+        Util.logConsole( "entered popTextFilenameList()" );
         File dir = new File( Settings.get( false, "last.directory", "" ) );
         
-        if ( filenames == null )
-            {
-            if ( dir.equals( "" ) )
-                {
+        if ( filenames == null ) {
+            Util.logConsole(true, "... filenames==null");
+            if (dir.equals("")) {
                 dir = (File.listRoots())[0];
-                }
+                Util.logConsole(true, "...... " + dir);
+            }
 
-            TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
-            if ( transReader.getCustomReaderData().getFilenameMatcher() == null ||
-                 transReader.getCustomReaderData().getFilenameMatcher().equals( "" ) )
-                {
-                transReader.getCustomReaderData().setFilenameMatcher( ".*\\.[Cc][Ss][Vv]" );
-                }
+            Util.logConsole(true, "***HERE3");
 
-            // create new filename filter
-             FilenameFilter fileNameFilter = new FilenameFilter() 
-                {
+            try {
                 TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
-                    {
-                    System.err.println( "popTextFilenameList() transReader.getFormatName() >" + transReader.getFormatName() + "<" );
-                    }
-                @Override
-                public boolean accept(File dir, String name) {
-                   System.err.println( "popTextFilenameList() match name? >" + name + "<" );
-                   //System.err.println( "popTextFilenameList() getFilenameMatcher() >" + transReader.getCustomReaderData().getFilenameMatcher() + "<" );
-                   if ( name.matches( transReader.getCustomReaderData().getFilenameMatcher() ) )
-                      {
-                      return true;
-                      }
-                   return false;
+                Util.logConsole(true, "***HERE4");
+                if (transReader.getCustomReaderData().getFilenameMatcher() == null ||
+                        transReader.getCustomReaderData().getFilenameMatcher().equals("")) {
+                    transReader.getCustomReaderData().setFilenameMatcher(".*\\.[Cc][Ss][Vv]");
                 }
-             };
-             
-            // returns pathnames for files and directory
-            filenames = dir.list( fileNameFilter );
+
+                // create new filename filter
+                FilenameFilter fileNameFilter = new FilenameFilter() {
+                    TransactionReader transReader = (TransactionReader) comboFileFormat.getSelectedItem();
+
+                    {
+                        Util.logConsole("popTextFilenameList() transReader.getFormatName() >" + transReader.getFormatName() + "<");
+                    }
+
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        Util.logConsole("popTextFilenameList() match name? >" + name + "<");
+                        //Util.logConsole( "popTextFilenameList() getFilenameMatcher() >" + transReader.getCustomReaderData().getFilenameMatcher() + "<" );
+                        if (name.matches(transReader.getCustomReaderData().getFilenameMatcher())) {
+                            return true;
+                        }
+                        return false;
+                    }
+                };
+
+                // returns pathnames for files and directory
+                filenames = dir.list(fileNameFilter);
+            } catch (Exception e) {
+//                e.printStackTrace();
+                filenames = null;
+            }
 
             textFilename.removeAllItems();
-            for ( String s : filenames )
-                {
-                System.err.println(  "popTextFilenameList add format >" + s + "<" );
-                textFilename.addItem( dir + System.getProperty( "file.separator" ) + s );
+            if (filenames != null) {
+                for (String s : filenames) {
+                    Util.logConsole("popTextFilenameList add format >" + s + "<");
+                    textFilename.addItem(dir + System.getProperty("file.separator") + s);
                 }
             }
+        }
         else
             {
+            Util.logConsole(true, "... pop - else.... filenames: " + filenames);
             textFilename.removeAllItems();
             for ( String s : filenames )
                 {
-                System.err.println(  "popTextFilenameList add format >" + s + "<" );
+                Util.logConsole(  "popTextFilenameList add format >" + s + "<" );
                 textFilename.addItem( s );
                 }
             }
@@ -1345,11 +1405,11 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
     
     public void popComboDateFormatList( String [] formats )
         {
-         System.err.println(  "entered popComboDateFormatList()" );
+         Util.logConsole(  "entered popComboDateFormatList()" );
          comboDateFormat.removeAllItems();
          for ( String s : formats )
             {
-            System.err.println(  "popComboDateFormatList add format >" + s + "<" );
+            Util.logConsole(  "popComboDateFormatList add format >" + s + "<" );
             comboDateFormat.addItem( s );
             }
         }
@@ -1436,7 +1496,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
       {
          TransactionReader reader = (TransactionReader) comboFileFormat.getSelectedItem();
          String[] formats = reader.getSupportedDateFormats();
-         System.err.println( "importDialog().fileChanged()  formats =" + formats + "=" );
+         Util.logConsole( "importDialog().fileChanged()  formats =" + formats + "=" );
 
          popComboDateFormatList( formats );
 
@@ -1455,13 +1515,13 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
          else
          {
             comboDateFormat.setEnabled( true );
-            System.err.println( "importDialog() customReaderDialog.getDateFormatSelected()) =" + customReaderDialog.getDateFormatSelected() + "=" );
+            Util.logConsole( "importDialog() customReaderDialog.getDateFormatSelected()) =" + customReaderDialog.getDateFormatSelected() + "=" );
             comboDateFormat.setSelectedItem( customReaderDialog.getDateFormatSelected() );
          }
          
-        System.err.println( "importDialog() error =" + error + "=" );
-        System.err.println( "importDialog() isSelectedOnlineImportTypeRB()) =" + isSelectedOnlineImportTypeRB()+ "=" );
-        System.err.println( "importDialog() reader.isUsingCategorynameFlag() =" + reader.isUsingCategorynameFlag() + "=" );
+        Util.logConsole( "importDialog() error =" + error + "=" );
+        Util.logConsole( "importDialog() isSelectedOnlineImportTypeRB()) =" + isSelectedOnlineImportTypeRB()+ "=" );
+        Util.logConsole( "importDialog() reader.isUsingCategorynameFlag() =" + reader.isUsingCategorynameFlag() + "=" );
         if ( ! error && importDialog.isSelectedOnlineImportTypeRB() && isUsingCategorynameFlag )
             {
             JOptionPane.showMessageDialog( this, "Categories will not import using \'Online\' import type. Set to \'Regular\' if you want that." 
@@ -1489,6 +1549,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
       boolean error = false;
       boolean isUsingCategorynameFlag = false;
               
+      Util.logConsole(true, "**** selectedFile: " + selectedFile);;
       // see if the file is selected
       if ( selectedFile == null || !selectedFile.exists() || !selectedFile.isFile() )
       {

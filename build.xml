@@ -77,6 +77,7 @@
         <property name="privatekey" value="private.key"/>
         <property name="publickey" value="public.key"/>
         <property name="privatekeyid" value="99"/>
+        <property name="keypass" value=""/>
     </target>
   
     <target name="-post-jar">
@@ -92,6 +93,7 @@
       <java newenvironment="true"
             classpath="externals/moneydance/extadmin.jar:externals/moneydance/moneydance.jar"
             classname="com.moneydance.admin.KeyAdmin">
+            <sysproperty key="moneydance_key_pass" value="${keypass}"/>
             <arg value="signextjar"/>
             <arg value="${privatekey}"/>
             <arg value="${privatekeyid}"/>
@@ -111,6 +113,7 @@
 
     <target name="genkeys" depends="init">
         <java
+            fork="true"
             classpath="externals/moneydance/extadmin.jar"
             classname="com.moneydance.admin.KeyAdmin">
             <arg value="genkey"/>

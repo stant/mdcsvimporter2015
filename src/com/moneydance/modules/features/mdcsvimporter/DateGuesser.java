@@ -305,12 +305,12 @@ public class DateGuesser
       Integer count = results.get( key );
       if ( count == null )
       {
-          System.err.println( "saving format key =" + key + "=   count =" + 1 );
+          Util.logConsole( "saving format key =" + key + "=   count =" + 1 );
          results.put( key, 1 );
       }
       else
       {
-          System.err.println( "saving format key =" + key + "=   count =" + (count + 1) );
+          Util.logConsole( "saving format key =" + key + "=   count =" + (count + 1) );
          results.put( key, count + 1 );
       }
    }
@@ -367,7 +367,7 @@ public class DateGuesser
 
       for ( Map.Entry<String, Integer> entry : results.entrySet() )
       {
-         System.err.println( "results before sort entry.getValue() =" + entry.getValue() + "=   entry.getKey() =" + entry.getKey() + "=" );
+         Util.logConsole( "results before sort entry.getValue() =" + entry.getValue() + "=   entry.getKey() =" + entry.getKey() + "=" );
          sortedResults.put( entry.getValue(), entry.getKey() );
       }
 
@@ -376,7 +376,7 @@ public class DateGuesser
 
       for ( String tmp : possibleFormats )
       {
-         System.err.println( "possibleFormats =" + tmp + "=" );
+         Util.logConsole( "possibleFormats =" + tmp + "=" );
       }
       
       if ( datesDetected == 0 )

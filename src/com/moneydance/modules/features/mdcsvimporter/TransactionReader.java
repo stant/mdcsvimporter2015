@@ -105,9 +105,9 @@ public abstract class TransactionReader
    public final String calcFITxnIdAbstract( AbstractTxn atxn )
       throws IOException
        {
-       //System.err.println(  "\n---------   entered TransactionReader().calcFITxnId( AbstractTxn )  -------------" );
-            //System.err.println( "key.getDescription() =" + atxn.getDescription() + "=   atxn.getFiTxnId( 1 ) =" + atxn.getFiTxnId( 1 ) + "=" );
-            //System.err.println( "atxn.getFiTxnId( 1 ) [" + k + "] =" + atxn.getFiTxnId( 1 ) + "=   atxn.getFiTxnId( 0 ) [" + k + "] =" + atxn.getFiTxnId( 0 ) + "=" );
+       //Util.logConsole(  "\n---------   entered TransactionReader().calcFITxnId( AbstractTxn )  -------------" );
+            //Util.logConsole( "key.getDescription() =" + atxn.getDescription() + "=   atxn.getFiTxnId( 1 ) =" + atxn.getFiTxnId( 1 ) + "=" );
+            //Util.logConsole( "atxn.getFiTxnId( 1 ) [" + k + "] =" + atxn.getFiTxnId( 1 ) + "=   atxn.getFiTxnId( 0 ) [" + k + "] =" + atxn.getFiTxnId( 0 ) + "=" );
             //tsetMatcherKey.add( atxn.getFiTxnId( 1 ) );
             
               // Here I am manually recreating the FiTxnId that I set on imported txn's because I could not figure
@@ -135,7 +135,7 @@ public abstract class TransactionReader
       String origtxn = atxn.getParameter("ol.orig-txn");
       //String origCheckNumber = origtxn.replaceAll( ".*\\\"chknum\\\" = \\\"(.*?)\\\"\\\n.*", "$1" );
 
-      //System.out.println( "\norigtxn ="+origtxn + "=" );
+      //Util.logTerminal( "\norigtxn ="+origtxn + "=" );
 
       // Run some matches
       if ( origtxn != null )
@@ -144,12 +144,12 @@ public abstract class TransactionReader
           if ( m.find() )
                 {
                 origCheckNumber = m.group( 1 );
-                //System.out.println("Found orig check num ="+m.group( 1 ) + "=" );
+                //Util.logTerminal("Found orig check num ="+m.group( 1 ) + "=" );
                 }
           else
                 {
                 origCheckNumber = atxn.getCheckNumber();
-                //System.out.println("have orig-txn but no check num so use getchecknum() ="+origCheckNumber + "=" );
+                //Util.logTerminal("have orig-txn but no check num so use getchecknum() ="+origCheckNumber + "=" );
                 }
           
           m = amtPat.matcher( origtxn );
@@ -157,18 +157,18 @@ public abstract class TransactionReader
                 {
                 long lamt = Long.valueOf( m.group( 1 ) ).longValue();
                 amt = currency.format( lamt, '.' );
-                //System.out.println("Found orig amt ="+m.group( 1 ) + "= formatted =" + amt );
+                //Util.logTerminal("Found orig amt ="+m.group( 1 ) + "= formatted =" + amt );
                 }
           else
                 {
                 amt = currency.format( atxn.getValue(), '.' );
-                //System.out.println("have orig-txn but no check num so use getchecknum() ="+origCheckNumber + "=" );
+                //Util.logTerminal("have orig-txn but no check num so use getchecknum() ="+origCheckNumber + "=" );
                 }
           }
       else
           {
           origCheckNumber = atxn.getCheckNumber();
-          //System.out.println("no orig check num so use getchecknum() ="+origCheckNumber + "=" );
+          //Util.logTerminal("no orig check num so use getchecknum() ="+origCheckNumber + "=" );
           amt = currency.format( atxn.getValue(), '.' );
           }
 
@@ -189,7 +189,7 @@ public abstract class TransactionReader
                            + ":" + (origCheckNumber == null ? "" : origCheckNumber.replaceAll( "^0*(.*)", "$1" ) )    // strip leading 0's
                            + ":" + (atxn.getParameter("ol.orig-memo") == null ? "" : atxn.getParameter("ol.orig-memo"));
 
-        //System.err.println( "calc abstract FITxnld >" + tmp + "<" );
+        //Util.logConsole( "calc abstract FITxnld >" + tmp + "<" );
         return tmp;
        }
 
@@ -197,7 +197,7 @@ public abstract class TransactionReader
    public final String calcFITxnId( OnlineTxn onlinetxn )
       throws IOException
        {
-       //System.err.println(  "\n---------   entered TransactionReader().calcFITxnId( onlinetxn )  -------------" );
+       //Util.logConsole(  "\n---------   entered TransactionReader().calcFITxnId( onlinetxn )  -------------" );
        //      txn.setFITxnId( date + ":" + currency.format( amount, '.' ) + ":" + description + ":" + txn.getCheckNum() + ":" + txn.getMemo() );
 
         String tmp = onlinetxn.getDateInitiatedInt() + ":" + currency.format( onlinetxn.getAmount(), '.' )
@@ -206,7 +206,7 @@ public abstract class TransactionReader
                            + ":" + (onlinetxn.getMemo() == null ? "" : onlinetxn.getMemo() )
                                   ;            
 
-       //System.err.println(  "calc online FITxnld >" + tmp + "<" );
+       //Util.logConsole(  "calc online FITxnld >" + tmp + "<" );
        return tmp;
        }
 
@@ -218,7 +218,7 @@ public abstract class TransactionReader
             {
             String tmp = calcFITxnIdAbstract( atxn );
 
-            //System.err.println( "tmp string [" + k + "] =" + tmp + "=" );
+            //Util.logConsole( "tmp string [" + k + "] =" + tmp + "=" );
             tsetMatcherKey.add( tmp );
             tsetFITxnIdMatcherKey.add( atxn.getFiTxnId( OnlineTxn.PROTO_TYPE_OFX ) );
             tsetFITxnIdMatcherKey.add( atxn.getFiTxnId( defProtocolId ) );
@@ -227,7 +227,7 @@ public abstract class TransactionReader
             //if ( k > 9 )
             //   break;
             }
-        //System.err.println(  "\n---------   end: make set of existing account transactions  -------------" );
+        //Util.logConsole(  "\n---------   end: make set of existing account transactions  -------------" );
         }
 
       /*                
@@ -236,7 +236,7 @@ public abstract class TransactionReader
         public final void parse( Main main, CSVData csvDataArg, Account accountIn, AccountBook book)
                 throws IOException 
         {
-        System.err.println("\n---------   entered TransactionReader().parse()  -------------");
+        Util.logConsole("\n---------   entered TransactionReader().parse()  -------------");
 
         this.csvData = csvDataArg;
         this.book = book;
@@ -256,9 +256,9 @@ public abstract class TransactionReader
 //      //getAllAccountNames - is only path from root to present acct
 //      //end testing
 
-        System.err.println("\n---------   beg: make set of existing account transactions  -------------");
-        //System.err.println(  "number of trans list =" +this.txnSet.getTransactionsForAccount( account ).getSize()  );
-        System.err.println("size of txnSet.getAllTxns = " + this.txnSet.getAllTxns().getSize());
+        Util.logConsole("\n---------   beg: make set of existing account transactions  -------------");
+        //Util.logConsole(  "number of trans list =" +this.txnSet.getTransactionsForAccount( account ).getSize()  );
+        Util.logConsole("size of txnSet.getAllTxns = " + this.txnSet.getAllTxns().getSize());
         // cannot get just for account because I am putting them into a temp/empty account !
         //Enumeration<AbstractTxn> tenums = this.txnSet.getTransactionsForAccount( account ).getAllTxns();
         TxnSet tset = this.txnSet.getAllTxns();
@@ -283,7 +283,7 @@ public abstract class TransactionReader
      while ( tenums.hasMoreElements() ) 
             {
             AbstractTxn key = tenums.nextElement();
-            System.err.println( "key.getDescription() =" + key.getDescription() + "=   key.getFiTxnId( 0 )" + key.getFiTxnId( 0 ) + "=" );
+            Util.logConsole( "key.getDescription() =" + key.getDescription() + "=   key.getFiTxnId( 0 )" + key.getFiTxnId( 0 ) + "=" );
             tsetMatcherKey.add( key.getFiTxnId( 0 ) );
             }
        * 
@@ -296,14 +296,14 @@ public abstract class TransactionReader
           OnlineTxn onlinetxn = transactionList.getTxn( k );
             String tmp = calcFITxnId( onlinetxn );
             
-            //System.err.println( "tmp string [" + k + "] =" + tmp + "=" );
+            //Util.logConsole( "tmp string [" + k + "] =" + tmp + "=" );
             onlineMatcherKey.add( tmp );
             
             //if ( k > 9 )
              //   break;
           }
       */
-      System.err.println(  "\n---------   end: make set of existing account online transactions  -------------" );
+      Util.logConsole(  "\n---------   end: make set of existing account online transactions  -------------" );
       
       //csvData.reset();
         if ( this instanceof CustomReader )
@@ -315,9 +315,9 @@ public abstract class TransactionReader
             csvData.parseIntoLines( null );
             }
 
-      //System.err.println( "at parse getFieldSeparator() =" + (char)csvData.getReader().getFieldSeparator() + "=" );
+      //Util.logConsole( "at parse getFieldSeparator() =" + (char)csvData.getReader().getFieldSeparator() + "=" );
       //csvData.getReader().setFieldSeparator( customReaderDialog.getFieldSeparatorChar() );
-      //System.err.println( "at parse getFieldSeparator() after set =" + (char)csvData.getReader().getFieldSeparator() + "=" );
+      //Util.logConsole( "at parse getFieldSeparator() after set =" + (char)csvData.getReader().getFieldSeparator() + "=" );
 
         csvData.reset();
         long fileLineCount = 0;
@@ -329,23 +329,23 @@ public abstract class TransactionReader
             if ( ! csvData.hasZeroFields() )
                 {
                 endingBlankLines ++;
-                System.err.println(  "endingBlankLines =" + endingBlankLines );
+                Util.logConsole(  "endingBlankLines =" + endingBlankLines );
                 }
             else
                 {
                 endingBlankLines = 0;
                 }
             }
-        System.err.println(  "fileLineCount =" + fileLineCount );
+        Util.logConsole(  "fileLineCount =" + fileLineCount );
 
         
       csvData.reset();
       //----- Skip Header Lines  -----
-        System.err.println(  "getHeaderCount() =" + getHeaderCount() );
+        Util.logConsole(  "getHeaderCount() =" + getHeaderCount() );
         for ( int hdrCnt = getHeaderCount(); hdrCnt > 0; --hdrCnt )
             {
             csvData.nextLine(); // skip the header
-            System.err.println( "skip header" );
+            Util.logConsole( "skip header" );
             }
       long begAtLine = csvData.getCurrentLineIndex() + 1;
       
@@ -362,11 +362,11 @@ public abstract class TransactionReader
       long totalDuplicates = 0;
       long stopAtLine = fileLineCount - getHeaderCount() - getCustomReaderData().getFooterLines() - endingBlankLines;
 //		priorAccountNameFromCSV = "";
-//		System.out.println("calling while (csvData.nextLine())...");
+//		Util.logTerminal("calling while (csvData.nextLine())...");
     boolean accountMissingError = false;
 
 //    csvData.printFile();
-        System.err.println( "ImportReverseOrderFlg(): " + getCustomReaderData().getImportReverseOrderFlg() );
+        Util.logConsole( "ImportReverseOrderFlg(): " + getCustomReaderData().getImportReverseOrderFlg() );
         if ( getCustomReaderData().getImportReverseOrderFlg() )
             {
             csvData.reverseListRangeOrder( begAtLine, stopAtLine - 1 );
@@ -377,22 +377,22 @@ public abstract class TransactionReader
         {
         accountNameFromCSV = "";
         totalProcessed++;
-        //			System.out.println("calling parseNext...");
+        //			Util.logTerminal("calling parseNext...");
         
         if ( parseNext() )
             {
             if ( null == accountNameFromCSV || accountNameFromCSV.isEmpty() )
                 {
-                System.out.println( "accountNameFromCSV is empty. Used selected acct." );
+                Util.logTerminal( "accountNameFromCSV is empty. Used selected acct." );
                 this.account = accountIn;
                 }
             else
                 {
                 this.account = book.getRootAccount().getAccountByName( accountNameFromCSV );
-                System.out.println( "accountNameFromCSV: " +  accountNameFromCSV );
+                Util.logTerminal( "accountNameFromCSV: " +  accountNameFromCSV );
                 if ( this.account == null )
                     {
-                    System.err.println( "ERROR: account is null" );
+                    Util.logConsole( "ERROR: account is null" );
                     //TODO: make new account?
                     if ( ! accountMissingError )
                         {
@@ -402,7 +402,7 @@ public abstract class TransactionReader
                     totalRejected++;
                     continue;
                     }
-                System.out.println( "account.getAccountName(): " + this.account.getAccountName() );
+                Util.logTerminal( "account.getAccountName(): " + this.account.getAccountName() );
                 }
           //TODO: per-account currency assignment is unfinished.
           //it requires separating parsing logic from matching logic. 2011.11.25 ds
@@ -413,10 +413,10 @@ public abstract class TransactionReader
         //  ! accountNameFromCSV.contentEquals(priorAccountNameFromCSV)) {
         //  priorAccountNameFromCSV = accountNameFromCSV;
           this.transactionList = account.getDownloadedTxns();//TODO: move this out of loop
-          System.err.println( "tset.getSize() = " + tset.getSize() + "   online txns.getSize() = " + transactionList.getTxnCount() );
+          Util.logConsole( "tset.getSize() = " + tset.getSize() + "   online txns.getSize() = " + transactionList.getTxnCount() );
 
         //				}
-          System.out.println("OnlineTxn txn = transactionList.newTxn();");
+          Util.logTerminal("OnlineTxn txn = transactionList.newTxn();");
           OnlineTxn txn = transactionList.newTxn();
           assignDataToTxn( txn );
           txn.setProtocolType( OnlineTxn.PROTO_TYPE_OFX );
@@ -429,14 +429,14 @@ public abstract class TransactionReader
           txn.setTotalAmount( -txn.getAmount() );
           }
             */
-            System.err.println( "if (account.balanceIsNegated())" );
+            Util.logConsole( "if (account.balanceIsNegated())" );
             if ( account.balanceIsNegated() )
                 {
                 txn.setAmount( -txn.getAmount() );
                 txn.setTotalAmount( -txn.getAmount() );
                 }
             
-            //System.err.println( "call to calc fitxnid - should be online type" );
+            //Util.logConsole( "call to calc fitxnid - should be online type" );
             String onlineMatchKey = calcFITxnId( txn );
             txn.setFITxnId( onlineMatchKey );
             
@@ -445,9 +445,9 @@ public abstract class TransactionReader
                  ! tsetFITxnIdMatcherKey.contains( onlineMatchKey )
                     )
                 {
-                System.err.println( "will add transaction with txn.getFITxnId( ) =" + txn.getFITxnId( ) + "=   txn.getFIID() =" + txn.getFIID() + "=" );
+                Util.logConsole( "will add transaction with txn.getFITxnId( ) =" + txn.getFITxnId( ) + "=   txn.getFIID() =" + txn.getFIID() + "=" );
                 //                     + "\n                              or onlineMatchKey =" + onlineMatchKey + "=" );
-                //System.err.println( "importDialog =" + importDialog + "=" );
+                //Util.logConsole( "importDialog =" + importDialog + "=" );
                 
                 /*  NOTE: This is to convert the online txn to an regular txn. This would let me set categories and tags 
                  * on incoming txn's,  but it automatically sets the category to the default account one and I like it
@@ -455,12 +455,12 @@ public abstract class TransactionReader
                  */
                 if ( importDialog.isSelectedOnlineImportTypeRB() )
                     {
-                    System.err.println( "add new onlineTxn" );
+                    Util.logConsole( "add new onlineTxn" );
                     transactionList.addNewTxn( txn );
                     }
                 else
                     {
-                    System.err.println( "add new parentTxn/splitTxn" );
+                    Util.logConsole( "add new parentTxn/splitTxn" );
                     ParentTxn pTxn = onlineToParentTxn( account, book, txn );
                     if ( pTxn != null )
                         {
@@ -469,12 +469,12 @@ public abstract class TransactionReader
                     }
                 totalAccepted ++;
                 // I don't know why, but for now this works here, but not below, after the main loop - Stan. Maybe because of using multiple account names?
-                System.err.println( "onlineMgr.processDownloadedTxns for account :" + account.getAccountName() );
+                Util.logConsole( "onlineMgr.processDownloadedTxns for account :" + account.getAccountName() );
                 onlineMgr.processDownloadedTxns( account );
                 }
             else
                 {
-                System.err.println( "will NOT add Duplicate transaction with txn.getFITxnId( ) =" + txn.getFITxnId( ) + "=" );
+                Util.logConsole( "will NOT add Duplicate transaction with txn.getFITxnId( ) =" + txn.getFITxnId( ) + "=" );
                 totalDuplicates ++;
                 }
               }  // parseNext()
@@ -504,17 +504,17 @@ public abstract class TransactionReader
                                                                             + "\nRejected Records: " + totalRejected
                                                                             + "\n\nDo you want to import the New records ?"
                                                                     , "Results", JOptionPane.YES_NO_OPTION );
-      System.err.println( "ans =" + ans + "=    JOptionPane.YES_OPTION =" + JOptionPane.YES_OPTION + "=    JOptionPane.NO_OPTION =" + JOptionPane.NO_OPTION + "=" );
+      Util.logConsole( "ans =" + ans + "=    JOptionPane.YES_OPTION =" + JOptionPane.YES_OPTION + "=    JOptionPane.NO_OPTION =" + JOptionPane.NO_OPTION + "=" );
       if ( ans == JOptionPane.YES_OPTION )
           {
               
           OnlineTxnList transactionListCurrent = account.getDownloadedTxns();
           int max = transactionList.getTxnCount();
-          System.err.println( "getTxnCount()/max =" + max + "=" );
+          Util.logConsole( "getTxnCount()/max =" + max + "=" );
           
           for ( int j = 0; j < max; j ++ )
               {
-              System.err.println( "transactionList.getTxn( " + j + " ) =" + transactionList.getTxn( j ) + "=" );
+              Util.logConsole( "transactionList.getTxn( " + j + " ) =" + transactionList.getTxn( j ) + "=" );
               transactionListCurrent.addNewTxn( transactionList.getTxn( j ) );
               }
                
@@ -561,10 +561,10 @@ public abstract class TransactionReader
                                                           , ckNum, account, oTxn.getName(), oTxn.getMemo()
                                                           , -1, AbstractTxn.STATUS_UNRECONCILED );
        try {
-           System.err.println( "find category for oTxn.getSubAccountTo() =" + oTxn.getSubAccountTo() + "=" );
+           Util.logConsole( "find category for oTxn.getSubAccountTo() =" + oTxn.getSubAccountTo() + "=" );
            category = getAccount( account, oTxn.getSubAccountTo(), AccountUtil.getDefaultCategoryForAcct( account ).getAccountName()  //rr.getString("default_category"),
                                   , oTxn.getAmount() <= 0 ? Account.AccountType.EXPENSE : Account.AccountType.INCOME );
-           System.err.println( "found category =" + category + "=" );
+           Util.logConsole( "found category =" + category + "=" );
 
        } catch (Exception ex) {
            Logger.getLogger(TransactionReader.class.getName()).log(Level.SEVERE, null, ex);
@@ -588,7 +588,7 @@ public abstract class TransactionReader
   
    public void setCustomReaderDialog( CustomReaderDialog customReaderDialog )
         {
-        System.err.println( "custreader set custreaderdialog" );
+        Util.logConsole( "custreader set custreaderdialog" );
         this.customReaderDialog = customReaderDialog;
         }
    
@@ -605,25 +605,25 @@ public abstract class TransactionReader
       ArrayList<TransactionReader> formats = new ArrayList<TransactionReader>();
 // moving      importDialog = importDialogArg;
       
-      System.err.println( "getCompatibleReaders() call cust read canParse()" );
+      Util.logConsole( "getCompatibleReaders() call cust read canParse()" );
       CSVReader csvReader = null;
       
       for ( String key : Settings.getReaderHM().keySet() )
             {
             TransactionReader transactionReader = Settings.getReaderHM().get( key );
-            System.err.println( "\n================  at canparse for transReader >" + key + "< ===============" );
+            Util.logConsole( "\n================  at canparse for transReader >" + key + "< ===============" );
             
              try
                 {
-                System.err.println( "using fileEncoding >" + transactionReader.getCustomReaderData().getFileEncoding() + "< ===============" );
+                Util.logConsole( "using fileEncoding >" + transactionReader.getCustomReaderData().getFileEncoding() + "< ===============" );
                 if ( transactionReader.getCustomReaderData().getUseRegexFlag() )
                     {
-                    System.err.println( "\n================  Regex Reader" );
+                    Util.logConsole( "\n================  Regex Reader" );
                     csvReader = new RegexReader( new InputStreamReader( new FileInputStream( selectedFile ), Charset.forName( transactionReader.getCustomReaderData().getFileEncoding() ) ), transactionReader.getCustomReaderData() );
                     }
                 else
                     {
-                    System.err.println( "\n================  Csv Reader" );
+                    Util.logConsole( "\n================  Csv Reader" );
                     csvReader = new CSVReader( new InputStreamReader( new FileInputStream( selectedFile ), Charset.forName( transactionReader.getCustomReaderData().getFileEncoding() ) ), transactionReader.getCustomReaderData() );
                     }
                 CSVData csvData = new CSVData( csvReader );
@@ -631,24 +631,24 @@ public abstract class TransactionReader
                 transactionReader.setAccountBook(TransactionReader.book);
                 if ( getAllReadersList )
                       {
-                      System.err.println( "=============== add all readers for >" + key + "< ===============" );
+                      Util.logConsole( "=============== add all readers for >" + key + "< ===============" );
                       formats.add( transactionReader );
                       }
                 else if ( transactionReader.canParse( csvData, PARSE_THRU_ERRORS_STOP_AT_FIRST ) )
                       {
-                      System.err.println( "=============== at canparse WORKS for >" + key + "< ===============" );
+                      Util.logConsole( "=============== at canparse WORKS for >" + key + "< ===============" );
                       formats.add( transactionReader );
                       }
                 else
                       {
-                      System.err.println( "=============== at canparse NOT WORK for >" + key + "< ===============" );
+                      Util.logConsole( "=============== at canparse NOT WORK for >" + key + "< ===============" );
                       }
                 }
              catch ( Throwable x )
                  {
-                 System.err.println( "at canparse error reading file !" );
-                 System.err.println( "=============== at canparse NOT WORK for >" + key + "< ===============" );
-                 System.err.println( "File Error: " );
+                 Util.logConsole( "at canparse error reading file !" );
+                 Util.logConsole( "=============== at canparse NOT WORK for >" + key + "< ===============" );
+                 Util.logConsole( "File Error: " );
                  x.printStackTrace();
                  }
              finally
@@ -668,15 +668,15 @@ public abstract class TransactionReader
       if ( customerReaderName != null && ! customerReaderName.equals( "" ) )
 s        {
 
-          System.err.println( "at canparse getFieldSeparator() =" + (char)data.getReader().getFieldSeparator() + "=" );
+          Util.logConsole( "at canparse getFieldSeparator() =" + (char)data.getReader().getFieldSeparator() + "=" );
 
           //data.getReader().setFieldSeparator( customReaderDialog.getFieldSeparatorChar() );
-          //System.err.println( "at canparse getFieldSeparator() after set =" + (char)data.getReader().getFieldSeparator() + "=" );
+          //Util.logConsole( "at canparse getFieldSeparator() after set =" + (char)data.getReader().getFieldSeparator() + "=" );
 
-//s          System.err.println( "at canparse getFieldSeparator() after set =" + (char)data.getReader().getFieldSeparator() + "=" );
+//s          Util.logConsole( "at canparse getFieldSeparator() after set =" + (char)data.getReader().getFieldSeparator() + "=" );
 
           customReader.setDateFormat( importDialog.comboDateFormatGetItem() );
-          System.err.println( "at canparse importDialog.comboDateFormatGetItem() after set =" + importDialog.comboDateFormatGetItem() + "=" );
+          Util.logConsole( "at canparse importDialog.comboDateFormatGetItem() after set =" + importDialog.comboDateFormatGetItem() + "=" );
           
           if ( customReader.canParse( data ) )
               {
@@ -748,7 +748,7 @@ s        {
             
     public void setUsingCategorynameFlag(boolean xx) {
         this.isUsingCategorynameFlag = xx;
-        //System.err.println( "set isUsingCategorynameFlag to =" + isUsingCategorynameFlag + "=" );
+        //Util.logConsole( "set isUsingCategorynameFlag to =" + isUsingCategorynameFlag + "=" );
     }
     
     /**************************************************************************************/
