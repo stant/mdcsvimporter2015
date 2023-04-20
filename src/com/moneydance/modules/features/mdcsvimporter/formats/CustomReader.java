@@ -19,7 +19,7 @@ import com.moneydance.modules.features.mdcsvimporter.CSVData;
 import com.moneydance.modules.features.mdcsvimporter.CustomReaderData;
 import com.moneydance.modules.features.mdcsvimporter.TransactionReader;
 import com.moneydance.modules.features.mdcsvimporter.Util;
-import com.moneydance.util.CustomDateFormat;
+import com.infinitekind.util.CustomDateFormat;
 import com.infinitekind.util.StringUtils;
 import java.io.IOException;
 import java.text.ParseException;
