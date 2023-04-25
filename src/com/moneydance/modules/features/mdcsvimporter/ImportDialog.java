@@ -951,7 +951,7 @@ public class ImportDialog extends javax.swing.JDialog
 
                 String[] tt = new String[]{dialog.getFiles()[0].getAbsolutePath()};
 
-                Util.logConsole(true, "***HERE1a: " + selectedFile + " " + selectedFile.getPath() + " " + dialog.getFiles()[0] + " " + selectedFile.getName());
+//                Util.logConsole(true, "***HERE1a: " + selectedFile + " " + selectedFile.getPath() + " " + dialog.getFiles()[0] + " " + selectedFile.getName());
                 popTextFilenameList(tt);
                 fileChanged2();
                 btnProcess.setEnabled(false);
@@ -989,7 +989,7 @@ public class ImportDialog extends javax.swing.JDialog
                 } else {
                     tt = new String[]{selectedFile.getPath()};
                 }
-                Util.logConsole(true, "***HERE1b: " + selectedFile + " " + selectedFile.getPath() + " " + dialog.getSelectedFiles()[0] + " " + selectedFile.getName());
+//                Util.logConsole(true, "***HERE1b: " + selectedFile + " " + selectedFile.getPath() + " " + dialog.getSelectedFiles()[0] + " " + selectedFile.getName());
                 popTextFilenameList(tt);
 //          fileChanged();
                 fileChanged2();
