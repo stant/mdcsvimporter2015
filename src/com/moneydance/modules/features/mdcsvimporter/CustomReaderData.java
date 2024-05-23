@@ -114,7 +114,7 @@ public class CustomReaderData {
         
         for (       ; c < max; c++ )
             {
-            //System.err.println( "(String) dataTypesList.get(" + c + ") =" + (String) dataTypesList.get( c ) + "=" );
+            //Util.logConsole( "(String) dataTypesList.get(" + c + ") =" + (String) dataTypesList.get( c ) + "=" );
             if ( ((String) dataTypesList.get( c )).equalsIgnoreCase( "" ) )
                 return c;
             }

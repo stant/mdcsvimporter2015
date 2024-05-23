@@ -227,36 +227,36 @@ public class RegexReader extends CSVReader
     for ( String patString : customReaderData.getRegexsList() )
         {
         matcherAl.add( Pattern.compile( patString ).matcher("") );
-        //System.err.println( "patString =" + patString + "=" );
+        //Util.logConsole( "patString =" + patString + "=" );
         }
     Matcher matcher = matcherAl.get( 0 );
 
     String item = null;
     
-    //System.err.println( "\nnextField() fieldSeparator =" + (char)fieldSeparator + "=" );
+    //Util.logConsole( "\nnextField() fieldSeparator =" + (char)fieldSeparator + "=" );
 
 //      if ( isEol( lastChar ) || isEof( lastChar ) )
 //      {
-//         //System.err.println( "nextField() return null for Eol or Eof" );
+//         //Util.logConsole( "nextField() return null for Eol or Eof" );
 //         return null;
 //      }
 
         if ( ! rgLine.isEmpty() )
             {
             try {
-                System.err.println( "\n----- left =" + rgLine + "=   use regex [" + rgFieldCnt + "] =" + matcherAl.get( rgFieldCnt ).pattern() + "=" );
+                Util.logConsole( "\n----- left =" + rgLine + "=   use regex [" + rgFieldCnt + "] =" + matcherAl.get( rgFieldCnt ).pattern() + "=" );
                 matcher = (matcherAl.get( rgFieldCnt ));
                 matcher.reset( rgLine ); //reset the input
                 if ( matcher.matches() )
                     {
-                    //System.err.println("Num groups: " + matcher.groupCount());
+                    //Util.logConsole("Num groups: " + matcher.groupCount());
                     try {
                         item = matcher.group("value") == null ? "" : matcher.group("value");
                         }
                     catch( Exception exc )
                         {
                         exc.printStackTrace();
-                        System.err.println("regex <value> probably does not exist.");
+                        Util.logConsole("regex <value> probably does not exist.");
                         item = "";
                         }
     //                rgLine = rgLine.substring( item.length() );
@@ -266,18 +266,18 @@ public class RegexReader extends CSVReader
                     catch( Exception exc )
                         {
                         exc.printStackTrace();
-                        System.err.println("regex <rest> probably does not exist.");
+                        Util.logConsole("regex <rest> probably does not exist.");
                         rgLine = "";
                         }
     //                if ( item.endsWith( "," ) )
     //                    item = item.substring( 0, item.length() - 1 );
-                    System.err.println( "rgFieldCnt =" + rgFieldCnt + "   item >" + item + "<    item2 to become leftover line >" + rgLine + "<" );
+                    Util.logConsole( "rgFieldCnt =" + rgFieldCnt + "   item >" + item + "<    item2 to become leftover line >" + rgLine + "<" );
                     }
                 }
             catch( Exception exc )
                 {
                 exc.printStackTrace();
-                System.err.println("Input does not match pattern.");
+                Util.logConsole("Input does not match pattern.");
                 rgLine = "";
                 return null;
                 }
@@ -285,7 +285,7 @@ public class RegexReader extends CSVReader
             }
         else
             {
-            System.err.println( "No more fields left." );
+            Util.logConsole( "No more fields left." );
             rgLine = "";
             return null;
             }
@@ -294,12 +294,12 @@ public class RegexReader extends CSVReader
 
       if ( trimFields )
       {
-         System.err.println( "RegexReader return nextField trim =" + item.trim() + "=" );
+         Util.logConsole( "RegexReader return nextField trim =" + item.trim() + "=" );
          return item.trim();
       }
       else
       {
-         System.err.println( "RegexReader return nextField =" + item + "=" );
+         Util.logConsole( "RegexReader return nextField =" + item + "=" );
          return item;
       }
    }
@@ -315,10 +315,10 @@ public class RegexReader extends CSVReader
       //LineNumberReader lineReader = new LineNumberReader( reader );
     //)
     {
-      System.err.println( "entered RegexReader.nextLine()" );
+      Util.logConsole( "entered RegexReader.nextLine()" );
       if ((rgLine = lineReader.readLine()) != null) 
         {
-        System.err.println( "\n---------- line =" + rgLine + "=" );
+        Util.logConsole( "\n---------- line =" + rgLine + "=" );
         rgFieldCnt = 0;
         return true;
       }      
@@ -331,7 +331,7 @@ public class RegexReader extends CSVReader
   
    public void setFieldSeparator( int fieldSeparator )
    {
-      //System.err.println( "CSVReader.setFieldSeparator =" + (char)fieldSeparator + "=" );
+      //Util.logConsole( "CSVReader.setFieldSeparator =" + (char)fieldSeparator + "=" );
       this.fieldSeparator = fieldSeparator;
    }
 

@@ -22,19 +22,19 @@ public class PreviewImportTblModel extends AbstractTableModel
         //headerCount = headerCountArg;
         colCount = colCountArg;
         
-        System.err.println( "row count =" + data.length );
-        System.err.println( "col count =" + colCount );
+        Util.logConsole( "row count =" + data.length );
+        Util.logConsole( "col count =" + colCount );
         }
 
     public int getColumnCount() { return colCount; }
     public int getRowCount() { return data.length;}
     public Object getValueAt(int row, int col) 
         {
-        //System.err.println( "getValueAt row =" + row + "  col =" + col );
+        //Util.logConsole( "getValueAt row =" + row + "  col =" + col );
         try {
             if ( data[row][col] == "" ) 
                 {
-                //System.err.println( "NOT EXISTS getValueAt row =" + row + "  col =" + col );
+                //Util.logConsole( "NOT EXISTS getValueAt row =" + row + "  col =" + col );
                 }
             } 
         catch( Exception ex )
