@@ -554,7 +554,6 @@ public class ImportDialog extends javax.swing.JDialog
     */
    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
@@ -572,7 +571,6 @@ public class ImportDialog extends javax.swing.JDialog
         comboFileFormat = new javax.swing.JComboBox();
         onlineImportTypeRB = new javax.swing.JRadioButton();
         regularImportTypeRB = new javax.swing.JRadioButton();
-        lblDateFormat = new javax.swing.JLabel();
         comboDateFormat = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -590,10 +588,10 @@ public class ImportDialog extends javax.swing.JDialog
         jLabel3.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(Main.EXTN_NAME + "(build: " + main.getBuild() + ")");
-        setMinimumSize(new java.awt.Dimension(950, 470));
+        setTitle(Main.EXTN_NAME + " (build: " + main.getBuild() + ")");
+        setMinimumSize(new java.awt.Dimension(850, 400));
         setName("importDialog"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(950, 470));
+        setPreferredSize(new java.awt.Dimension(850, 400));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -634,7 +632,7 @@ public class ImportDialog extends javax.swing.JDialog
         checkDeleteFile.setPreferredSize(new java.awt.Dimension(250, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 13;
+        gridBagConstraints.gridy = 12;
         gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -649,7 +647,7 @@ public class ImportDialog extends javax.swing.JDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 16;
+        gridBagConstraints.gridy = 15;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         getContentPane().add(btnClose, gridBagConstraints);
@@ -663,7 +661,7 @@ public class ImportDialog extends javax.swing.JDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 16;
+        gridBagConstraints.gridy = 15;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         getContentPane().add(btnProcess, gridBagConstraints);
@@ -672,7 +670,7 @@ public class ImportDialog extends javax.swing.JDialog
         lblAccount.setPreferredSize(new java.awt.Dimension(120, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         getContentPane().add(lblAccount, gridBagConstraints);
@@ -683,7 +681,7 @@ public class ImportDialog extends javax.swing.JDialog
         comboAccount.setPreferredSize(new java.awt.Dimension(180, 29));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -699,7 +697,7 @@ public class ImportDialog extends javax.swing.JDialog
         lblMessage.setPreferredSize(new java.awt.Dimension(3, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 18;
+        gridBagConstraints.gridy = 17;
         gridBagConstraints.gridwidth = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipady = 1;
@@ -743,7 +741,7 @@ public class ImportDialog extends javax.swing.JDialog
         onlineImportTypeRB.setText("Online");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         getContentPane().add(onlineImportTypeRB, gridBagConstraints);
 
@@ -752,32 +750,20 @@ public class ImportDialog extends javax.swing.JDialog
         regularImportTypeRB.setText("Regular");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         getContentPane().add(regularImportTypeRB, gridBagConstraints);
 
-        lblDateFormat.setText("Date Format:");
-        lblDateFormat.setPreferredSize(new java.awt.Dimension(120, 24));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
-        getContentPane().add(lblDateFormat, gridBagConstraints);
-
         comboDateFormat.setModel(new javax.swing.DefaultComboBoxModel(new String[] {  }));
+        comboDateFormat.setEnabled(false);
+        comboDateFormat.setFocusable(false);
         comboDateFormat.setMaximumSize(new java.awt.Dimension(180, 29));
         comboDateFormat.setMinimumSize(new java.awt.Dimension(180, 29));
         comboDateFormat.setPreferredSize(new java.awt.Dimension(180, 29));
-        comboDateFormat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboDateFormatActionPerformed(evt);
-            }
-        });
+        comboDateFormat.setRequestFocusEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 4, 10, 0);
@@ -791,7 +777,7 @@ public class ImportDialog extends javax.swing.JDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 16;
+        gridBagConstraints.gridy = 15;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         getContentPane().add(jButton1, gridBagConstraints);
@@ -800,7 +786,7 @@ public class ImportDialog extends javax.swing.JDialog
         jLabel5.setToolTipText("<html>Online: These will not have a default category pre-set.<br/>\nRegular: These are regular transactions and they get the default category for the account.<br/>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You can also import a 'tag' field in the regular type.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
         getContentPane().add(jLabel5, gridBagConstraints);
@@ -825,14 +811,14 @@ public class ImportDialog extends javax.swing.JDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 13;
+        gridBagConstraints.gridy = 12;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jButton2, gridBagConstraints);
 
         jLabel1.setText(" ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 14;
+        gridBagConstraints.gridy = 13;
         getContentPane().add(jLabel1, gridBagConstraints);
 
         propertiesFile.setText(" ");
@@ -841,10 +827,10 @@ public class ImportDialog extends javax.swing.JDialog
         propertiesFile.setPreferredSize(new java.awt.Dimension(180, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 19;
+        gridBagConstraints.gridy = 18;
         gridBagConstraints.gridwidth = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(4, 10, 10, 10);
         getContentPane().add(propertiesFile, gridBagConstraints);
 
@@ -856,7 +842,7 @@ public class ImportDialog extends javax.swing.JDialog
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 16;
+        gridBagConstraints.gridy = 15;
         getContentPane().add(PreviewImportBtn, gridBagConstraints);
 
         jButton3.setText("Find Reader(s) that Work on Import File");
@@ -1051,12 +1037,11 @@ public class ImportDialog extends javax.swing.JDialog
         customReaderDialog.setVisible( true );
     }//GEN-LAST:event_jButton1ActionPerformed
 
-private void comboDateFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDateFormatActionPerformed
-    //customReaderDialog.setDateFormat( (String)comboDateFormat.getSelectedItem() );
-}//GEN-LAST:event_comboDateFormatActionPerformed
-
 private void comboFileFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboFileFormatActionPerformed
 
+    if ( comboFileFormatLabel.getText().equalsIgnoreCase( "pick one" ) )
+        comboFileFormatLabel.setText( "" );
+    
       btnProcess.setEnabled( false );
     /*  use actionPerformed - not both !
 if ( comboFileFormat.getSelectedItem() instanceof String )
@@ -1108,6 +1093,10 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // this field: comboDateFormat has a lot of usages. The date format is really set
+        // on each custom reader so maybe I could get rid of this but it would take some
+        // work which I will not do yet. For now I will hide it from the user but let it be used by the code. Stan
+        this.comboDateFormat.setVisible( false );
         this.setPropertiesFile(); 
        
 //    // for copying style
@@ -1179,12 +1168,33 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         fileChanged();
+        
+        Util.logConsole(true, "comboFileFormatLabel.getText() =" + comboFileFormatLabel.getText() + "=" );
+        btnProcess.setEnabled( false );
+        if ( ! comboFileFormatLabel.getText().equalsIgnoreCase( "no matches" ) &&
+             ! comboFileFormatLabel.getText().equalsIgnoreCase( "no file" ) )
+            {
+            btnProcess.setEnabled( true );                
+            }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Util.logConsole(true, "***HERE2");
+        Util.logConsole(true, "at find file to import");
         popTextFilenameList( null );
-        btnProcess.setEnabled( false );
+        
+        try
+            {
+            int cnt = Integer.parseInt( importFileCount.getText() );
+            if ( cnt > 0 )
+                {
+                btnProcess.setEnabled( true );                
+                }
+            }
+        catch( Exception exc )
+            {
+
+            }
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void textFilenameItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_textFilenameItemStateChanged
@@ -1213,6 +1223,7 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         fileChanged2();
+        btnProcess.setEnabled( false );
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1263,7 +1274,6 @@ if ( comboFileFormat.getSelectedItem() instanceof String )
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel lblAccount;
-    private javax.swing.JLabel lblDateFormat;
     private javax.swing.JLabel lblFileFormat;
     private javax.swing.JLabel lblMessage;
     private javax.swing.JLabel lblSelectFile;

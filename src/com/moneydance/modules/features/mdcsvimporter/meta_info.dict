@@ -1,7 +1,7 @@
 {
   "id" = "mdcsvimporter2015"
-  "vendor" = "Stan Towianski - Updated by Stuart Beesley StuWareSoftSystems"
-  "module_build" = "1001"
+  "vendor" = "Stan Towianski - MD code Updates by Stuart Beesley StuWareSoftSystems"
+  "module_build" = "25"
   "minbuild" = "1372"
   "vendor.url" = "https://github.com/stant/mdcsvimporter2015/releases"
   "module_name" = "CSV Importer"
